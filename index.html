@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Navigator</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- HEADER -->
+  <header>
+    <div class="container header-container">
+      <a href="#" class="logo"><img src="ChatGPT Image 13 мар. 2026 г., 19_18_20.png" alt="AI Navigator Logo"></a>
+
+      <div class="menu-toggle">☰</div>
+
+      <nav>
+        <a href="#">Home</a>
+        <a href="#tools">AI Tools</a>
+        <a href="#workflows">Workflows</a>
+        <a href="#categories-usecases"> AI Guides</a>
+        <a href="#categories-usecases">Use Cases</a>
+        <a href="#bot">AI Bot</a>
+        <a href="#pricing">Pricing</a>
+      </nav>
+
+      <a href="#pricing" class="premium-btn">
+        Get Premium
+      </a>
+
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container">
+
+      <h1>Use AI Like a Pro — Not a Beginner</h1>
+
+      <p>
+        <span class="hero-highlight">One entry → multiple AI → ready solutions.</span><br>
+        Use structured workflows, powerful prompts, and top AI tools —
+        all in one place, without chaos and endless searching.
+      </p>
+
+
+      <!-- AUTH INPUT -->
+      <div id="auth-box" class="hero-auth">
+        <input id="email-input" type="email" placeholder="Enter your email" />
+        <button onclick="saveEmail()">Continue</button>
+      </div>
+
+      <div class="hero-buttons">
+        <a href="#workflows" class="btn-main">Explore Workflows</a>
+        <a href="https://t.me/hakob_ai_it_bot" class="btn-secondary" target="_blank">
+          Try Telegram Bot
+        </a>
+      </div>
+
+      <p class="hero-proof">
+        🚀 50+ structured AI workflows • Save hours every day
+      </p>
+
+    </div>
+  </section>
+
+
+  <!-- TRENDING AI TOOLS -->
+  <section id="tools" class="trending">
+    <div class="container">
+      <h2>🔥 Trending AI Tools</h2>
+      <div class="tools-grid">
+
+        <!-- Text AI -->
+        <div class="tool-card">
+          <h3 translate="no">ChatGPT</h3>
+          <p>AI assistant for writing, research, and content generation.</p>
+          <div class="tool-footer">
+            <span class="tool-tag">Text AI</span>
+            <a class="tool-btn" href="https://chat.openai.com" target="_blank" rel="noopener noreferrer" translate="no">
+              ChatGPT
+            </a>
+          </div>
+        </div>
+
+        <!-- Image AI -->
+        <div class="tool-card">
+          <h3 translate="no">MidJourney</h3>
+          <p>Generate creative images using AI.</p>
+          <div class="tool-footer">
+            <span class="tool-tag">Image AI</span>
+            <a class="tool-btn" href="https://www.midjourney.com" target="_blank" rel="noopener noreferrer"
+              translate="no">
+              MidJourney
+            </a>
+          </div>
+        </div>
+
+        <!-- Video AI -->
+        <div class="tool-card">
+          <h3 translate="no">Runway</h3>
+          <p>AI video creation platform for all creators.</p>
+          <div class="tool-footer">
+            <span class="tool-tag">Video AI</span>
+            <a class="tool-btn" href="https://runwayml.com" target="_blank" rel="noopener noreferrer" translate="no">
+              Runway
+            </a>
+          </div>
+        </div>
+
+        <!-- Voice AI -->
+        <div class="tool-card">
+          <h3 translate="no">ElevenLabs</h3>
+          <p>High-quality AI voice synthesis for creators.</p>
+          <div class="tool-footer">
+            <span class="tool-tag">Voice AI</span>
+            <a class="tool-btn" href="https://elevenlabs.io" target="_blank" rel="noopener noreferrer" translate="no">
+              ElevenLabs
+            </a>
+          </div>
+        </div>
+
+        <!-- Coding AI -->
+        <div class="tool-card">
+          <h3 translate="no">GitHub Copilot</h3>
+          <p>AI code assistant for faster software development.</p>
+          <div class="tool-footer">
+            <span class="tool-tag">Coding AI</span>
+            <a class="tool-btn" href="https://github.com/features/copilot" target="_blank" rel="noopener noreferrer"
+              translate="no">
+              GitHub Copilot
+            </a>
+          </div>
+        </div>
+
+        <!-- Automation AI -->
+        <div class="tool-card">
+          <h3 translate="no">Zapier</h3>
+          <p>Automate repetitive tasks and connect apps using AI.</p>
+          <div class="tool-footer">
+            <span class="tool-tag">Automation AI</span>
+            <a class="tool-btn" href="https://zapier.com" target="_blank" rel="noopener noreferrer" translate="no">
+              Zapier
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="workflows">
+    <div class="container">
+
+      <div class="section-header">
+        <h2 class="section-title">🔥 Premium AI Workflows</h2>
+        <p class="section-subtitle">
+          Unlock powerful step-by-step AI workflows
+        </p>
+      </div>
+
+      <div id="workflow-cards">
+
+        <!-- 1 -->
+        <div class="tool-card workflow-locked">
+          <div class="tool-card-content">
+            <h3>YouTube Creator</h3>
+            <p>From idea to video.</p>
+
+            <div class="tool-footer" translate="no">
+              <a href="https://chat.openai.com" target="_blank" class="tool-btn">ChatGPT</a>
+              <a href="https://www.midjourney.com" target="_blank" class="tool-btn tool-locked">MidJourney</a>
+              <a href="https://runwayml.com" target="_blank" class="tool-btn tool-locked">Runway</a>
+            </div>
+
+            <button class="open-workflow" data-workflow="youtube">Open Workflow</button>
+          </div>
+
+          <div class="card-overlay">
+            <div class="overlay-content">
+              <span class="lock-icon">🔒</span>
+              <p>Premium Only</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2 -->
+        <div class="tool-card workflow-locked">
+          <div class="tool-card-content">
+            <h3>Marketing</h3>
+            <p>Launch campaigns.</p>
+
+            <div class="tool-footer" translate="no">
+              <a href="https://www.jasper.ai" target="_blank" class="tool-btn">Jasper</a>
+              <a href="https://www.copy.ai" target="_blank" class="tool-btn tool-locked">Copy.ai</a>
+              <a href="https://chat.openai.com" target="_blank" class="tool-btn tool-locked">ChatGPT</a>
+            </div>
+
+            <button class="open-workflow" data-workflow="marketing">Open Workflow</button>
+          </div>
+
+          <div class="card-overlay">
+            <div class="overlay-content">
+              <span class="lock-icon">🔒</span>
+              <p>Premium Only</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3 -->
+        <div class="tool-card workflow-locked">
+          <div class="tool-card-content">
+            <h3>Website Builder</h3>
+            <p>Build sites fast.</p>
+
+            <div class="tool-footer" translate="no">
+              <a href="https://vercel.com" target="_blank" class="tool-btn">Vercel</a>
+              <a href="https://github.com/features/copilot" target="_blank" class="tool-btn tool-locked">Copilot</a>
+              <a href="https://chat.openai.com" target="_blank" class="tool-btn tool-locked">ChatGPT</a>
+            </div>
+
+            <button class="open-workflow" data-workflow="website">Open Workflow</button>
+          </div>
+
+          <div class="card-overlay">
+            <div class="overlay-content">
+              <span class="lock-icon">🔒</span>
+              <p>Premium Only</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4 -->
+        <div class="tool-card workflow-locked">
+          <div class="tool-card-content">
+            <h3>Design AI</h3>
+            <p>Create visuals.</p>
+
+            <div class="tool-footer" translate="no">
+              <a href="https://www.midjourney.com" target="_blank" class="tool-btn">MidJourney</a>
+              <a href="https://www.canva.com" target="_blank" class="tool-btn tool-locked">Canva</a>
+              <a href="https://runwayml.com" target="_blank" class="tool-btn tool-locked">Runway</a>
+            </div>
+
+            <button class="open-workflow" data-workflow="design">Open Workflow</button>
+          </div>
+
+          <div class="card-overlay">
+            <div class="overlay-content">
+              <span class="lock-icon">🔒</span>
+              <p>Premium Only</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5 -->
+        <div class="tool-card workflow-locked">
+          <div class="tool-card-content">
+            <h3>Learning AI</h3>
+            <p>Learn faster.</p>
+
+            <div class="tool-footer" translate="no">
+              <a href="https://www.perplexity.ai" target="_blank" class="tool-btn">Perplexity</a>
+              <a href="https://chat.openai.com" target="_blank" class="tool-btn tool-locked">ChatGPT</a>
+              <a href="https://www.notion.so" target="_blank" class="tool-btn tool-locked">Notion</a>
+            </div>
+
+            <button class="open-workflow" data-workflow="learning">Open Workflow</button>
+          </div>
+
+          <div class="card-overlay">
+            <div class="overlay-content">
+              <span class="lock-icon">🔒</span>
+              <p>Premium Only</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6 -->
+        <div class="tool-card workflow-locked">
+          <div class="tool-card-content">
+            <h3>Automation</h3>
+            <p>Automate tasks.</p>
+
+            <div class="tool-footer" translate="no">
+              <a href="https://zapier.com" target="_blank" class="tool-btn">Zapier</a>
+              <a href="https://www.make.com" target="_blank" class="tool-btn tool-locked">Make</a>
+              <a href="https://ifttt.com" target="_blank" class="tool-btn tool-locked">IFTTT</a>
+            </div>
+
+            <button class="open-workflow" data-workflow="automation">Open Workflow</button>
+          </div>
+
+          <div class="card-overlay">
+            <div class="overlay-content">
+              <span class="lock-icon">🔒</span>
+              <p>Premium Only</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7 -->
+        <div class="tool-card workflow-locked">
+          <div class="tool-card-content">
+            <h3>NotebookLM</h3>
+            <p>Research with AI.</p>
+
+            <div class="tool-footer" translate="no">
+              <a href="https://notebooklm.google.com" target="_blank" class="tool-btn">NotebookLM</a>
+              <a href="https://chat.openai.com" target="_blank" class="tool-btn tool-locked">ChatGPT</a>
+              <a href="https://www.perplexity.ai" target="_blank" class="tool-btn tool-locked">Perplexity</a>
+            </div>
+
+            <button class="open-workflow" data-workflow="notebook">Open Workflow</button>
+          </div>
+
+          <div class="card-overlay">
+            <div class="overlay-content">
+              <span class="lock-icon">🔒</span>
+              <p>Premium Only</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8 -->
+        <div class="tool-card workflow-locked">
+          <div class="tool-card-content">
+            <h3>AI Writing</h3>
+            <p>Write better.</p>
+
+            <div class="tool-footer" translate="no">
+              <a href="https://www.grammarly.com" target="_blank" class="tool-btn">Grammarly</a>
+              <a href="https://www.jasper.ai" target="_blank" class="tool-btn tool-locked">Jasper</a>
+              <a href="https://chat.openai.com" target="_blank" class="tool-btn tool-locked">ChatGPT</a>
+            </div>
+
+            <button class="open-workflow" data-workflow="writing">Open Workflow</button>
+          </div>
+
+          <div class="card-overlay">
+            <div class="overlay-content">
+              <span class="lock-icon">🔒</span>
+              <p>Premium Only</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- 9 -->
+        <div class="tool-card workflow-locked">
+          <div class="tool-card-content">
+            <h3>AI Research</h3>
+            <p>Analyze info.</p>
+
+            <div class="tool-footer" translate="no">
+              <a href="https://www.perplexity.ai" target="_blank" class="tool-btn">Perplexity</a>
+              <a href="https://chat.openai.com" target="_blank" class="tool-btn tool-locked">ChatGPT</a>
+              <a href="https://scholarai.io" target="_blank" class="tool-btn tool-locked">ScholarAI</a>
+            </div>
+
+            <button class="open-workflow" data-workflow="research">Open Workflow</button>
+          </div>
+
+          <div class="card-overlay">
+            <div class="overlay-content">
+              <span class="lock-icon">🔒</span>
+              <p>Premium Only</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div id="workflow-viewer"></div>
+
+  <!-- AI Quickstart Guide -->
+  <section id="ai-quickstart">
+    <div class="container">
+      <div class="quickstart-card">
+        <h2>AI Quickstart Guide</h2>
+        <ol>
+          <li>
+            🔹 <strong>What is AI</strong> — Artificial Intelligence (AI) helps automate tasks, create text, images,
+            and
+            videos. Simply put: AI is a tool that can do work for you if you instruct it correctly.
+          </li>
+          <li>
+            💬 <strong>How to talk to AI</strong> — AI understands clear instructions. The more precise your task
+            description, the better the results. Example: <br>
+            ❌ "Write something about marketing" <br>
+            ✅ "Write a short Instagram post about a marketing strategy for a small coffee shop."
+          </li>
+          <li>
+            ✍️ <strong>How to ask good prompts</strong> — Use context and format. Always clarify: what, for whom, in
+            which style. <br>
+            Example: "Create 3 name ideas for a travel YouTube channel in a fun style."
+          </li>
+          <li>
+            ⚠️ <strong>Common beginner mistakes</strong> — Typical mistakes: <br>
+            • Too vague prompts <br>
+            • Expecting perfect results <br>
+            • Ignoring AI instructions <br>
+            • Not fact-checking <br>
+            Tip: Be specific and always review AI output.
+          </li>
+          <li>
+            🛠️ <strong>Best AI tools to start</strong> — Recommended tools for beginners: <br>
+            • ChatGPT — text, ideas, guidance <br>
+            • MidJourney — image generation <br>
+            • Runway — video and animation <br>
+            • Perplexity — quick answers and search <br>
+            • Notion AI — organization and notes
+          </li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= -->
+  <!-- AI Categories & Use Cases -->
+  <!-- ======================= -->
+
+  <section id="categories-usecases">
+    <div class="container">
+
+      <!-- AI Categories -->
+      <h2>AI Categories</h2>
+
+      <div class="categories-grid">
+
+        <div class="category-card" data-category="text">
+          <h3>Text AI</h3>
+          <p>Generate posts, scripts, articles, and business content.</p>
+        </div>
+
+        <div class="category-card" data-category="image">
+          <h3>Image AI</h3>
+          <p>Create visuals, thumbnails, and design assets.</p>
+        </div>
+
+        <div class="category-card" data-category="video">
+          <h3>Video AI</h3>
+          <p>Produce videos, edits, and short-form content.</p>
+        </div>
+
+        <div class="category-card" data-category="voice">
+          <h3>Voice AI</h3>
+          <p>Convert text to speech and create voice content.</p>
+        </div>
+
+        <div class="category-card" data-category="automation">
+          <h3>Automation AI</h3>
+          <p>Automate workflows and repetitive tasks.</p>
+        </div>
+
+        <div class="category-card" data-category="coding">
+          <h3>Coding AI</h3>
+          <p>Write, debug, and optimize code faster.</p>
+        </div>
+
+      </div>
+
+
+      <!-- AI Use Cases -->
+      <h2 style="margin-top:60px;">AI Use Cases</h2>
+
+      <div class="cases-grid">
+
+        <div class="case-card" data-usecase="business">
+          <h3>AI for Business</h3>
+          <p>Automate operations, analyze data, and grow faster.</p>
+        </div>
+
+        <div class="case-card" data-usecase="marketing">
+          <h3>AI for Marketing</h3>
+          <p>Create ads, funnels, and campaigns with AI.</p>
+        </div>
+
+        <div class="case-card" data-usecase="content">
+          <h3>Content Creation</h3>
+          <p>Generate videos, posts, and media content.</p>
+        </div>
+
+        <div class="case-card" data-usecase="dev">
+          <h3>AI for Developers</h3>
+          <p>Build apps, debug code, and speed up development.</p>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+
+  <!-- PRICING SECTION -->
+  <section id="pricing">
+    <div class="container">
+      <h2>Pricing</h2>
+      <div class="pricing-grid">
+
+        <!-- FREE PLAN -->
+        <div class="pricing-card">
+          <h3>Free</h3>
+          <p>Explore AI tools with limited workflows</p>
+          <p><strong>$0 / month</strong></p>
+
+          <ul class="premium-benefits empty">
+            <li>⚠️ Limited workflows</li>
+            <li>⚠️ Restricted AI access</li>
+          </ul>
+          <a href="#" class="premium-btn disabled">Try Free</a>
+        </div>
+
+        <!-- PRO PLAN -->
+        <div class="pricing-card">
+          <h3>Pro</h3>
+
+          <p class="premium-highlight">
+            One entry → multiple AI → ready solutions
+          </p>
+
+          <p><strong>$10 / month</strong></p>
+
+          <!-- PREMIUM BENEFITS -->
+          <ul class="premium-benefits">
+            <li>✅ Full access to AI tools & structured workflows</li>
+            <li>✅ Unlock all use cases & ready-to-use prompts</li>
+            <li>✅ AI guides & step-by-step tutorials</li>
+            <li>✅ Exclusive Telegram bot access</li>
+            <li>✅ Priority updates & new tools</li>
+            <li>✅ Early access to premium workflows</li>
+            <li>✅ Save time & avoid endless searching</li>
+          </ul>
+
+          <a href="javascript:void(0)" onclick="buyPremium()" class="premium-btn">
+            Get Premium
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- TELEGRAM BOT -->
+  <section id="bot" class="bot">
+    <div class="container">
+      <h2>AI Navigator Bot</h2>
+      <p>Use AI Navigator directly in Telegram to find AI tools instantly.</p>
+      <a href="https://t.me/hakob_ai_it_bot" target="_blank" class="bot-button">Open Telegram Bot</a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+
+      <p class="footer-logo">AI Navigator</p>
+
+      <!-- Navigation -->
+      <div class="footer-links">
+        <a href="#tools">AI Tools</a>
+        <a href="#categories-usecases">Guides</a>
+        <a href="#pricing">Pricing</a>
+      </div>
+
+      <!-- SHARE -->
+      <div class="share-links">
+        <span>Share:</span>
+
+        <!-- Facebook -->
+        <a id="share-fb" class="share-btn" target="_blank" rel="noopener noreferrer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M22 12a10 10 0 1 0-11.5 9.9v-7H8v-3h2.5V9.5C10.5 7 12 5.8 14.2 5.8c1 0 2 .1 2 .1v2.2H15c-1 0-1.3.6-1.3 1.2V12H16l-.4 3h-2v7A10 10 0 0 0 22 12z" />
+          </svg>
+        </a>
+
+        <!-- X (Twitter) -->
+        <a id="share-tw" class="share-btn" target="_blank" rel="noopener noreferrer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M18.9 2H22l-6.8 7.8L23 22h-6.2l-4.9-6-5.2 6H3l7.3-8.4L1 2h6.3l4.4 5.4L18.9 2z" />
+          </svg>
+        </a>
+
+        <!-- Telegram -->
+        <a id="share-tg" class="share-btn" target="_blank" rel="noopener noreferrer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M9.7 14.6 9.4 19c.5 0 .7-.2 1-.5l2.3-2.2 4.8 3.5c.9.5 1.6.2 1.8-.8l3.3-15.6c.3-1.3-.5-1.8-1.4-1.4L2.5 9.5c-1.3.5-1.3 1.2-.2 1.6l4.9 1.5 11.3-7.1c.5-.3 1-.1.6.2" />
+          </svg>
+        </a>
+
+        <!-- Instagram -->
+        <a id="share-ig" class="share-btn" target="_blank" rel="noopener noreferrer">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+            <path
+              d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5.5A4.5 4.5 0 1 0 16.5 12 4.5 4.5 0 0 0 12 7.5zm6.5-1.3a1.2 1.2 0 1 0 1.2 1.2 1.2 1.2 0 0 0-1.2-1.2z" />
+          </svg>
+        </a>
+
+        <!-- Copy -->
+        <button id="copy-btn" class="share-btn">
+          ⧉
+        </button>
+      </div>
+
+      <!-- SUPPORT -->
+      <a href="https://t.me/hakob_ai_it_bot?start=support" target="_blank" rel="noopener noreferrer" class="support">
+        Support
+      </a>
+
+      <!-- LIKE -->
+      <div class="footer-like">
+        <span id="like-btn" class="like-btn">❤️</span>
+        <span id="like-count">0</span>
+      </div>
+
+      <p class="footer-copy">© 2026 AI Navigator. All rights reserved.</p>
+
+    </div>
+  </footer>
+
+  <script>
+
+    const API_URL = "https://ai-navigator-backend-mcb3.onrender.com";
+
+    // =========================
+    // SESSION
+    // =========================
+    const sessionId = localStorage.sessionId || crypto.randomUUID();
+    localStorage.sessionId = sessionId;
+
+    // =========================
+    // STATE
+    // =========================
+    const AppState = {
+      userId: null,
+      premium: false,
+      isRefreshing: false
+    };
+
+    // =========================
+    // API
+    // =========================
+    const API = {
+      async checkPremium(userId) {
+        try {
+          const res = await fetch(
+            `${API_URL}/api/premium/check?userId=${userId}`
+          );
+
+          const data = await res.json();
+          return data.premium === true;
+
+        } catch (e) {
+          console.error("API error", e);
+          return false;
+        }
+      }
+    };
+
+    // =========================
+    // UI
+    // =========================
+    const UI = {
+
+      renderLocks() {
+        const premium = AppState.premium;
+
+        document.querySelectorAll(".tool-card").forEach(card => {
+          card.classList.toggle("workflow-locked", !premium);
+        });
+
+        document.querySelectorAll(".tool-card .tool-locked").forEach(btn => {
+          if (premium) {
+            btn.classList.remove("tool-locked");
+            btn.style.pointerEvents = "auto";
+            btn.style.opacity = "1";
+          } else {
+            btn.style.pointerEvents = "none";
+            btn.style.opacity = "0.5";
+          }
+        });
+      },
+
+      isPremium() {
+        return AppState.premium;
+      }
+    };
+
+    // =========================
+    // PREMIUM CORE (FIXED)
+    // =========================
+    async function refreshPremiumState() {
+      if (!AppState.userId) return;
+      if (AppState.isRefreshing) return;
+
+      AppState.isRefreshing = true;
+
+      try {
+        AppState.premium = await API.checkPremium(AppState.userId);
+      } finally {
+        AppState.isRefreshing = false;
+      }
+    }
+
+    // =========================
+    // INIT APP
+    // =========================
+    async function initApp() {
+      const email = localStorage.getItem("email");
+
+      if (!email) {
+        document.getElementById("auth-box").style.display = "block";
+
+        AppState.userId = null;
+        AppState.premium = false;
+
+        UI.renderLocks();
+        return;
+      }
+
+      AppState.userId = email;
+      localStorage.setItem("user_id", email);
+
+      await refreshPremiumState();
+      UI.renderLocks();
+
+      console.log("USER:", AppState.userId);
+      console.log("PREMIUM:", AppState.premium);
+    }
+
+    // =========================
+    // SAVE EMAIL
+    // =========================
+    function saveEmail() {
+      const email = document
+        .getElementById("email-input")
+        .value.trim()
+        .toLowerCase();
+
+      if (!email) {
+        alert("Enter email");
+        return;
+      }
+
+      localStorage.setItem("email", email);
+
+      // 🔥 FIX: не перезагружаем страницу
+      AppState.userId = email;
+
+      // сразу запускаем и обновляем UI
+      initApp();
+    }
+
+    // =========================
+    // PREMIUM SERVICE (WRAPPER)
+    // =========================
+    const PremiumService = {
+      async refresh() {
+        await refreshPremiumState();
+      }
+    };
+
+    // =========================
+    // STRIPE
+    // =========================
+    const StripeService = {
+      isLoading: false,
+
+      async buyPremium() {
+        if (this.isLoading) return;
+
+        const userId = AppState.userId;
+
+        if (!userId) {
+          alert("Please login first");
+          document
+            .getElementById("auth-box")
+            ?.scrollIntoView({ behavior: "smooth" });
+          return;
+        }
+
+        this.isLoading = true;
+
+        try {
+          const res = await fetch(
+            `${API_URL}/api/stripe/create-checkout-session`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({ userId })
+            }
+          );
+
+          const data = await res.json();
+
+          if (data.url) {
+            window.location.href = data.url;
+          } else {
+            console.log("Stripe error:", data);
+          }
+
+        } catch (e) {
+          console.error("StripeService error:", e);
+        } finally {
+          this.isLoading = false;
+        }
+      }
+    };
+
+    // =========================
+    // LIMIT MESSAGE
+    // =========================
+    function showLimitMessage(workflowKey, type, remainingMs) {
+      const container = document.querySelector(".limit-info");
+      if (!container) return;
+
+      const remaining = Math.max(0, remainingMs);
+
+      const totalMinutes = Math.ceil(remaining / 60000);
+      const hours = Math.floor(totalMinutes / 60);
+      const minutes = totalMinutes % 60;
+
+      const timeText =
+        hours > 0 ? `${hours}h ${minutes}m` : `${minutes} min`;
+
+      container.innerHTML = `
+    <div class="limit-box">
+      ⏳ Free limit reached<br><br>
+      Available in: <b>${timeText}</b><br><br>
+      🔓 <a href="pricing.html" target="_blank">Upgrade to Premium</a>
+    </div>
+  `;
+    }
+
+    // =========================
+    // GLOBAL
+    // =========================
+    window.buyPremium = () => StripeService.buyPremium();
+
+    document.addEventListener("DOMContentLoaded", async () => {
+
+      // =========================
+      // VIEWER
+      // =========================
+      const viewer = document.getElementById("workflow-viewer");
+      if (!viewer) return;
+
+      viewer.addEventListener("click", (e) => {
+        if (e.target === viewer) {
+          viewer.style.display = "none";
+        }
+      });
+
+      // =========================
+      // USER ID (FIXED)
+      // =========================
+      let userId = localStorage.getItem("user_id");
+
+      if (userId) {
+        AppState.userId = userId;
+      } else {
+        console.log("No user yet (waiting for login)");
+        AppState.userId = null;
+      }
+
+
+      function refreshViewerIfOpen() {
+        const viewer = document.getElementById("workflow-viewer");
+
+        if (viewer && viewer.style.display === "flex") {
+          const content = viewer.querySelector(".viewer-content");
+          const key = content?.dataset?.key;
+
+          if (key && typeof openViewer === "function") {
+            openViewer("Workflow", AppState.workflows[key], key, "workflow");
+          }
+        }
+      }
+
+
+      // =========================
+      // WORKFLOW INFO
+      // =========================
+      function getWorkflowInfo(key) {
+        const data = {
+          youtube: {
+            title: "YouTube Growth Workflow",
+            desc: "Create viral YouTube videos using AI tools",
+            result: "Ready-to-publish viral video",
+            tools: "AI Idea Generator • Script Writer • Visual Designer • Video Producer",
+            time: "30–60 min",
+            difficulty: "Medium"
+          },
+          marketing: {
+            title: "AI Marketing Workflow",
+            desc: "Launch and optimize ads with AI",
+            result: "Running ad campaign with conversions",
+            tools: "Audience Analyst • Copywriting AI • Ad Creative Engine • Campaign Optimizer",
+            time: "20–40 min",
+            difficulty: "Medium"
+          },
+          website: {
+            title: "Website Creation Workflow",
+            desc: "Build and launch a website",
+            result: "Live website online",
+            tools: "Product Strategist • UX Builder • Code Generator • Deployment Engine",
+            time: "1–2 hours",
+            difficulty: "Medium"
+          },
+          design: {
+            title: "AI Design Workflow",
+            desc: "Create visuals and branding",
+            result: "Finished design assets",
+            tools: "Creative Director AI • Visual Generator • Brand Designer • Asset Producer",
+            time: "20–40 min",
+            difficulty: "Easy"
+          },
+          learning: {
+            title: "AI Learning Workflow",
+            desc: "Learn faster with AI",
+            result: "Clear understanding of topic",
+            tools: "Learning Strategist • Knowledge Explainer • Tutor AI • Memory Builder",
+            time: "15–30 min",
+            difficulty: "Easy"
+          },
+          automation: {
+            title: "Automation Workflow",
+            desc: "Automate repetitive tasks",
+            result: "Fully automated process",
+            tools: "Workflow Architect • Automation Builder • API Connector • System Optimizer",
+            time: "30–90 min",
+            difficulty: "Hard"
+          },
+          notebook: {
+            title: "AI Notebook Workflow",
+            desc: "Analyze documents and data",
+            result: "Structured insights",
+            tools: "Data Analyst AI • Insight Extractor • Summary Engine • Knowledge Organizer",
+            time: "10–20 min",
+            difficulty: "Easy"
+          },
+          writing: {
+            title: "AI Writing Workflow",
+            desc: "Create high-quality text",
+            result: "Polished content ready to use",
+            tools: "Content Strategist • Writer AI • Editor Engine • Tone Optimizer",
+            time: "10–25 min",
+            difficulty: "Easy"
+          },
+          research: {
+            title: "AI Research Workflow",
+            desc: "Analyze and compare information",
+            result: "Clear structured report",
+            tools: "Research Analyst • Data Gatherer • Comparison Engine • Report Generator",
+            time: "20–45 min",
+            difficulty: "Medium"
+          }
+        };
+
+        return data[key] || {
+          title: "Workflow",
+          desc: "AI process",
+          result: "Result",
+          tools: "AI System",
+          time: "—",
+          difficulty: "—"
+        };
+      }
+
+      // =========================
+      // VIEWER RENDER
+      // =========================
+
+      function openViewer(title, content, key, type) {
+
+        if (!content) return;
+
+        const viewer = document.getElementById("workflow-viewer");
+        const premium = AppState.premium;
+
+        const lines = content.split("\n");
+        const info = getWorkflowInfo(key);
+
+        let html = `<div class="viewer-content" data-key="${key}"><h3>${title}</h3>`;
+
+        if (type === "workflow") {
+
+          html += `
+      <div class="workflow-desc">${info.desc}</div>
+      <div class="workflow-result">🎯 ${info.result}</div>
+      <div class="workflow-tools">🛠 ${info.tools}</div>
+      <div class="workflow-meta">
+        ⏱ ${info.time} <br>
+        📊 ${info.difficulty}
+      </div>
+
+    `;
+
+          lines.forEach((line, index) => {
+            html += premium
+              ? `<div class="step">${line}</div>`
+              : index === 0
+                ? `<div class="step">${line}</div>`
+                : `<div class="step step-locked">🔒 Premium step</div>`;
+          });
+
+        } else {
+
+          html += `<div class="simple-content">${content}</div>`;
+        }
+
+        html += `</div>`;
+
+        viewer.innerHTML = html;
+        viewer.style.display = "flex";
+      }
+
+      // =========================
+      // DATA (НЕ ТРОГАЛ)
+      // =========================
+      const workflows = {
+        youtube: `💡 Generate a viral YouTube video idea in [your niche] with target audience and hook
+✍️ Write a full engaging script with intro, main points, and strong call-to-action
+🎨 Create visuals using MidJourney (thumbnails + scene ideas with prompts)
+🎬 Edit video using Runway or CapCut (cuts, captions, effects)
+🚀 Publish with SEO title, description, and tags optimized for YouTube algorithm`,
+
+        marketing: `🎯 Define your target audience (age, needs, pain points)
+✍️ Write high-converting copy (headline, offer, CTA)
+📢 Create ad creatives (images/videos with AI tools)
+🚀 Launch campaign (Meta Ads / Google Ads setup)
+📊 Analyze performance and optimize results`,
+
+        website: `🧠 Define website goal (landing page, SaaS, portfolio)
+🧱 Generate structure (sections, layout, UX flow)
+💻 Write clean HTML/CSS or use AI builder
+🎨 Improve UI design (colors, spacing, typography)
+🚀 Deploy website (Vercel / Netlify / hosting)`,
+
+        design: `💡 Generate design concept (style, mood, references)
+🎨 Create visuals using MidJourney or Leonardo AI
+🛠 Refine design in Figma or Photoshop
+✨ Add details (colors, shadows, composition)
+📦 Export final assets (web, social, branding)`,
+
+        learning: `🔍 Research topic using AI (summarize key ideas)
+📘 Generate structured learning plan (steps, resources)
+🧠 Learn with explanations and examples
+📝 Create notes and summaries
+🔁 Review and practice regularly`,
+
+        automation: `⚙️ Define task to automate (content, emails, workflows)
+🔗 Choose tools (Zapier, Make, APIs, AI tools)
+🧱 Build automation flow step-by-step
+🧪 Test workflow and fix errors
+🚀 Run automation and monitor results`,
+
+        notebook: `📤 Upload document or data
+❓ Ask specific questions about content
+📊 Analyze information (summaries, insights)
+🧠 Extract key points and patterns
+📄 Generate final summary or report`,
+
+        writing: `✍️ Generate first draft (topic + goal + audience)
+🧠 Improve clarity and structure
+✨ Enhance tone and style (professional, casual, etc.)
+📝 Edit grammar and readability
+🚀 Finalize polished version`,
+
+        research: `🔍 Search information from multiple sources
+⚖️ Compare perspectives and data
+🧠 Analyze findings and identify key insights
+📊 Structure results clearly
+📄 Generate final report or conclusion`
+      };
+
+      const categories = {
+        text: `✍️ Generate high-quality content (posts, blogs, articles)
+🧠 Write engaging social media posts with hooks and CTAs
+🎬 Create scripts for videos, ads, or storytelling
+🔍 Optimize text for SEO (keywords, structure, readability)`,
+
+        image: `🎨 Generate images using AI (MidJourney, DALL·E)
+🖌 Design graphics for social media, branding, ads
+🖼 Create thumbnails that attract clicks and attention
+✨ Enhance and edit images with AI tools`,
+
+        video: `🎬 Generate videos using AI tools (Runway, Pika)
+✂️ Edit clips with cuts, subtitles, effects
+📱 Create short-form content (Reels, TikTok, Shorts)
+🚀 Publish and optimize videos for engagement`,
+
+        voice: `🎙 Convert text to natural speech (AI voice tools)
+🗣 Generate realistic AI voices for content
+🎧 Edit audio (noise removal, clarity, effects)
+📢 Create voiceovers for videos and ads`,
+
+        automation: `⚙️ Connect tools using Zapier, Make, APIs
+🔗 Build automated workflows step-by-step
+🤖 Use AI to automate repetitive tasks
+🚀 Save time by creating smart systems`,
+
+        coding: `💻 Generate code using AI (HTML, JS, Python)
+🐞 Debug and fix errors in your code
+🧠 Explain code logic and improve structure
+🚀 Deploy and optimize your project`
+      };
+      const usecases = {
+        business: `📊 Automate business processes (emails, workflows, tasks)
+📈 Analyze data and generate insights for decision making
+🤖 Use AI to reduce manual work and save time
+🚀 Scale your business with smart AI systems`,
+
+        marketing: `🎯 Create high-converting ads (copy + visuals)
+🧠 Build marketing funnels (lead → conversion)
+📢 Generate content for campaigns (emails, posts, creatives)
+🚀 Launch and optimize campaigns using AI insights`,
+
+        content: `💡 Generate content ideas for social media and YouTube
+✍️ Create posts, scripts, and captions with AI
+🎨 Design visuals and thumbnails for content
+🚀 Publish and grow audience with consistent content`,
+
+        dev: `💻 Write code faster using AI assistance
+🐞 Debug errors and fix issues efficiently
+🧠 Understand and improve code logic
+🚀 Build and launch apps or websites`
+      };
+
+      // =========================
+      // EVENTS
+      // =========================
+      document.querySelectorAll(".open-workflow").forEach(btn => {
+        const card = btn.closest(".tool-card");
+
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+
+          const key = btn.dataset.workflow;
+          openViewer("Workflow", workflows[key], key, "workflow");
+        });
+      });
+
+      document.querySelectorAll(".category-card").forEach(card => {
+        card.addEventListener("click", () => {
+          openViewer("AI Category", categories[card.dataset.category], card.dataset.category, "category");
+        });
+      });
+
+      document.querySelectorAll(".case-card").forEach(card => {
+        card.addEventListener("click", () => {
+          openViewer("Use Case", usecases[card.dataset.usecase], card.dataset.usecase, "usecase");
+        });
+      });
+
+      // =====================
+      // WORKFLOW TITLES
+      // =====================
+      const workflowTitles = {
+        youtube: "YouTube Video Creation",
+        marketing: "AI Marketing",
+        website: "Website Development",
+        design: "AI Design",
+        learning: "AI Learning",
+        automation: "Automation Systems",
+        notebook: "Data Analysis",
+        writing: "AI Writing",
+        research: "AI Research"
+      };
+
+
+      (function () {
+
+        const url = encodeURIComponent(window.location.href);
+        const text = encodeURIComponent("Check out AI Navigator 🚀");
+
+        const fb = document.getElementById("share-fb");
+        const tw = document.getElementById("share-tw");
+        const tg = document.getElementById("share-tg");
+
+        if (fb) fb.href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+        if (tw) tw.href = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
+        if (tg) tg.href = `https://t.me/share/url?url=${url}&text=${text}`;
+
+      })();
+
+      // =====================
+      // COPY LINK
+      // =====================
+
+      const copyBtn = document.getElementById("copy-btn");
+
+      if (copyBtn) {
+        copyBtn.addEventListener("click", async () => {
+          try {
+            await navigator.clipboard.writeText(window.location.origin + window.location.pathname);
+
+            showToast("Link copied!");
+          } catch (e) {
+            showToast("Copy failed");
+          }
+        });
+      }
+
+      function showToast(message) {
+        const toast = document.createElement("div");
+        toast.textContent = message;
+
+        toast.style.position = "fixed";
+        toast.style.bottom = "20px";
+        toast.style.left = "50%";
+        toast.style.transform = "translateX(-50%)";
+        toast.style.background = "#111";
+        toast.style.color = "#fff";
+        toast.style.padding = "10px 16px";
+        toast.style.borderRadius = "8px";
+        toast.style.fontSize = "14px";
+        toast.style.zIndex = "9999";
+        toast.style.opacity = "0.9";
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+          toast.remove();
+        }, 1500);
+      }
+
+      const likeBtn = document.getElementById("like-btn");
+      const likeCount = document.getElementById("like-count");
+
+      if (likeBtn && likeCount) {
+        let count = Number(localStorage.getItem("likes") || 0);
+        likeCount.textContent = count;
+
+        likeBtn.addEventListener("click", () => {
+          count++;
+          localStorage.setItem("likes", count);
+          likeCount.textContent = count;
+        });
+      }
+
+      // =========================
+      // MOBILE MENU
+      // =========================
+      const toggle = document.querySelector(".menu-toggle");
+      const nav = document.querySelector("nav");
+
+      if (toggle && nav) {
+        toggle.addEventListener("click", () => {
+          nav.classList.toggle("active");
+        });
+
+        nav.querySelectorAll("a").forEach(link => {
+          link.addEventListener("click", () => {
+            nav.classList.remove("active");
+          });
+        });
+      }
+
+
+      // =========================
+      // INIT
+      // =========================
+      await initApp();
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const paymentSuccess = urlParams.get("success");
+
+      // =========================
+      // STRIPE SUCCESS FLOW
+      // =========================
+      if (paymentSuccess === "true") {
+
+        // маленькая задержка чтобы webhook успел записать premium
+        setTimeout(async () => {
+          await refreshPremiumState();
+          UI.renderLocks();
+          console.log("🔄 Premium refreshed after Stripe");
+        }, 1000);
+
+        // UI эффект (скролл + fade)
+        setTimeout(() => {
+          const el = document.getElementById("workflows");
+
+          if (el) {
+            el.style.transition = "opacity 0.4s";
+            el.style.opacity = "0";
+
+            el.scrollIntoView({ behavior: "smooth" });
+
+            setTimeout(() => {
+              el.style.opacity = "1";
+            }, 400);
+          }
+        }, 500);
+      }
+
+      // =========================
+      // ADMIN (DEV ONLY)
+      // =========================
+      window.admin = async function () {
+        try {
+          const res = await fetch(`${API_URL}/api/admin/stats`, {
+            headers: {
+              "x-admin-key": "super_secret_key_123"
+            }
+          });
+
+          const data = await res.json();
+
+          console.log("📊 STATS:");
+          console.log("👤 Users:", data.users);
+          console.log("💳 Premium:", data.premium);
+          console.log("💰 Payments:", data.payments);
+
+        } catch (err) {
+          console.error("❌ Error:", err);
+        }
+      };
+
+    });
+  </script>
+
+</body>
+
+</html>

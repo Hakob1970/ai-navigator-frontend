@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Success</title>
+</head>
+
+<body>
+    <h1>Payment successful 🎉</h1>
+
+    <p>Redirecting...</p>
+
+    <script>
+        async function activate() {
+
+            const params = new URLSearchParams(window.location.search);
+            const userId = params.get("userId");
+
+            console.log("SUCCESS USER:", userId);
+
+            if (userId) {
+                localStorage.setItem("user_id", userId);
+            }
+
+            try {
+                // небольшая задержка на webhook Stripe
+                await new Promise(r => setTimeout(r, 1500));
+
+                const res = await fetch(`/api/premium/check?userId=${userId}`);
+                const data = await res.json();
+
+                console.log("PREMIUM STATUS:", data);
+
+                // просто ждём и уходим обратно в приложение
+                setTimeout(() => {
+                    window.location.href = "/";
+                }, 1200);
+
+            } catch (err) {
+                console.error("Activation error:", err);
+
+                // даже при ошибке просто возвращаем пользователя
+                setTimeout(() => {
+                    window.location.href = "/";
+                }, 1200);
+            }
+        }
+
+        activate();
+    </script>
+</body>
+
+</html>
