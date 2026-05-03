@@ -102,9 +102,12 @@ def register_user(user_id, username):
         pass
 
 
-def is_premium(user_id):
+def is_premium(telegram_id):
     try:
-        res = requests.get(f"{BACKEND}/api/premium/check?userId={user_id}")
+        res = requests.get(
+            f"{BACKEND}/api/premium/check-telegram",
+            params={"telegramId": telegram_id}
+        )
         return res.json().get("premium", False)
     except:
         return False
@@ -148,6 +151,9 @@ def menu(lang):
 # START
 # =========================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+
+    await update.message.reply_text(str(update.effective_user.id))
+
     user_id = update.effective_user.id
     username = update.effective_user.username or "user"
 
