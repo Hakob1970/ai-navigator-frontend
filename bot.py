@@ -9,6 +9,47 @@ from telegram import InlineKeyboardMarkup, InlineKeyboardButton
 
 TOKEN = "8645293983:AAEfUVCWatvE7klR1g1TC6_QBRZm6wdQ1Zc"
 
+BACKEND = "https://ai-navigator-backend-mcb3.onrender.com"
+
+def link_telegram(email, telegram_id):
+    try:
+        requests.post(
+            f"{BACKEND}/api/user/link-telegram",
+            json={
+                "email": email,
+                "telegramId": str(telegram_id)
+            }
+        )
+    except:
+        pass
+
+def check_premium(telegram_id):
+    try:
+        email = get_email_by_telegram(telegram_id)
+
+        if not email:
+            return False
+
+        res = requests.get(
+            f"{BACKEND}/api/premium/check",
+            params={"userId": email}
+        )
+
+        return res.json().get("premium", False)
+    except:
+        return False
+
+
+def get_email_by_telegram(telegram_id):
+    try:
+        res = requests.get(
+            f"{BACKEND}/api/user/email-by-telegram",
+            params={"telegramId": telegram_id}
+        )
+        return res.json().get("email")
+    except:
+        return None
+
 # =========================
 # BACKEND
 # =========================
