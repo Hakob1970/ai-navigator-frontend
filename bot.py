@@ -11,55 +11,17 @@ TOKEN = "8645293983:AAEfUVCWatvE7klR1g1TC6_QBRZm6wdQ1Zc"
 
 BACKEND = "https://ai-navigator-backend-mcb3.onrender.com"
 
-def link_telegram(email, telegram_id):
-    try:
-        requests.post(
-            f"{BACKEND}/api/user/link-telegram",
-            json={
-                "email": email,
-                "telegramId": str(telegram_id)
-            }
-        )
-    except:
-        pass
-
-def check_premium(telegram_id):
-    try:
-        email = get_email_by_telegram(telegram_id)
-
-        if not email:
-            return False
-
-        res = requests.get(
-            f"{BACKEND}/api/premium/check",
-            params={"userId": email}
-        )
-
-        return res.json().get("premium", False)
-    except:
-        return False
-
-
-def get_email_by_telegram(telegram_id):
-    try:
-        res = requests.get(
-            f"{BACKEND}/api/user/email-by-telegram",
-            params={"telegramId": telegram_id}
-        )
-        return res.json().get("email")
-    except:
-        return None
-
-# =========================
-# BACKEND
-# =========================
-BACKEND = "http://localhost:3000"
-
-# =========================
-# STATE
-# =========================
-user_states = {}
-last_request = {}
+#def link_telegram(email, telegram_id):
+#    try:
+#        requests.post(
+#            f"{BACKEND}/api/user/link-telegram",
+#            json={
+#                "email": email,
+#                "telegramId": str(telegram_id)
+ #           }
+#        )
+  #  except:
+ #       pass
 
 # =========================
 # MENU TEXTS
@@ -106,7 +68,7 @@ def is_premium(telegram_id):
     try:
         res = requests.get(
             f"{BACKEND}/api/premium/check-telegram",
-            params={"telegramId": telegram_id}
+            params={"telegramId": str(telegram_id)}
         )
         return res.json().get("premium", False)
     except:
@@ -151,8 +113,6 @@ def menu(lang):
 # START
 # =========================
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-
-    await update.message.reply_text(str(update.effective_user.id))
 
     user_id = update.effective_user.id
     username = update.effective_user.username or "user"
@@ -219,7 +179,7 @@ async def handle(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if premium:
             keyboard = InlineKeyboardMarkup([
-                [InlineKeyboardButton("Open Discuss", url="https://t.me/your_channel")]
+                [InlineKeyboardButton("Open Discuss", url="https://t.me/+UnxQr7zNlrI5Njhi")]
             ])
 
             await update.message.reply_text("🚀 Join Discuss:", reply_markup=keyboard)
@@ -238,28 +198,6 @@ async def handle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # DEFAULT
     await update.message.reply_text("Use the menu 👇")
 
-
-# =========================
-# PREMIUM COMMAND
-# =========================
-async def give_premium(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-
-    try:
-        res = requests.post(
-            f"{BACKEND}/api/premium/activate",
-            json={"userId": str(user_id)}
-        )
-
-        if res.status_code == 200:
-            await update.message.reply_text("💎 Premium activated via backend!")
-        else:
-            await update.message.reply_text("❌ Error")
-    except:
-        await update.message.reply_text("❌ Backend not reachable")
-
-
-
 # =========================
 # MAIN
 # =========================
@@ -267,7 +205,6 @@ def main():
     app = Application.builder().token(TOKEN).build()
 
     app.add_handler(CommandHandler("start", start))
-    app.add_handler(CommandHandler("premium", give_premium))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle))
 
     print("🤖 Bot running clean version...")
