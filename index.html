@@ -727,6 +727,9 @@
       localStorage.setItem("user_id", email);
 
       await refreshPremiumState();
+      if (AppState.premium) {
+  document.getElementById("auth-box").style.display = "none";
+}
       UI.renderLocks();
 
       console.log("USER:", AppState.userId);
@@ -751,6 +754,8 @@
 
       // 🔥 FIX: не перезагружаем страницу
       AppState.userId = email;
+
+        input.value = "";
 
       // сразу запускаем и обновляем UI
       initApp();
