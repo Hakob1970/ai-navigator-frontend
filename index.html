@@ -728,16 +728,6 @@
 
       await refreshPremiumState();
       
-if (AppState.premium) {
-  const box = document.getElementById("auth-box");
-
-  box.innerHTML = `
-    <div class="premium-user">
-      💎 Premium Active<br>
-      <small>Email saved and linked</small>
-    </div>
-  `;
-}
       UI.renderLocks();
 
       console.log("USER:", AppState.userId);
