@@ -1328,6 +1328,17 @@ function saveEmail() {
         }
       };
 
+      // TELEGRAM LINK FIX
+const email = localStorage.getItem("email");
+
+const tgLink = email
+  ? `https://t.me/hakob_ai_it_bot?start=${encodeURIComponent(email)}`
+  : "https://t.me/hakob_ai_it_bot";
+
+document.querySelectorAll("a.btn-secondary").forEach(btn => {
+  if (btn.href.includes("t.me/hakob_ai_it_bot")) {
+    btn.href = tgLink;
+  }
     });
   </script>
 
