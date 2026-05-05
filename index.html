@@ -737,29 +737,28 @@
     // =========================
     // SAVE EMAIL
     // =========================
-    function saveEmail() {
-      const email = document
-        .getElementById("email-input")
-        .value.trim()
-        .toLowerCase();
+function saveEmail() {
+  const input = document.getElementById("email-input");
 
-      if (!email) {
-        alert("Enter email");
-        return;
-      }
+  const email = input.value.trim().toLowerCase();
 
-      localStorage.setItem("email", email);
+  if (!email) {
+    alert("Enter email");
+    return;
+  }
 
-      // 🔥 FIX: не перезагружаем страницу
-      AppState.userId = email;
+  localStorage.setItem("email", email);
+  AppState.userId = email;
 
-        input.value = "";
-       input.placeholder = "Email saved ✓ You can change it anytime";
+  // 🔥 очищаем поле
+  input.value = "";
 
-      // сразу запускаем и обновляем UI
-      initApp();
-    }
+  // UX подсказка (не обязательно, но красиво)
+  input.placeholder = "Email saved ✓ You can change it anytime";
 
+  // обновляем UI
+  initApp();
+}
     // =========================
     // PREMIUM SERVICE (WRAPPER)
     // =========================
