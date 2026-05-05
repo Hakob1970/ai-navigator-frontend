@@ -727,6 +727,7 @@
       localStorage.setItem("user_id", email);
 
       await refreshPremiumState();
+
       UI.renderLocks();
 
       console.log("USER:", AppState.userId);
@@ -737,25 +738,31 @@
     // SAVE EMAIL
     // =========================
     function saveEmail() {
-      const email = document
-        .getElementById("email-input")
-        .value.trim()
-        .toLowerCase();
+      const input = document.getElementById("email-input");
+      const email = input.value.trim().toLowerCase();
 
       if (!email) {
         alert("Enter email");
         return;
       }
 
+      // сохраняем
       localStorage.setItem("email", email);
+      localStorage.setItem("user_id", email);
 
-      // 🔥 FIX: не перезагружаем страницу
       AppState.userId = email;
 
-      // сразу запускаем и обновляем UI
-      initApp();
-    }
+      // 🔥 очищаем поле (визуально скрываем)
+      input.value = "";
+      input.blur(); // убрать фокус
 
+      input.placeholder = "Email saved ✓ Click to edit";
+
+      // 🔥 обновляем премиум
+      refreshPremiumState().then(() => {
+        UI.renderLocks();
+      });
+    }
     // =========================
     // PREMIUM SERVICE (WRAPPER)
     // =========================
@@ -1325,7 +1332,19 @@
         }
       };
 
-    });
+      // TELEGRAM LINK FIX
+      const email = localStorage.getItem("email");
+
+      const tgLink = email
+        ? `https://t.me/hakob_ai_it_bot?start=${encodeURIComponent(email)}`
+        : "https://t.me/hakob_ai_it_bot";
+
+      document.querySelectorAll("a.btn-secondary").forEach(btn => {
+        if (btn.href.includes("t.me/hakob_ai_it_bot")) {
+          btn.href = tgLink;
+        }
+      });
+    }); 
   </script>
 
 </body>
