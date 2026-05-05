@@ -727,8 +727,16 @@
       localStorage.setItem("user_id", email);
 
       await refreshPremiumState();
-      if (AppState.premium) {
-  document.getElementById("auth-box").style.display = "none";
+      
+if (AppState.premium) {
+  const box = document.getElementById("auth-box");
+
+  box.innerHTML = `
+    <div class="premium-user">
+      💎 Premium Active<br>
+      <small>Email saved and linked</small>
+    </div>
+  `;
 }
       UI.renderLocks();
 
