@@ -18,7 +18,7 @@ def link_telegram(email, telegram_id):
         requests.post(
             f"{BACKEND}/api/user/link-telegram",
             json={
-                "email": email,
+                "userId": email,
                 "telegramId": str(telegram_id)
             }
         )
@@ -67,21 +67,30 @@ def register_user(user_id, username):
         pass
 
 
-def is_premium(telegram_id):
+def is_premium(email):
     try:
         res = requests.get(
-            f"{BACKEND}/api/premium/check-telegram",
-            params={"telegramId": str(telegram_id)},
+            f"{BACKEND}/api/premium/check",
+            params={"userId": email},
             timeout=3
         )
 
-        print("DEBUG STATUS:", res.status_code)
-        print("DEBUG RESPONSE:", res.text)
-
         return res.json().get("premium", False)
+
     except Exception as e:
         print("ERROR:", e)
         return False
+
+def get_email(telegram_id):
+    try:
+        res = requests.get(
+            f"{BACKEND}/api/user/get-email",
+            params={"telegramId": telegram_id},
+            timeout=3
+        )
+        return res.json().get("email")
+    except:
+        return None
 
 
 def get_lang(user_id):
@@ -166,6 +175,7 @@ async def handle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     username = update.effective_user.username or "user"
 
     text = update.message.text.strip()
+    email = get_email(user_id)
     print("🔥 HANDLE ENTERED")
     print("CLICKED TEXT:", text)
     print("TEXT RECEIVED:", repr(text)) 
@@ -193,7 +203,11 @@ async def handle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # =========================
     # PREMIUM    # =========================
     if "💎 Premium" in text:
-        premium = is_premium(user_id)
+        
+
+        premium = False
+        if email:
+            premium = is_premium(email) if email else False
 
         if premium:
             await update.message.reply_text("💎 You are Premium!")
@@ -211,7 +225,11 @@ async def handle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # DISCUSS
     # =========================
     if "💬 AI Club" in text:
-        premium = is_premium(user_id)
+        
+
+        premium = False
+        if email:
+            premium = is_premium(email) if email else False
 
         if premium:
             keyboard = InlineKeyboardMarkup([
