@@ -727,7 +727,7 @@
       localStorage.setItem("user_id", email);
 
       await refreshPremiumState();
-      
+
       UI.renderLocks();
 
       console.log("USER:", AppState.userId);
@@ -737,28 +737,27 @@
     // =========================
     // SAVE EMAIL
     // =========================
-function saveEmail() {
-  const input = document.getElementById("email-input");
+    function saveEmail() {
+      const input = document.getElementById("email-input");
+      const email = input.value.trim().toLowerCase();
 
-  const email = input.value.trim().toLowerCase();
+      // сохраняем
+      localStorage.setItem("email", email);
+      localStorage.setItem("user_id", email);
 
-  if (!email) {
-    alert("Enter email");
-    return;
-  }
+      AppState.userId = email;
 
-  localStorage.setItem("email", email);
-  AppState.userId = email;
+      // 🔥 очищаем поле (визуально скрываем)
+      input.value = "";
+      input.blur(); // убрать фокус
 
-  // 🔥 очищаем поле
-  input.value = "";
+      input.placeholder = "Email saved ✓ Click to edit";
 
-  // UX подсказка (не обязательно, но красиво)
-  input.placeholder = "Email saved ✓ You can change it anytime";
-
-  // обновляем UI
-  initApp();
-}
+      // 🔥 обновляем премиум
+      refreshPremiumState().then(() => {
+        UI.renderLocks();
+      });
+    }
     // =========================
     // PREMIUM SERVICE (WRAPPER)
     // =========================
@@ -1329,18 +1328,18 @@ function saveEmail() {
       };
 
       // TELEGRAM LINK FIX
-const email = localStorage.getItem("email");
+      const email = localStorage.getItem("email");
 
-const tgLink = email
-  ? `https://t.me/hakob_ai_it_bot?start=${encodeURIComponent(email)}`
-  : "https://t.me/hakob_ai_it_bot";
+      const tgLink = email
+        ? `https://t.me/hakob_ai_it_bot?start=${encodeURIComponent(email)}`
+        : "https://t.me/hakob_ai_it_bot";
 
-document.querySelectorAll("a.btn-secondary").forEach(btn => {
-  if (btn.href.includes("t.me/hakob_ai_it_bot")) {
-    btn.href = tgLink;
-  }
+      document.querySelectorAll("a.btn-secondary").forEach(btn => {
+        if (btn.href.includes("t.me/hakob_ai_it_bot")) {
+          btn.href = tgLink;
+        }
+      });
     });
-     }); 
   </script>
 
 </body>
