@@ -20,7 +20,8 @@ def link_telegram(email, telegram_id):
             json={
                 "userId": email,
                 "telegramId": str(telegram_id)
-            }
+            },
+            timeout=3
         )
     except:
         pass
@@ -53,13 +54,14 @@ TEXTS = {
 
 }
 
+
 # =========================
 # BACKEND FUNCTIONS
 # =========================
+
 def register_user(user_id, username):
     try:
-        requests.post(
-            f"{BACKEND}/api/user/register",
+        requests.post(f"{BACKEND}/api/user/register",
             json={"userId": str(user_id), "username": username},
             timeout=3
         )
@@ -67,25 +69,11 @@ def register_user(user_id, username):
         pass
 
 
-def is_premium(email):
-    try:
-        res = requests.get(
-            f"{BACKEND}/api/premium/check",
-            params={"userId": email},
-            timeout=3
-        )
-
-        return res.json().get("premium", False)
-
-    except Exception as e:
-        print("ERROR:", e)
-        return False
-
-def get_email(telegram_id):
+def get_email(user_id):
     try:
         res = requests.get(
             f"{BACKEND}/api/user/get-email",
-            params={"telegramId": telegram_id},
+            params={"telegramId": user_id},
             timeout=3
         )
         return res.json().get("email")
@@ -94,35 +82,26 @@ def get_email(telegram_id):
 
 
 def get_lang(user_id):
-    if user_id in LANG_CACHE:
-        return LANG_CACHE[user_id]
-
     try:
         res = requests.get(
             f"{BACKEND}/api/user/lang",
             params={"userId": user_id},
             timeout=3
         )
-        lang = res.json().get("language", "en")
-        LANG_CACHE[user_id] = lang
-        return lang
+        return res.json().get("language", "en")
     except:
         return "en"
 
-
-def set_language(user_id, username, lang):
+def is_premium(email):
     try:
-        requests.post(
-            f"{BACKEND}/api/user/lang",
-            json={
-                "userId": str(user_id),
-                "username": username,
-                "language": lang
-            }
+        res = requests.get(
+            f"{BACKEND}/api/premium/check",
+            params={"userId": email},
+            timeout=3
         )
+        return res.json().get("premium", False)
     except:
-        pass
-
+        return False
 
 # =========================
 # MENU
@@ -153,7 +132,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         requests.post(
             f"{BACKEND}/api/user/link-telegram",
             json={
-                "email": email,
+                "userId": email,
                 "telegramId": str(user_id)
             },
             timeout=3
@@ -203,11 +182,8 @@ async def handle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # =========================
     # PREMIUM    # =========================
     if "💎 Premium" in text:
-        
-
-        premium = False
-        if email:
-            premium = is_premium(email) if email else False
+ 
+        premium = is_premium(email) if email else False
 
         if premium:
             await update.message.reply_text("💎 You are Premium!")
@@ -225,11 +201,8 @@ async def handle(update: Update, context: ContextTypes.DEFAULT_TYPE):
     # DISCUSS
     # =========================
     if "💬 AI Club" in text:
-        
-
-        premium = False
-        if email:
-            premium = is_premium(email) if email else False
+ 
+        premium = is_premium(email) if email else False
 
         if premium:
             keyboard = InlineKeyboardMarkup([
