@@ -55,9 +55,9 @@
 
       <div class="hero-buttons">
         <a href="#workflows" class="btn-main">Explore Workflows</a>
-        <a href="https://t.me/hakob_ai_it_bot" class="btn-secondary" target="_blank">
-          Try Telegram Bot
-        </a>
+      <a id="telegram-btn" href="https://t.me/hakob_ai_it_bot" target="_blank" class="bot-button">
+  Open Telegram Bot
+</a>
       </div>
 
       <p class="hero-proof">
@@ -550,7 +550,9 @@
     <div class="container">
       <h2>AI Navigator Bot</h2>
       <p>Use AI Navigator directly in Telegram to find AI tools instantly.</p>
-      <a href="https://t.me/hakob_ai_it_bot" target="_blank" class="bot-button">Open Telegram Bot</a>
+     <a id="telegram-btn" href="https://t.me/hakob_ai_it_bot" target="_blank" class="bot-button">
+  Open Telegram Bot
+</a>
     </div>
   </section>
 
@@ -626,12 +628,6 @@
   <script>
 
     const API_URL = "https://ai-navigator-backend-mcb3.onrender.com";
-
-    // =========================
-    // SESSION
-    // =========================
-    const sessionId = localStorage.sessionId || crypto.randomUUID();
-    localStorage.sessionId = sessionId;
 
     // =========================
     // STATE
@@ -724,7 +720,6 @@
       }
 
       AppState.userId = email;
-      localStorage.setItem("user_id", email);
 
       await refreshPremiumState();
 
@@ -748,9 +743,6 @@
 
       // сохраняем
       localStorage.setItem("email", email);
-      localStorage.setItem("user_id", email);
-
-      AppState.userId = email;
 
       // 🔥 очищаем поле (визуально скрываем)
       input.value = "";
@@ -1308,42 +1300,21 @@
           }
         }, 500);
       }
-
-      // =========================
-      // ADMIN (DEV ONLY)
-      // =========================
-      window.admin = async function () {
-        try {
-          const res = await fetch(`${API_URL}/api/admin/stats`, {
-            headers: {
-              "x-admin-key": "super_secret_key_123"
-            }
-          });
-
-          const data = await res.json();
-
-          console.log("📊 STATS:");
-          console.log("👤 Users:", data.users);
-          console.log("💳 Premium:", data.premium);
-          console.log("💰 Payments:", data.payments);
-
-        } catch (err) {
-          console.error("❌ Error:", err);
-        }
-      };
+    
 
       // TELEGRAM LINK FIX
-      const email = localStorage.getItem("email");
+      
+const email = AppState.userId;
 
-      const tgLink = email
-        ? `https://t.me/hakob_ai_it_bot?start=${encodeURIComponent(email)}`
-        : "https://t.me/hakob_ai_it_bot";
+const tgLink = email
+  ? `https://t.me/hakob_ai_it_bot?start=${encodeURIComponent(email)}`
+  : "https://t.me/hakob_ai_it_bot";
 
-      document.querySelectorAll("a.btn-secondary").forEach(btn => {
-        if (btn.href.includes("t.me/hakob_ai_it_bot")) {
-          btn.href = tgLink;
-        }
-      });
+const telegramBtn = document.getElementById("telegram-btn");
+
+if (telegramBtn) {
+  telegramBtn.href = tgLink;
+}
     }); 
   </script>
 
