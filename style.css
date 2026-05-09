@@ -12,8 +12,6 @@ body {
   scroll-behavior: smooth;
 }
 
-
-
 .container {
   max-width: 1200px;
   margin: auto;
@@ -535,6 +533,35 @@ nav a {
 /* ===================== */
 /* OPEN WORKFLOW BUTTON */
 /* ===================== */
+
+.open-workflow {
+  margin-top: 12px;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+
+  background: linear-gradient(135deg, #ff7a18, #ffb347);
+  color: white;
+
+  cursor: pointer;
+  font-weight: 600;
+
+  box-shadow: 0 10px 25px rgba(255, 122, 24, 0.25);
+  transition: transform 0.25s ease, box-shadow 0.25s ease, filter 0.25s ease;
+
+  position: relative;
+  z-index: 5;
+}
+
+.open-workflow:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 35px rgba(255, 122, 24, 0.35);
+  filter: brightness(1.03);
+}
+
+.open-workflow:active {
+  transform: scale(0.98);
+}
 
 .workflow-desc {
   font-size: 14px;
@@ -1386,35 +1413,6 @@ footer {
   }
 }
 
-button.open-workflow {
-  margin-top: 12px;
-  padding: 12px 18px;
-  border-radius: 8px;
-  border: 2px solid rgba(255, 255, 255, 0.18) !important;
 
-  background: linear-gradient(135deg, #ff7a18, #ffb347) !important;
-  color: #ffffff !important;
-
-  cursor: pointer;
-  font-weight: 600;
-  letter-spacing: 0;
-
-  box-shadow: 0 8px 20px rgba(255, 122, 24, 0.18);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease, border-color 0.2s ease;
-
-  position: relative;
-  z-index: 5;
-}
-
-button.open-workflow:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(255, 122, 24, 0.3);
-  filter: brightness(1.03);
-  border-color: rgba(255, 255, 255, 0.32) !important;
-}
-
-button.open-workflow:active {
-  transform: scale(0.98);
-}
 
 
