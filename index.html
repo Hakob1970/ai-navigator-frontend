@@ -743,13 +743,14 @@
 
       // сохраняем
       localStorage.setItem("email", email);
+      AppState.userId = email;
 
       // 🔥 очищаем поле (визуально скрываем)
       input.value = "";
       input.blur(); // убрать фокус
 
       input.placeholder = "Email saved ✓ Click to edit";
-
+      
       // 🔥 обновляем премиум
       refreshPremiumState().then(() => {
         UI.renderLocks();
