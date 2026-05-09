@@ -1417,3 +1417,9 @@ footer {
     opacity: 1;
   }
 }
+
+button.open-workflow {
+  background: red !important;
+  border: 5px solid yellow !important;
+}
+
