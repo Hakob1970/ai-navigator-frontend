@@ -645,7 +645,7 @@ const API = {
   async checkPremium(email) {
     try {
       const res = await fetch(
-        `${API_URL}/api/premium/check?userId=${email}`
+        `${API_URL}/api/premium/check?userId=${encodeURIComponent(email)}`
       );
 
       const data = await res.json();
@@ -655,8 +655,45 @@ const API = {
       console.error("API error", e);
       return false;
     }
+  },
+
+  async changeEmail(oldEmail, newEmail) {
+    try {
+      const res = await fetch(`${API_URL}/api/user/change-email`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          oldEmail,
+          newEmail
+        })
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        return {
+          success: false,
+          error: data.error || "Email change failed"
+        };
+      }
+
+      return {
+        success: true,
+        userId: data.userId
+      };
+
+    } catch (e) {
+      console.error("Change email error", e);
+      return {
+        success: false,
+        error: "Server error"
+      };
+    }
   }
 };
+
 
     // =========================
     // UI
@@ -730,30 +767,39 @@ const API = {
     // =========================
     // SAVE EMAIL
     // =========================
-    function saveEmail() {
-      const input = document.getElementById("email-input");
-      const email = input.value.trim().toLowerCase();
+  async function saveEmail() {
+  const input = document.getElementById("email-input");
+  const newEmail = input.value.trim().toLowerCase();
+  const oldEmail = localStorage.getItem("email");
 
-      if (!email) {
-        alert("Enter email");
-        return;
-      }
+  if (!newEmail) {
+    alert("Enter email");
+    return;
+  }
 
-      // сохраняем
-      localStorage.setItem("email", email);
-      AppState.email = email;
+  if (oldEmail && oldEmail !== newEmail) {
+    const result = await API.changeEmail(oldEmail, newEmail);
 
-      // 🔥 очищаем поле (визуально скрываем)
-      input.value = "";
-      input.blur(); // убрать фокус
-
-      input.placeholder = "Email saved ✓ Click to edit";
-      
-      // 🔥 обновляем премиум
-      refreshPremiumState().then(() => {
-        UI.renderLocks();
-      });
+    if (!result.success) {
+      alert(result.error || "Email change failed");
+      return;
     }
+  }
+
+  localStorage.setItem("email", newEmail);
+  AppState.email = newEmail;
+
+  input.value = "";
+  input.blur();
+  input.placeholder = "Email saved ✓ Click to edit";
+
+  await refreshPremiumState();
+  UI.renderLocks();
+
+  console.log("EMAIL SAVED:", AppState.email);
+  console.log("PREMIUM:", AppState.premium);
+}
+
     // =========================
     // PREMIUM SERVICE (WRAPPER)
     // =========================
