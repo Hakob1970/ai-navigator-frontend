@@ -55,9 +55,10 @@
 
       <div class="hero-buttons">
         <a href="#workflows" class="btn-main">Explore Workflows</a>
-<a id="telegram-btn" href="#pricing" class="bot-button" onclick="openTelegramBot(); return false;">
+<a id="telegram-btn" href="https://t.me/hakob_ai_it_bot" target="_blank" class="bot-button">
   Open Telegram Bot
 </a>
+
 
 
       </div>
@@ -552,9 +553,10 @@
     <div class="container">
       <h2>AI Navigator Bot</h2>
       <p>Use AI Navigator directly in Telegram to find AI tools instantly.</p>
-<a id="telegram-btn" href="#pricing" class="bot-button" onclick="openTelegramBot(); return false;">
+<a id="telegram-btn" href="https://t.me/hakob_ai_it_bot" target="_blank" class="bot-button">
   Open Telegram Bot
 </a>
+
 
 
     </div>
@@ -791,31 +793,10 @@ async function saveEmail() {
   }
 
   localStorage.setItem("email", email);
-
   AppState.email = email;
-
-  // 🔥 telegram sync
- function openTelegramBot() {
-  const email = AppState.email;
-
-  if (!email || !AppState.premium) {
-    window.location.href = "#pricing";
-    return;
-  }
-
-  const botUsername = "hakob_ai_it_bot";
-  const encodedEmail = encodeURIComponent(email);
-
-  window.open(
-    `https://t.me/${botUsername}?start=${encodedEmail}`,
-    "_blank"
-  );
-}
-
 
   input.value = "";
   input.blur();
-
   input.placeholder = "Email saved ✓ Click to edit";
 
   await refreshPremiumState();
@@ -825,6 +806,7 @@ async function saveEmail() {
   console.log("EMAIL SAVED:", AppState.email);
   console.log("PREMIUM:", AppState.premium);
 }
+
 
     // =========================
     // PREMIUM SERVICE (WRAPPER)
