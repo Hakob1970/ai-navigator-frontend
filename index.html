@@ -767,27 +767,17 @@ const API = {
     // =========================
     // SAVE EMAIL
     // =========================
-  async function saveEmail() {
+async function saveEmail() {
   const input = document.getElementById("email-input");
-  const newEmail = input.value.trim().toLowerCase();
-  const oldEmail = localStorage.getItem("email");
+  const email = input.value.trim().toLowerCase();
 
-  if (!newEmail) {
+  if (!email) {
     alert("Enter email");
     return;
   }
 
-  if (oldEmail && oldEmail !== newEmail) {
-    const result = await API.changeEmail(oldEmail, newEmail);
-
-    if (!result.success) {
-      alert(result.error || "Email change failed");
-      return;
-    }
-  }
-
-  localStorage.setItem("email", newEmail);
-  AppState.email = newEmail;
+  localStorage.setItem("email", email);
+  AppState.email = email;
 
   input.value = "";
   input.blur();
