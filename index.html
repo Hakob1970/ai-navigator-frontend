@@ -657,45 +657,8 @@ const API = {
       console.error("API error", e);
       return false;
     }
-  },
-
-  async changeEmail(oldEmail, newEmail) {
-    try {
-      const res = await fetch(`${API_URL}/api/user/change-email`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          oldEmail,
-          newEmail
-        })
-      });
-
-      const data = await res.json();
-
-      if (!res.ok) {
-        return {
-          success: false,
-          error: data.error || "Email change failed"
-        };
-      }
-
-      return {
-        success: true,
-        userId: data.userId
-      };
-
-    } catch (e) {
-      console.error("Change email error", e);
-      return {
-        success: false,
-        error: "Server error"
-      };
-    }
   }
 };
-
 
     // =========================
     // UI
@@ -729,8 +692,12 @@ const API = {
     // =========================
     // PREMIUM CORE (FIXED)
     // =========================
- async function refreshPremiumState() {
-  if (!AppState.email) return;
+async function refreshPremiumState() {
+  if (!AppState.email) {
+    AppState.premium = false;
+    return;
+  }
+
   if (AppState.isRefreshing) return;
 
   AppState.isRefreshing = true;
@@ -741,26 +708,37 @@ const API = {
     AppState.isRefreshing = false;
   }
 }
-    // =========================
+
+/ =========================
+// STRIPE PREMIUM REFRESH
+// =========================
+async function refreshPremiumAfterStripe() {
+  for (let i = 0; i < 5; i++) {
+    await refreshPremiumState();
+    UI.renderLocks();
+
+    if (AppState.premium) {
+      console.log("✅ Premium active after Stripe");
+      return;
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 1500));
+  }
+
+  console.log("⏳ Premium is not active yet, try refreshing");
+}
+
+ // =========================
     // INIT APP
     // =========================
  async function initApp() {
-
-  // 🔥 telegram id from URL
-  const params = new URLSearchParams(window.location.search);
-
-  const tg = params.get("tg");
-
-  if (tg) {
-    localStorage.setItem("telegram_id", tg);
-  }
 
   const email = localStorage.getItem("email");
 
   if (!email) {
     document.getElementById("auth-box").style.display = "block";
 
-    AppState.userId = null;
+    AppState.email = null;
     AppState.premium = false;
 
     UI.renderLocks();
@@ -1356,34 +1334,28 @@ async function openTelegramBot() {
       const urlParams = new URLSearchParams(window.location.search);
       const paymentSuccess = urlParams.get("success");
 
-      // =========================
-      // STRIPE SUCCESS FLOW
-      // =========================
-      if (paymentSuccess === "true") {
+    // =========================
+// STRIPE SUCCESS FLOW
+// =========================
+if (paymentSuccess === "true") {
+  refreshPremiumAfterStripe();
 
-        // маленькая задержка чтобы webhook успел записать premium
-        setTimeout(async () => {
-          await refreshPremiumState();
-          UI.renderLocks();
-          console.log("🔄 Premium refreshed after Stripe");
-        }, 1000);
+  // UI эффект (скролл + fade)
+  setTimeout(() => {
+    const el = document.getElementById("workflows");
 
-        // UI эффект (скролл + fade)
-        setTimeout(() => {
-          const el = document.getElementById("workflows");
+    if (el) {
+      el.style.transition = "opacity 0.4s";
+      el.style.opacity = "0";
 
-          if (el) {
-            el.style.transition = "opacity 0.4s";
-            el.style.opacity = "0";
+      el.scrollIntoView({ behavior: "smooth" });
 
-            el.scrollIntoView({ behavior: "smooth" });
-
-            setTimeout(() => {
-              el.style.opacity = "1";
-            }, 400);
-          }
-        }, 500);
-      }     
+      setTimeout(() => {
+        el.style.opacity = "1";
+      }, 400);
+    }
+  }, 500);
+}
 
     }); 
   </script>
