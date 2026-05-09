@@ -632,31 +632,31 @@
     // =========================
     // STATE
     // =========================
-    const AppState = {
-      userId: null,
-      premium: false,
-      isRefreshing: false
-    };
+  const AppState = {
+  email: null,
+  premium: false,
+  isRefreshing: false
+};
 
     // =========================
     // API
     // =========================
-    const API = {
-      async checkPremium(userId) {
-        try {
-          const res = await fetch(
-            `${API_URL}/api/premium/check?userId=${userId}`
-          );
+const API = {
+  async checkPremium(email) {
+    try {
+      const res = await fetch(
+        `${API_URL}/api/premium/check?userId=${email}`
+      );
 
-          const data = await res.json();
-          return data.premium === true;
+      const data = await res.json();
+      return data.premium === true;
 
-        } catch (e) {
-          console.error("API error", e);
-          return false;
-        }
-      }
-    };
+    } catch (e) {
+      console.error("API error", e);
+      return false;
+    }
+  }
+};
 
     // =========================
     // UI
@@ -690,19 +690,18 @@
     // =========================
     // PREMIUM CORE (FIXED)
     // =========================
-    async function refreshPremiumState() {
-      if (!AppState.userId) return;
-      if (AppState.isRefreshing) return;
+ async function refreshPremiumState() {
+  if (!AppState.email) return;
+  if (AppState.isRefreshing) return;
 
-      AppState.isRefreshing = true;
+  AppState.isRefreshing = true;
 
-      try {
-        AppState.premium = await API.checkPremium(AppState.userId);
-      } finally {
-        AppState.isRefreshing = false;
-      }
-    }
-
+  try {
+    AppState.premium = await API.checkPremium(AppState.email);
+  } finally {
+    AppState.isRefreshing = false;
+  }
+}
     // =========================
     // INIT APP
     // =========================
@@ -767,51 +766,51 @@
     // =========================
     // STRIPE
     // =========================
-    const StripeService = {
-      isLoading: false,
+  const StripeService = {
+  isLoading: false,
 
-      async buyPremium() {
-        if (this.isLoading) return;
+  async buyPremium() {
+    if (this.isLoading) return;
 
-        const userId = AppState.userId;
+    const email = AppState.email;
 
-        if (!userId) {
-          alert("Please login first");
-          document
-            .getElementById("auth-box")
-            ?.scrollIntoView({ behavior: "smooth" });
-          return;
+    if (!email) {
+      alert("Please login first");
+      document
+        .getElementById("auth-box")
+        ?.scrollIntoView({ behavior: "smooth" });
+      return;
+    }
+
+    this.isLoading = true;
+
+    try {
+      const res = await fetch(
+        `${API_URL}/api/stripe/create-checkout-session`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ userId: email }) // backend пока ждёт userId
         }
+      );
 
-        this.isLoading = true;
+      const data = await res.json();
 
-        try {
-          const res = await fetch(
-            `${API_URL}/api/stripe/create-checkout-session`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json"
-              },
-              body: JSON.stringify({ userId })
-            }
-          );
-
-          const data = await res.json();
-
-          if (data.url) {
-            window.location.href = data.url;
-          } else {
-            console.log("Stripe error:", data);
-          }
-
-        } catch (e) {
-          console.error("StripeService error:", e);
-        } finally {
-          this.isLoading = false;
-        }
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        console.log("Stripe error:", data);
       }
-    };
+
+    } catch (e) {
+      console.error("StripeService error:", e);
+    } finally {
+      this.isLoading = false;
+    }
+  }
+};
 
     // =========================
     // LIMIT MESSAGE
@@ -1303,8 +1302,7 @@
     
 
       // TELEGRAM LINK FIX
-      
-const email = AppState.userId;
+ const email = AppState.email;
 
 const tgLink = email
   ? `https://t.me/hakob_ai_it_bot?start=${encodeURIComponent(email)}`
@@ -1314,7 +1312,8 @@ const telegramBtn = document.getElementById("telegram-btn");
 
 if (telegramBtn) {
   telegramBtn.href = tgLink;
-}
+}     
+
     }); 
   </script>
 
