@@ -706,29 +706,28 @@
     // =========================
     // INIT APP
     // =========================
-    async function initApp() {
-      const email = localStorage.getItem("email");
+ async function initApp() {
+  const email = localStorage.getItem("email");
 
-      if (!email) {
-        document.getElementById("auth-box").style.display = "block";
+  if (!email) {
+    document.getElementById("auth-box").style.display = "block";
 
-        AppState.userId = null;
-        AppState.premium = false;
+    AppState.email = null;
+    AppState.premium = false;
 
-        UI.renderLocks();
-        return;
-      }
+    UI.renderLocks();
+    return;
+  }
 
-      AppState.userId = email;
+  AppState.email = email;
 
-      await refreshPremiumState();
+  await refreshPremiumState();
 
-      UI.renderLocks();
+  UI.renderLocks();
 
-      console.log("USER:", AppState.userId);
-      console.log("PREMIUM:", AppState.premium);
-    }
-
+  console.log("EMAIL:", AppState.email);
+  console.log("PREMIUM:", AppState.premium);
+}
     // =========================
     // SAVE EMAIL
     // =========================
@@ -743,7 +742,7 @@
 
       // сохраняем
       localStorage.setItem("email", email);
-      AppState.userId = email;
+      AppState.email = email;
 
       // 🔥 очищаем поле (визуально скрываем)
       input.value = "";
