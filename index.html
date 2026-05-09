@@ -743,12 +743,22 @@ const API = {
     // INIT APP
     // =========================
  async function initApp() {
+
+  // 🔥 telegram id from URL
+  const params = new URLSearchParams(window.location.search);
+
+  const tg = params.get("tg");
+
+  if (tg) {
+    localStorage.setItem("telegram_id", tg);
+  }
+
   const email = localStorage.getItem("email");
 
   if (!email) {
     document.getElementById("auth-box").style.display = "block";
 
-    AppState.email = null;
+    AppState.userId = null;
     AppState.premium = false;
 
     UI.renderLocks();
@@ -761,7 +771,7 @@ const API = {
 
   UI.renderLocks();
 
-  console.log("EMAIL:", AppState.email);
+  console.log("USER:", AppState.email);
   console.log("PREMIUM:", AppState.premium);
 }
     // =========================
@@ -777,13 +787,32 @@ async function saveEmail() {
   }
 
   localStorage.setItem("email", email);
+
   AppState.email = email;
+
+  // 🔥 telegram sync
+  const telegramId = localStorage.getItem("telegram_id");
+
+  if (telegramId) {
+    await fetch(`${API_URL}/api/user/link-telegram`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email,
+        telegramId
+      })
+    });
+  }
 
   input.value = "";
   input.blur();
+
   input.placeholder = "Email saved ✓ Click to edit";
 
   await refreshPremiumState();
+
   UI.renderLocks();
 
   console.log("EMAIL SAVED:", AppState.email);
