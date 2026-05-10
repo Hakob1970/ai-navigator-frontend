@@ -11,20 +11,21 @@ TOKEN = "8645293983:AAEfUVCWatvE7klR1g1TC6_QBRZm6wdQ1Zc"
 
 BACKEND = "https://ai-navigator-backend-mcb3.onrender.com"
 
-LANG_CACHE = {}
+email_cache = {}
 
 def link_telegram(email, telegram_id):
     try:
         requests.post(
             f"{BACKEND}/api/user/link-telegram",
             json={
-                "userId": email,
+                "email": email,
                 "telegramId": str(telegram_id)
             },
             timeout=3
         )
     except:
         pass
+
 
 # =========================
 # MENU TEXTS
@@ -35,21 +36,21 @@ TEXTS = {
         "news": "📰 AI News",
         "categories": "📂 Categories",
         "premium": "💎 Premium",
-        "discuss": "💬 AI Club"
+        "discuss": "💬 Discussion Club"
     },
     "ru": {
         "welcome": "Добро пожаловать в AI Navigator!",
         "news": "📰 AI News",
         "categories": "📂 Categories",
         "premium": "💎 Premium",
-        "discuss": "💬 AI Club"
+        "discuss": "💬 Discussion Club"
     },
     "am": {
         "welcome": "Բարի գալուստ AI Navigator!",
         "news": "📰 AI News",
         "categories": "📂 Կատեգորիաներ",
         "premium": "💎 Պրեմիում",
-        "discuss": "💬 AI Club"
+        "discuss": "💬 Discussion Club"
     }
 
 }
@@ -109,10 +110,18 @@ def is_premium(email):
 def menu(lang):
     return ReplyKeyboardMarkup([
         ["📰 AI News"],
-        ["📂 Categories"],
-        ["💎 Premium"],
-        ["💬 AI Club"]
-    ], resize_keyboard=True)
+        ["💬 Discussion Club"]
+    ], resize_keyboard=True,
+       is_persistent=True)
+
+async def show_menu(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    lang = get_lang(user_id)
+
+    await update.message.reply_text(
+        "Menu",
+        reply_markup=menu(lang)
+    )
 
 
 # =========================
@@ -127,16 +136,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # 👇 ВАЖНО
     if context.args:
-        email = context.args[0]
+        email = context.args[0].strip().lower()
 
         requests.post(
             f"{BACKEND}/api/user/link-telegram",
             json={
-                "userId": email,
+                "email": email,
                 "telegramId": str(user_id)
             },
             timeout=3
         )
+
 
     lang = get_lang(user_id)
 
@@ -170,65 +180,42 @@ async def handle(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await update.message.reply_text(f"{entry.title}\n{entry.link}")
         return
 
-    # =========================
-    # CATEGORIES
-    # =========================
-    if "📂 Categories" in text:
-        await update.message.reply_text(
-            "📂 Open categories:\nhttps://ai-navigator-frontend.vercel.app/#categories"
-        )
-        return
-
-    # =========================
-    # PREMIUM    # =========================
-    if "💎 Premium" in text:
- 
-        premium = is_premium(email) if email else False
-
-        if premium:
-            await update.message.reply_text("💎 You are Premium!")
-        else:
-            await update.message.reply_text(
-                "💎 Premium unlocks:\n\n"
-                "• AI tools access\n"
-                "• 💬 Join private AI club\n"
-                "• 🔒 Exclusive members area\n\n"
-                "👉 https://ai-navigator-frontend.vercel.app/#pricing"
-            )
-        return
 
     # =========================
     # DISCUSS
     # =========================
-    if "💬 AI Club" in text:
- 
+    if "💬 Discussion Club" in text:
+
+        email = get_email(user_id)
         premium = is_premium(email) if email else False
+
+        print("DISCUSSION CLUB TELEGRAM ID:", user_id)
+        print("DISCUSSION CLUB EMAIL:", email)
+        print("DISCUSSION CLUB PREMIUM:", premium)
 
         if premium:
             keyboard = InlineKeyboardMarkup([
-                [InlineKeyboardButton("Open AI Club", url="https://t.me/+UnxQr7zNlrI5Njhi")]
+                [InlineKeyboardButton("Open Discussion Club", url="https://t.me/+UnxQr7zNlrI5Njhi")]
             ])
 
             await update.message.reply_text(
-                "💬 AI Club\n\nWelcome to private AI community 🚀",
+                "💬 Discussion Club\n\nWelcome to the private AI community 🚀",
                 reply_markup=keyboard
             )
 
         else:
             keyboard = InlineKeyboardMarkup([
-                [InlineKeyboardButton("Get Premium", url="https://ai-navigator-frontend.vercel.app/#pricing")]
+                [InlineKeyboardButton("Get Premium", url=f"https://ai-navigator-frontend.vercel.app/?tg={user_id}#pricing")]
             ])
 
             await update.message.reply_text(
-                "🔒 AI Club is for Premium users only\n\n"
-                "Unlock access to:\n"
-                "• Private AI discussions\n"
-                "• Exclusive community\n\n"
-                "👉 https://ai-navigator-frontend.vercel.app/#pricing",
+                "🔒 Discussion Club is for Premium users only\n\n"
+                f"👉 https://ai-navigator-frontend.vercel.app/?tg={user_id}#pricing",
                 reply_markup=keyboard
             )
 
         return
+
 
     # DEFAULT
     await update.message.reply_text("Use the menu 👇")
@@ -239,6 +226,7 @@ async def handle(update: Update, context: ContextTypes.DEFAULT_TYPE):
 def main():
     app = Application.builder().token(TOKEN).build()
 
+    app.add_handler(CommandHandler("menu", show_menu))
     app.add_handler(CommandHandler("start", start))
     app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, handle))
 
