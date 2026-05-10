@@ -536,18 +536,28 @@ nav a {
 
 .open-workflow {
   margin-top: 12px;
-  padding: 10px;
+  padding: 10px 14px;
   border-radius: 8px;
 
   border: 1px solid rgba(255, 122, 24, 0.55);
   background: rgba(255, 122, 24, 0.1);
+  backdrop-filter: blur(6px);
+
   color: #ffffff;
 
   cursor: pointer;
+
   font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.2px;
 
   box-shadow: 0 8px 20px rgba(255, 122, 24, 0.12);
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease,
+    border-color 0.25s ease;
 
   position: relative;
   z-index: 5;
@@ -556,14 +566,15 @@ nav a {
 .open-workflow:hover {
   background: rgba(255, 122, 24, 0.18);
   border-color: rgba(255, 122, 24, 0.75);
+
   box-shadow: 0 10px 25px rgba(255, 122, 24, 0.2);
+
   transform: translateY(-2px);
 }
 
 .open-workflow:active {
   transform: scale(0.98);
 }
-
 
 
 .workflow-desc {
