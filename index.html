@@ -1296,19 +1296,36 @@ async function openTelegramBot() {
         }, 1500);
       }
 
-      const likeBtn = document.getElementById("like-btn");
-      const likeCount = document.getElementById("like-count");
+ const likeBtn = document.getElementById("like-btn");
+const likeCount = document.getElementById("like-count");
 
-      if (likeBtn && likeCount) {
-        let count = Number(localStorage.getItem("likes") || 0);
-        likeCount.textContent = count;
+async function loadLikes() {
+  try {
+    const res = await fetch(`${API_URL}/api/likes`);
+    const data = await res.json();
+    likeCount.textContent = data.likes || 0;
+  } catch (e) {
+    likeCount.textContent = "0";
+  }
+}
 
-        likeBtn.addEventListener("click", () => {
-          count++;
-          localStorage.setItem("likes", count);
-          likeCount.textContent = count;
-        });
-      }
+if (likeBtn && likeCount) {
+  loadLikes();
+
+  likeBtn.addEventListener("click", async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/likes`, {
+        method: "POST"
+      });
+
+      const data = await res.json();
+      likeCount.textContent = data.likes || 0;
+    } catch (e) {
+      showToast("Like failed");
+    }
+  });
+}
+
 
       // =========================
       // MOBILE MENU
