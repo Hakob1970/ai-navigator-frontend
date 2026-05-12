@@ -705,7 +705,47 @@ async function refreshPremiumState() {
   AppState.isRefreshing = true;
 
   try {
+
+    // =========================
+    // 1. DEVICE ID (ВАЖНО)
+    // =========================
+    let deviceId = localStorage.getItem("device_id");
+
+    if (!deviceId) {
+      deviceId = crypto.randomUUID();
+      localStorage.setItem("device_id", deviceId);
+    }
+
+    // =========================
+    // 2. DEVICE CHECK
+    // =========================
+    const deviceRes = await fetch(`${API_URL}/api/device/check`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        email: AppState.email,
+        deviceId: deviceId
+      })
+    });
+
+    const deviceData = await deviceRes.json();
+
+    if (!deviceData.allowed) {
+      AppState.premium = false;
+      console.log("🚫 Device blocked");
+      return;
+    }
+
+    // =========================
+    // 3. PREMIUM CHECK (СТАРЫЙ КОД)
+    // =========================
     AppState.premium = await API.checkPremium(AppState.email);
+
+  } catch (e) {
+    console.error("refreshPremiumState error", e);
+    AppState.premium = false;
   } finally {
     AppState.isRefreshing = false;
   }
