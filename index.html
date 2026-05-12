@@ -709,7 +709,7 @@ async function refreshPremiumState() {
     // =========================
     // 1. DEVICE ID (ВАЖНО)
     // =========================
-    let deviceId = localStorage.getItem("device_id");
+   let deviceId = localStorage.getItem("device_id");
 
     if (!deviceId) {
       deviceId = crypto.randomUUID();
