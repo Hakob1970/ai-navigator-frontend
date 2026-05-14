@@ -726,11 +726,19 @@ async function refreshPremiumState() {
 
     const deviceData = await deviceRes.json();
 
-    if (!deviceData.allowed) {
-      console.log("🚫 Device blocked");
-      AppState.premium = false; // можно даже убрать это
-      return;
-    }
+  if (!deviceData.allowed) {
+
+  alert(
+    deviceData.message ||
+    "Лимит исчерпан. У вас уже 3 премиум устройства."
+  );
+
+  console.log("🚫 Device blocked");
+
+  AppState.premium = false;
+
+  return;
+}
 
     // 3. PREMIUM CHECK (ГЛАВНОЕ)
     AppState.premium = await API.checkPremium(AppState.email);
