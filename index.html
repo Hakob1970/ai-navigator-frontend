@@ -647,16 +647,21 @@
     // =========================
 const API = {
   async checkPremium(email) {
+
     try {
+
       const res = await fetch(
-        `${API_URL}/api/premium/check?userId=${encodeURIComponent(email)}`
+        `${API_URL}/api/premium/check?email=${encodeURIComponent(email)}`
       );
 
       const data = await res.json();
+
       return data.premium === true;
 
     } catch (e) {
+
       console.error("API error", e);
+
       return false;
     }
   }
@@ -706,13 +711,26 @@ async function refreshPremiumState() {
 
   try {
 
-    // 1. DEVICE ID
-    let deviceId = localStorage.getItem("device_id");
+   // =========================
+// DEVICE ID
+// =========================
 
-    if (!deviceId) {
-      deviceId = "web_" + crypto.randomUUID();
-      localStorage.setItem("device_id", deviceId);
-    }
+let deviceId = localStorage.getItem("device_id");
+
+if (!deviceId) {
+
+  const fingerprint = [
+    navigator.userAgent,
+    navigator.language,
+    screen.width,
+    screen.height,
+    Intl.DateTimeFormat().resolvedOptions().timeZone
+  ].join("_");
+
+  deviceId = "web_" + btoa(fingerprint).slice(0, 32);
+
+  localStorage.setItem("device_id", deviceId);
+}
 
     // 2. DEVICE CHECK (ТОЛЬКО ГЕЙТ)
     const deviceRes = await fetch(`${API_URL}/api/device/check`, {
@@ -754,7 +772,7 @@ async function refreshPremiumState() {
 // =========================
 // STRIPE PREMIUM REFRESH
 // =========================
-async function refreshPremiumAfterStripe() {
+async function refreshPremiumAfterPayment() {
   for (let i = 0; i < 5; i++) {
     await refreshPremiumState();
     UI.renderLocks();
@@ -776,15 +794,21 @@ async function refreshPremiumAfterStripe() {
     // =========================
  async function initApp() {
 
-  const email = localStorage.getItem("email");
+  const savedEmail = localStorage.getItem("email");
+
+  const email = savedEmail
+    ? savedEmail.trim().toLowerCase()
+    : null;
 
   if (!email) {
+
     document.getElementById("auth-box").style.display = "block";
 
     AppState.email = null;
     AppState.premium = false;
 
     UI.renderLocks();
+
     return;
   }
 
@@ -801,11 +825,12 @@ async function refreshPremiumAfterStripe() {
     // SAVE EMAIL
     // =========================
 async function saveEmail() {
+
   const input = document.getElementById("email-input");
   const email = input.value.trim().toLowerCase();
 
-  if (!email) {
-    alert("Enter email");
+  if (!email || !email.includes("@")) {
+    alert("Enter valid email");
     return;
   }
 
@@ -823,7 +848,6 @@ async function saveEmail() {
   console.log("EMAIL SAVED:", AppState.email);
   console.log("PREMIUM:", AppState.premium);
 }
-
 // =========================
 // TELEGRAM BOT
 // =========================
@@ -877,9 +901,10 @@ async function openTelegramBot() {
   isLoading: false,
 
   async buyPremium() {
+
     if (this.isLoading) return;
 
-    const email = AppState.email;
+    const email = AppState.email?.trim().toLowerCase();
 
     if (!email) {
       alert("Please login first");
@@ -892,6 +917,7 @@ async function openTelegramBot() {
     this.isLoading = true;
 
     try {
+
       const res = await fetch(
         `${API_URL}/api/stripe/create-checkout-session`,
         {
@@ -899,7 +925,7 @@ async function openTelegramBot() {
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ userId: email }) // backend пока ждёт userId
+          body: JSON.stringify({ email }) // ✔ FIXED
         }
       );
 
@@ -1413,7 +1439,7 @@ if (emailInput) {
 // STRIPE SUCCESS FLOW
 // =========================
 if (paymentSuccess === "true") {
-  refreshPremiumAfterStripe();
+ await refreshPremiumAfterPayment();
 
   // UI эффект (скролл + fade)
   setTimeout(() => {
