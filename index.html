@@ -747,11 +747,7 @@ if (!deviceId) {
     "Лимит исчерпан. У вас уже 3 премиум устройства."
   );
 
-  console.log("🚫 Device blocked");
-
-  AppState.premium = false;
-
-  return;
+console.warn("🚫 Device limit reached (soft block)");
 }
 
     // 3. PREMIUM CHECK (ГЛАВНОЕ)
