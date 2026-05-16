@@ -647,26 +647,23 @@
     // =========================
 const API = {
   async checkPremium(email) {
-
     try {
+      const cleanEmail = email.trim().toLowerCase();
 
       const res = await fetch(
-        `${API_URL}/api/premium/check?email=${encodeURIComponent(email)}`
+        `${API_URL}/api/premium/check?email=${encodeURIComponent(cleanEmail)}`
       );
 
       const data = await res.json();
 
-      return data.premium === true;
+      return data?.premium === true;
 
     } catch (e) {
-
       console.error("API error", e);
-
       return false;
     }
   }
 };
-
     // =========================
     // UI
     // =========================
@@ -701,8 +698,7 @@ const API = {
     // =========================
 async function refreshPremiumState() {
   if (!AppState.email) {
-    AppState.premium = false;
-    return;
+  console.log("🚫 Device limit reached, but premium still checked");
   }
 
   if (AppState.isRefreshing) return;
