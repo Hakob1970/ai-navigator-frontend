@@ -645,25 +645,82 @@
     // =========================
     // API
     // =========================
-const API = {
-  async checkPremium(email) {
-    try {
-      const cleanEmail = email.trim().toLowerCase();
+app.get("/api/premium/check", async (req, res) => {
+  try {
+    const { email } = req.query;
 
-      const res = await fetch(
-        `${API_URL}/api/premium/check?email=${encodeURIComponent(cleanEmail)}`
-      );
-
-      const data = await res.json();
-
-      return data?.premium === true;
-
-    } catch (e) {
-      console.error("API error", e);
-      return false;
+    if (!email) {
+      return res.json({
+        premium: false,
+        daysLeft: 0,
+        warning: "NO_EMAIL"
+      });
     }
+
+    const result = await pool.query(
+      `
+      SELECT premium_until
+      FROM users
+      WHERE email = $1
+      `,
+      [email.trim().toLowerCase()]
+    );
+
+    const user = result.rows[0];
+
+    if (!user || !user.premium_until) {
+      return res.json({
+        premium: false,
+        daysLeft: 0,
+        warning: "NO_PREMIUM"
+      });
+    }
+
+    // =========================
+    // CALCULATE PREMIUM STATUS
+    // =========================
+    const now = new Date();
+    const end = new Date(user.premium_until);
+
+    const diffMs = end - now;
+    const daysLeft = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
+
+    let warning = null;
+
+    if (daysLeft <= 0) {
+      return res.json({
+        premium: false,
+        daysLeft: 0,
+        premiumUntil: user.premium_until,
+        warning: "EXPIRED"
+      });
+    }
+
+    if (daysLeft <= 1) {
+      warning = "CRITICAL";
+    } else if (daysLeft <= 3) {
+      warning = "WARNING";
+    } else if (daysLeft <= 7) {
+      warning = "INFO";
+    }
+
+    return res.json({
+      premium: true,
+      daysLeft,
+      premiumUntil: user.premium_until,
+      warning
+    });
+
+  } catch (err) {
+    console.error("PREMIUM CHECK ERROR:", err);
+
+    return res.status(500).json({
+      premium: false,
+      daysLeft: 0,
+      warning: "SERVER_ERROR"
+    });
   }
-};
+});
     // =========================
     // UI
     // =========================
