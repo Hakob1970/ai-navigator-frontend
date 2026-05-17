@@ -786,19 +786,28 @@ async function openTelegramBot() {
 
   try {
     const res = await fetch(`${API_URL}/api/telegram/create-link`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email })
-    });
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ email })
+});
 
-    const data = await res.json();
+let data = {};
+try {
+  data = await res.json();
+} catch (e) {
+  console.warn("Invalid JSON response");
+}
 
-    if (!res.ok || !data.url) {
-      window.location.href = "#pricing";
-      return;
-    }
+console.log("Telegram response:", data);
 
-    window.open(data.url, "_blank");
+if (data && data.url) {
+  window.open(data.url, "_blank");
+  return;
+}
+
+console.log("Telegram fallback:", data);
+window.location.href = "#pricing";
+
   } catch (err) {
     console.error(err);
     window.location.href = "#pricing";
