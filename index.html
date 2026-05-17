@@ -631,20 +631,20 @@
 
   <script>
 
-    const API_URL = "https://ai-navigator-backend-mcb3.onrender.com";
+  const API_URL = "https://ai-navigator-backend-mcb3.onrender.com";
 
-    // =========================
-    // STATE
-    // =========================
-  const AppState = {
+// =========================
+// STATE
+// =========================
+const AppState = {
   email: null,
   premium: false,
   isRefreshing: false
 };
 
-    // =========================
-    // API
-    // =========================
+// =========================
+// API
+// =========================
 const API = {
   checkPremium: async (email) => {
     const res = await fetch(`${API_URL}/api/premium/check?email=${email}`);
@@ -657,225 +657,107 @@ const API = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, deviceId })
     });
-
     return await res.json();
   }
 };
 
-    // =========================
-    // CALCULATE PREMIUM STATUS
-    // =========================
-    const now = new Date();
-    const end = new Date(user.premium_until);
+// =========================
+// UI
+// =========================
+const UI = {
+  renderLocks() {
+    const premium = AppState.premium;
 
-    const diffMs = end - now;
-    const daysLeft = Math.ceil(diffMs / (1000 * 60 * 60 * 24));
-
-    let warning = null;
-
-    if (daysLeft <= 0) {
-      return res.json({
-        premium: false,
-        daysLeft: 0,
-        premiumUntil: user.premium_until,
-        warning: "EXPIRED"
-      });
-    }
-
-    if (daysLeft <= 1) {
-      warning = "CRITICAL";
-    } else if (daysLeft <= 3) {
-      warning = "WARNING";
-    } else if (daysLeft <= 7) {
-      warning = "INFO";
-    }
-
-    return res.json({
-      premium: true,
-      daysLeft,
-      premiumUntil: user.premium_until,
-      warning
+    document.querySelectorAll(".tool-card").forEach(card => {
+      card.classList.toggle("workflow-locked", !premium);
     });
 
-  } catch (err) {
-    console.error("PREMIUM CHECK ERROR:", err);
-
-    return res.status(500).json({
-      premium: false,
-      daysLeft: 0,
-      warning: "SERVER_ERROR"
-    });
-  }
-});
-    // =========================
-    // UI
-    // =========================
-    const UI = {
-
-      renderLocks() {
-        const premium = AppState.premium;
-
-        document.querySelectorAll(".tool-card").forEach(card => {
-          card.classList.toggle("workflow-locked", !premium);
-        });
-
-        document.querySelectorAll(".tool-card .tool-locked").forEach(btn => {
-          if (premium) {
-            btn.classList.remove("tool-locked");
-            btn.style.pointerEvents = "auto";
-            btn.style.opacity = "1";
-          } else {
-            btn.style.pointerEvents = "none";
-            btn.style.opacity = "0.5";
-          }
-        });
-      },
-
-      isPremium() {
-        return AppState.premium;
+    document.querySelectorAll(".tool-card .tool-locked").forEach(btn => {
+      if (premium) {
+        btn.classList.remove("tool-locked");
+        btn.style.pointerEvents = "auto";
+        btn.style.opacity = "1";
+      } else {
+        btn.style.pointerEvents = "none";
+        btn.style.opacity = "0.5";
       }
-    };
+    });
+  },
 
-    // =========================
-    // PREMIUM CORE (FIXED)
-    // =========================
-async function refreshPremiumState() {
-
-  // =========================
-  // EMAIL GUARD
-  // =========================
-  if (!AppState.email) {
-    console.log("❌ No email");
-    return;
+  isPremium() {
+    return AppState.premium;
   }
+};
 
+// =========================
+// PREMIUM CORE
+// =========================
+async function refreshPremiumState() {
+  if (!AppState.email) return;
   if (AppState.isRefreshing) return;
 
   AppState.isRefreshing = true;
 
   try {
-
-    // =========================
-    // DEVICE ID
-    // =========================
     let deviceId = localStorage.getItem("device_id");
 
     if (!deviceId) {
-
       deviceId = crypto.randomUUID();
-
       localStorage.setItem("device_id", deviceId);
     }
 
-    console.log("DEVICE ID:", deviceId);
+    const deviceData = await API.deviceCheck(AppState.email, deviceId);
 
-    // =========================
-    // DEVICE CHECK
-    // =========================
-    const deviceRes = await fetch(`${API_URL}/api/device/check`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        email: AppState.email,
-        deviceId
-      })
-    });
-
-    const deviceData = await deviceRes.json();
-
-    console.log("DEVICE CHECK:", deviceData);
-
-    // =========================
-    // ONLY REAL DEVICE LIMIT
-    // =========================
     if (!deviceData.allowed) {
-
       if (deviceData.error === "DEVICE_LIMIT") {
-
         alert(
           deviceData.message ||
           "Лимит исчерпан. У вас уже 3 премиум устройства."
         );
       }
-
-      console.warn("DEVICE CHECK ERROR:", deviceData.error);
+      console.warn("DEVICE ERROR:", deviceData.error);
     }
 
-    // =========================
-    // PREMIUM CHECK
-    // =========================
-    AppState.premium = await API.checkPremium(AppState.email);
+    const premiumData = await API.checkPremium(AppState.email);
+
+    AppState.premium = premiumData.premium;
 
   } catch (e) {
-
     console.error("refreshPremiumState error", e);
-
     AppState.premium = false;
-
   } finally {
-
     AppState.isRefreshing = false;
   }
 }
+
 // =========================
-// STRIPE PREMIUM REFRESH
+// INIT APP
 // =========================
-async function refreshPremiumAfterPayment() {
-  for (let i = 0; i < 5; i++) {
-    await refreshPremiumState();
-    UI.renderLocks();
-
-    if (AppState.premium) {
-      console.log("✅ Premium active after Stripe");
-      return;
-    }
-
-    await new Promise(resolve => setTimeout(resolve, 1500));
-  }
-
-  console.log("⏳ Premium is not active yet, try refreshing");
-}
-
-
- // =========================
-    // INIT APP
-    // =========================
- async function initApp() {
-
+async function initApp() {
   const savedEmail = localStorage.getItem("email");
-
-  const email = savedEmail
-    ? savedEmail.trim().toLowerCase()
-    : null;
+  const email = savedEmail ? savedEmail.trim().toLowerCase() : null;
 
   if (!email) {
-
     document.getElementById("auth-box").style.display = "block";
-
     AppState.email = null;
     AppState.premium = false;
-
     UI.renderLocks();
-
     return;
   }
 
   AppState.email = email;
 
   await refreshPremiumState();
-
   UI.renderLocks();
 
   console.log("USER:", AppState.email);
   console.log("PREMIUM:", AppState.premium);
 }
-    // =========================
-    // SAVE EMAIL
-    // =========================
-async function saveEmail() {
 
+// =========================
+// SAVE EMAIL
+// =========================
+async function saveEmail() {
   const input = document.getElementById("email-input");
   const email = input.value.trim().toLowerCase();
 
@@ -887,19 +769,12 @@ async function saveEmail() {
   localStorage.setItem("email", email);
   AppState.email = email;
 
-  input.value = "";
-  input.blur();
-  input.placeholder = "Email saved ✓ Click to edit";
-
   await refreshPremiumState();
-
   UI.renderLocks();
-
-  console.log("EMAIL SAVED:", AppState.email);
-  console.log("PREMIUM:", AppState.premium);
 }
+
 // =========================
-// TELEGRAM BOT
+// TELEGRAM
 // =========================
 async function openTelegramBot() {
   const email = AppState.email;
@@ -912,67 +787,28 @@ async function openTelegramBot() {
   try {
     const res = await fetch(`${API_URL}/api/telegram/create-link`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
+      headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email })
     });
 
     const data = await res.json();
 
-    if (!res.ok || !data.allowed || !data.url) {
+    if (!res.ok || !data.url) {
       window.location.href = "#pricing";
       return;
     }
 
     window.open(data.url, "_blank");
-
-
   } catch (err) {
-    console.error("Telegram link error:", err);
+    console.error(err);
     window.location.href = "#pricing";
   }
 }
 
-    
-    // =========================
-    // PREMIUM SERVICE (WRAPPER)
-    // =========================
-    const PremiumService = {
-      async refresh() {
-        await refreshPremiumState();
-      }
-    };
-
-    // =========================
-    // LIMIT MESSAGE
-    // =========================
-    function showLimitMessage(workflowKey, type, remainingMs) {
-      const container = document.querySelector(".limit-info");
-      if (!container) return;
-
-      const remaining = Math.max(0, remainingMs);
-
-      const totalMinutes = Math.ceil(remaining / 60000);
-      const hours = Math.floor(totalMinutes / 60);
-      const minutes = totalMinutes % 60;
-
-      const timeText =
-        hours > 0 ? `${hours}h ${minutes}m` : `${minutes} min`;
-
-      container.innerHTML = `
-    <div class="limit-box">
-      ⏳ Free limit reached<br><br>
-      Available in: <b>${timeText}</b><br><br>
-      🔓 <a href="pricing.html" target="_blank">Upgrade to Premium</a>
-    </div>
-  `;
-    }
-
-    // =========================
-    // GLOBAL
-    // =========================
-   window.buyPremium = async function () {
+// =========================
+// BUY PREMIUM
+// =========================
+window.buyPremium = async function () {
   const email = AppState.email?.trim().toLowerCase();
 
   if (!email) {
@@ -990,16 +826,14 @@ async function openTelegramBot() {
     const data = await res.json();
 
     if (data.url) {
-        window.open(data.url, "_blank");
+      window.open(data.url, "_blank");
     } else {
       console.log("LEMON ERROR:", data);
     }
-
   } catch (err) {
     console.error("LEMON ERROR:", err);
   }
 };
-
     document.addEventListener("DOMContentLoaded", async () => {
 
       // =========================
