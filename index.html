@@ -699,6 +699,9 @@ async function refreshPremiumState() {
   AppState.isRefreshing = true;
 
   try {
+    // =========================
+    // DEVICE ID
+    // =========================
     let deviceId = localStorage.getItem("device_id");
 
     if (!deviceId) {
@@ -706,7 +709,14 @@ async function refreshPremiumState() {
       localStorage.setItem("device_id", deviceId);
     }
 
+    console.log("DEVICE ID:", deviceId);
+
+    // =========================
+    // DEVICE CHECK
+    // =========================
     const deviceData = await API.deviceCheck(AppState.email, deviceId);
+
+    console.log("DEVICE CHECK:", deviceData);
 
     if (!deviceData.allowed) {
       if (deviceData.error === "DEVICE_LIMIT") {
@@ -718,9 +728,38 @@ async function refreshPremiumState() {
       console.warn("DEVICE ERROR:", deviceData.error);
     }
 
+    // =========================
+    // PREMIUM CHECK
+    // =========================
     const premiumData = await API.checkPremium(AppState.email);
 
+    console.log("PREMIUM CHECK:", premiumData);
+
     AppState.premium = premiumData.premium;
+    AppState.daysLeft = premiumData.daysLeft;
+    AppState.warning = premiumData.warning;
+
+    // =========================
+    // PREMIUM WARNINGS (NO SPAM)
+    // =========================
+    if (!AppState.notifiedPremiumWarning) {
+      if (premiumData.daysLeft <= 0) {
+        alert("⚠️ Ваш Premium истёк");
+        AppState.notifiedPremiumWarning = true;
+      } 
+      else if (premiumData.daysLeft <= 1) {
+        alert("⏳ Premium закончится завтра");
+        AppState.notifiedPremiumWarning = true;
+      } 
+      else if (premiumData.daysLeft <= 3) {
+        alert("⚠️ Premium закончится через 3 дня");
+        AppState.notifiedPremiumWarning = true;
+      } 
+      else if (premiumData.daysLeft <= 7) {
+        alert("ℹ️ Premium закончится через неделю");
+        AppState.notifiedPremiumWarning = true;
+      }
+    }
 
   } catch (e) {
     console.error("refreshPremiumState error", e);
