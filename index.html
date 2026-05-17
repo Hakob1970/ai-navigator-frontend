@@ -887,57 +887,6 @@ async function openTelegramBot() {
     };
 
     // =========================
-    // STRIPE
-    // =========================
-  const StripeService = {
-  isLoading: false,
-
-  async buyPremium() {
-
-    if (this.isLoading) return;
-
-    const email = AppState.email?.trim().toLowerCase();
-
-    if (!email) {
-      alert("Please login first");
-      document
-        .getElementById("auth-box")
-        ?.scrollIntoView({ behavior: "smooth" });
-      return;
-    }
-
-    this.isLoading = true;
-
-    try {
-
-      const res = await fetch(
-        `${API_URL}/api/stripe/create-checkout-session`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({ email }) // ✔ FIXED
-        }
-      );
-
-      const data = await res.json();
-
-      if (data.url) {
-        window.location.href = data.url;
-      } else {
-        console.log("Stripe error:", data);
-      }
-
-    } catch (e) {
-      console.error("StripeService error:", e);
-    } finally {
-      this.isLoading = false;
-    }
-  }
-};
-
-    // =========================
     // LIMIT MESSAGE
     // =========================
     function showLimitMessage(workflowKey, type, remainingMs) {
@@ -965,7 +914,33 @@ async function openTelegramBot() {
     // =========================
     // GLOBAL
     // =========================
-    window.buyPremium = () => StripeService.buyPremium();
+   window.buyPremium = async function () {
+  const email = AppState.email?.trim().toLowerCase();
+
+  if (!email) {
+    alert("Please login first");
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API_URL}/api/lemon/create-checkout-session`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email })
+    });
+
+    const data = await res.json();
+
+    if (data.url) {
+      window.location.href = data.url;
+    } else {
+      console.log("LEMON ERROR:", data);
+    }
+
+  } catch (err) {
+    console.error("LEMON ERROR:", err);
+  }
+};
 
     document.addEventListener("DOMContentLoaded", async () => {
 
