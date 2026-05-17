@@ -645,36 +645,22 @@
     // =========================
     // API
     // =========================
-app.get("/api/premium/check", async (req, res) => {
-  try {
-    const { email } = req.query;
+const API = {
+  checkPremium: async (email) => {
+    const res = await fetch(`${API_URL}/api/premium/check?email=${email}`);
+    return await res.json();
+  },
 
-    if (!email) {
-      return res.json({
-        premium: false,
-        daysLeft: 0,
-        warning: "NO_EMAIL"
-      });
-    }
+  deviceCheck: async (email, deviceId) => {
+    const res = await fetch(`${API_URL}/api/device/check`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, deviceId })
+    });
 
-    const result = await pool.query(
-      `
-      SELECT premium_until
-      FROM users
-      WHERE email = $1
-      `,
-      [email.trim().toLowerCase()]
-    );
-
-    const user = result.rows[0];
-
-    if (!user || !user.premium_until) {
-      return res.json({
-        premium: false,
-        daysLeft: 0,
-        warning: "NO_PREMIUM"
-      });
-    }
+    return await res.json();
+  }
+};
 
     // =========================
     // CALCULATE PREMIUM STATUS
