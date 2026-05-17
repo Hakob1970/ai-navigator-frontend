@@ -754,8 +754,13 @@ app.get("/api/premium/check", async (req, res) => {
     // PREMIUM CORE (FIXED)
     // =========================
 async function refreshPremiumState() {
+
+  // =========================
+  // EMAIL GUARD
+  // =========================
   if (!AppState.email) {
-  console.log("🚫 Device limit reached, but premium still checked");
+    console.log("❌ No email");
+    return;
   }
 
   if (AppState.isRefreshing) return;
@@ -764,31 +769,28 @@ async function refreshPremiumState() {
 
   try {
 
-   // =========================
-// DEVICE ID
-// =========================
+    // =========================
+    // DEVICE ID
+    // =========================
+    let deviceId = localStorage.getItem("device_id");
 
-let deviceId = localStorage.getItem("device_id");
+    if (!deviceId) {
 
-if (!deviceId) {
+      deviceId = crypto.randomUUID();
 
-  const fingerprint = [
-    navigator.userAgent,
-    navigator.language,
-    screen.width,
-    screen.height,
-    Intl.DateTimeFormat().resolvedOptions().timeZone
-  ].join("_");
+      localStorage.setItem("device_id", deviceId);
+    }
 
-  deviceId = "web_" + btoa(fingerprint).slice(0, 32);
+    console.log("DEVICE ID:", deviceId);
 
-  localStorage.setItem("device_id", deviceId);
-}
-
-    // 2. DEVICE CHECK (ТОЛЬКО ГЕЙТ)
+    // =========================
+    // DEVICE CHECK
+    // =========================
     const deviceRes = await fetch(`${API_URL}/api/device/check`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json"
+      },
       body: JSON.stringify({
         email: AppState.email,
         deviceId
@@ -797,27 +799,40 @@ if (!deviceId) {
 
     const deviceData = await deviceRes.json();
 
-  if (!deviceData.allowed) {
+    console.log("DEVICE CHECK:", deviceData);
 
-  alert(
-    deviceData.message ||
-    "Лимит исчерпан. У вас уже 3 премиум устройства."
-  );
+    // =========================
+    // ONLY REAL DEVICE LIMIT
+    // =========================
+    if (!deviceData.allowed) {
 
-console.warn("🚫 Device limit reached (soft block)");
-}
+      if (deviceData.error === "DEVICE_LIMIT") {
 
-    // 3. PREMIUM CHECK (ГЛАВНОЕ)
+        alert(
+          deviceData.message ||
+          "Лимит исчерпан. У вас уже 3 премиум устройства."
+        );
+      }
+
+      console.warn("DEVICE CHECK ERROR:", deviceData.error);
+    }
+
+    // =========================
+    // PREMIUM CHECK
+    // =========================
     AppState.premium = await API.checkPremium(AppState.email);
 
   } catch (e) {
+
     console.error("refreshPremiumState error", e);
+
     AppState.premium = false;
+
   } finally {
+
     AppState.isRefreshing = false;
   }
 }
-
 // =========================
 // STRIPE PREMIUM REFRESH
 // =========================
