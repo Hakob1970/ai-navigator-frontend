@@ -718,18 +718,21 @@ async function refreshPremiumState() {
 
     console.log("DEVICE CHECK:", deviceData);
 
-    if (!deviceData.allowed) {
-      if (deviceData.error === "DEVICE_LIMIT") {
-        alert(
-          deviceData.message ||
-          "Лимит исчерпан. У вас уже 3 премиум устройства."
-        );
-        }else {
+if (!deviceData.allowed) {
+  if (deviceData.error === "DEVICE_LIMIT") {
+    alert(
+      deviceData.message ||
+      "Лимит исчерпан. У вас уже 3 премиум устройства."
+    );
+  } else if (deviceData.error === "NO_PREMIUM") {
+    alert("У вас нет активного Premium");
+  } else {
     alert(deviceData.message || "Доступ с этого устройства запрещён");
   }
-      console.warn("DEVICE ERROR:", deviceData.error);
 
-      AppState.premium = false;
+  console.warn("DEVICE ERROR:", deviceData.error);
+
+  AppState.premium = false;
   AppState.isRefreshing = false;
 
   return;
@@ -817,6 +820,16 @@ async function saveEmail() {
 
   await refreshPremiumState();
   UI.renderLocks();
+
+if (AppState.premium) {
+  document.getElementById("auth-box").style.display = "none";
+} else {
+  document.getElementById("auth-box").style.display = "block";
+}
+
+console.log("USER:", AppState.email);
+console.log("PREMIUM:", AppState.premium);
+  
 }
 
 // =========================
