@@ -724,14 +724,15 @@ async function refreshPremiumState() {
           deviceData.message ||
           "Лимит исчерпан. У вас уже 3 премиум устройства."
         );
-
-   AppState.premium = false;
-    AppState.isRefreshing = false;
-
-    return; 
-        
-      }
+        }else {
+    alert(deviceData.message || "Доступ с этого устройства запрещён");
+  }
       console.warn("DEVICE ERROR:", deviceData.error);
+
+      AppState.premium = false;
+  AppState.isRefreshing = false;
+
+  return;
     }
 
     // =========================
