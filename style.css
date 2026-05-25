@@ -1176,6 +1176,10 @@ nav a {
 /* ===================== */
 
 .pricing-card a {
+  .pricing-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   margin-top: auto;
   display: inline-block;
 }
