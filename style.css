@@ -1162,8 +1162,12 @@ nav a {
 }
 
 .premium-benefits li {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
   margin-bottom: 10px;
   font-size: 14px;
+  line-height: 1.4;
 }
 
 .premium-benefits.empty li {
