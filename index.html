@@ -698,7 +698,7 @@ const UI = {
   }
 };
 
-  function renderAuthState() {
+function renderAuthState() {
   const authBox = document.getElementById("auth-box");
   const accountBox = document.getElementById("account-box");
 
@@ -708,13 +708,15 @@ const UI = {
     return;
   }
 
+  const isPremium = !!AppState.premium; // ✔ нормализация состояния
+
   authBox.style.display = "none";
   accountBox.style.display = "block";
 
   accountBox.innerHTML = `
     <div class="account-state">
       ${
-        AppState.premium
+        isPremium
           ? "Premium Active ✓"
           : "✓ Welcome to AI Navigator"
       }
@@ -727,12 +729,14 @@ const UI = {
   `;
 }
 
+    
    function logout() {
   localStorage.removeItem("email");
 
   AppState.email = null;
   AppState.premium = false;
   AppState.daysLeft = 0;
+  AppState.deviceBlocked = false;   
 
   renderAuthState();
   UI.renderLocks();
@@ -793,7 +797,7 @@ if (AppState.deviceBlocked) {
 
     console.log("PREMIUM CHECK:", premiumData);
 
-    AppState.premium = premiumData.premium;
+    AppState.premium = !!premiumData.premium;
     AppState.daysLeft = premiumData.daysLeft;
     AppState.warning = premiumData.warning;
 
@@ -848,6 +852,7 @@ async function initApp() {
   }
 
   AppState.email = email;
+  AppState.premium = false; 
 
  await refreshPremiumState();
 UI.renderLocks();
