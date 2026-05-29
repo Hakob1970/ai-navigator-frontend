@@ -51,6 +51,8 @@
         <button onclick="saveEmail()">Get Started</button>
       </div>
 
+      <div id="account-box" class="hero-auth" style="display:none;">
+
       </div>
 
       <p class="hero-proof">
@@ -696,6 +698,60 @@ const UI = {
   }
 };
 
+  function renderAuthState() {
+  const authBox = document.getElementById("auth-box");
+  const accountBox = document.getElementById("account-box");
+
+  if (!AppState.email) {
+    authBox.style.display = "block";
+    accountBox.style.display = "none";
+    return;
+  }
+
+  authBox.style.display = "none";
+  accountBox.style.display = "block";
+
+  accountBox.innerHTML = `
+    <div class="account-state">
+      ${
+        AppState.premium
+          ? "Premium Active ✓"
+          : "✓ Welcome to AI Navigator"
+      }
+    </div>
+
+    <div class="account-actions">
+      <button onclick="changeEmail()">Change Email</button>
+      <button onclick="logout()">Logout</button>
+    </div>
+  `;
+}
+
+   function logout() {
+  localStorage.removeItem("email");
+
+  AppState.email = null;
+  AppState.premium = false;
+  AppState.daysLeft = 0;
+
+  renderAuthState();
+  UI.renderLocks();
+}
+
+   function changeEmail() {
+  localStorage.removeItem("email");
+
+  AppState.email = null;
+  AppState.premium = false;
+  AppState.daysLeft = 0;
+
+  renderAuthState();
+  UI.renderLocks();
+
+  document.getElementById("auth-box").style.display = "block";
+  document.getElementById("account-box").style.display = "none";
+} 
+
 // =========================
 // PREMIUM CORE
 // =========================
@@ -789,8 +845,9 @@ async function initApp() {
 
   AppState.email = email;
 
-  await refreshPremiumState();
-  UI.renderLocks();
+ await refreshPremiumState();
+UI.renderLocks();
+renderAuthState();
 
   console.log("USER:", AppState.email);
   console.log("PREMIUM:", AppState.premium);
@@ -811,8 +868,9 @@ async function saveEmail() {
   localStorage.setItem("email", email);
   AppState.email = email;
 
-  await refreshPremiumState();
-  UI.renderLocks();
+ await refreshPremiumState();
+UI.renderLocks();
+renderAuthState();
 
 if (AppState.premium) {
   document.getElementById("auth-box").style.display = "none";
