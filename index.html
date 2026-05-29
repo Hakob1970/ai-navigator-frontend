@@ -782,6 +782,10 @@ async function refreshPremiumState() {
     // ❗ НЕ убиваем premium, только помечаем блокировку
    AppState.deviceBlocked = !deviceData.allowed;
 
+if (AppState.deviceBlocked) {
+  showDeviceLimitWarning();
+}
+
     // =========================
     // PREMIUM CHECK (SOURCE OF TRUTH)
     // =========================
@@ -872,16 +876,26 @@ async function saveEmail() {
 UI.renderLocks();
 renderAuthState();
 
-if (AppState.premium) {
-  document.getElementById("auth-box").style.display = "none";
-} else {
-  document.getElementById("auth-box").style.display = "block";
-}
-
 console.log("USER:", AppState.email);
 console.log("PREMIUM:", AppState.premium);
   
 }
+
+  function showDeviceLimitWarning() {
+     AppState.deviceBlocked = true;
+  const messageBox = document.getElementById("account-box");
+
+  messageBox.innerHTML = `
+    <div class="device-limit-warning">
+      ⚠️ Device limit reached (3 devices max)
+      <br><br>
+      Remove another device or switch account
+    </div>
+  `;
+
+  document.getElementById("auth-box").style.display = "none";
+  messageBox.style.display = "block";
+}  
 
 // =========================
 // TELEGRAM
