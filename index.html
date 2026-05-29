@@ -642,8 +642,13 @@ const AppState = {
   email: null,
   premium: false,
   deviceBlocked: false,
-  isRefreshing: false
+  isRefreshing: false,
+  notifiedPremiumWarning: false
 };
+
+   function hasPremiumAccess() {
+  return AppState.premium && !AppState.deviceBlocked;
+} 
 // =========================
 // API
 // =========================
@@ -668,7 +673,7 @@ const API = {
 // =========================
 const UI = {
   renderLocks() {
-    const premium = AppState.premium && !AppState.deviceBlocked;
+    const premium = hasPremiumAccess();
 
     document.querySelectorAll(".tool-card").forEach(card => {
       card.classList.toggle("workflow-locked", !premium);
@@ -687,7 +692,7 @@ const UI = {
   },
 
   isPremium() {
-    return AppState.premium && !AppState.deviceBlocked;
+    return hasPremiumAccess();
   }
 };
 
@@ -719,11 +724,7 @@ async function refreshPremiumState() {
     console.log("DEVICE CHECK:", deviceData);
 
     // ❗ НЕ убиваем premium, только помечаем блокировку
-    if (!deviceData.allowed) {
-      AppState.deviceBlocked = true;
-    } else {
-      AppState.deviceBlocked = false;
-    }
+   AppState.deviceBlocked = !deviceData.allowed;
 
     // =========================
     // PREMIUM CHECK (SOURCE OF TRUTH)
