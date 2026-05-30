@@ -748,6 +748,7 @@ function renderAuthState() {
   AppState.email = null;
   AppState.premium = false;
   AppState.daysLeft = 0;
+  AppState.deviceBlocked = false;   
 
   renderAuthState();
   UI.renderLocks();
@@ -788,6 +789,7 @@ async function refreshPremiumState() {
 
 if (AppState.deviceBlocked) {
   showDeviceLimitWarning();
+   return;
 }
 
     // =========================
@@ -796,6 +798,8 @@ if (AppState.deviceBlocked) {
     const premiumData = await API.checkPremium(AppState.email);
 
     console.log("PREMIUM CHECK:", premiumData);
+    console.log("PREMIUM TYPE:", typeof premiumData.premium);
+console.log("PREMIUM VALUE:", premiumData.premium);
 
     AppState.premium = !!premiumData.premium;
     AppState.daysLeft = premiumData.daysLeft;
