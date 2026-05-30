@@ -797,7 +797,7 @@ if (AppState.deviceBlocked) {
     // =========================
     const premiumData = await API.checkPremium(AppState.email);
 
-    console.log("PREMIUM CHECK:", premiumData);
+    console.log("PREMIUM RAW:", JSON.stringify(premiumData));
     console.log("PREMIUM TYPE:", typeof premiumData.premium);
 console.log("PREMIUM VALUE:", premiumData.premium);
 
