@@ -699,6 +699,14 @@ const UI = {
 };
 
 function renderAuthState() {
+
+  console.log(
+    "renderAuthState",
+    "email:", AppState.email,
+    "premium:", AppState.premium,
+    "blocked:", AppState.deviceBlocked
+  );
+  
   const authBox = document.getElementById("auth-box");
   const accountBox = document.getElementById("account-box");
 
