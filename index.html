@@ -976,7 +976,7 @@ window.location.href = "#pricing";
 // =========================
 // BUY PREMIUM
 // =========================
-window.buyPremium = function () {
+window.buyPremium = async function () {
   const email = AppState.email?.trim().toLowerCase();
 
   if (!email) {
@@ -984,11 +984,26 @@ window.buyPremium = function () {
     return;
   }
 
-  window.open(
-    "https://www.creem.io/test/payment/prod_7DKUEWZQ9fVx7TniuLo8Oj",
-    "_blank",
-    "noopener,noreferrer"
-  );
+  try {
+    const res = await fetch(`${API_URL}/create-checkout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email })
+    });
+
+    const data = await res.json();
+
+    if (data.url) {
+      window.open(data.url, "_blank", "noopener,noreferrer");
+    } else {
+      alert("Checkout error");
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Payment failed");
+  }
 };
 
     
