@@ -716,6 +716,24 @@ function renderAuthState() {
     return;
   }
 
+  if (AppState.deviceBlocked) {
+  authBox.style.display = "none";
+  accountBox.style.display = "block";
+
+  accountBox.innerHTML = `
+    <div class="device-limit-warning">
+      ⚠️ Device limit reached (3 devices max)
+      <br><br>
+      Remove another device or switch account
+      <br><br>
+      <button onclick="changeEmail()">Change Email</button>
+      <button onclick="logout()">Logout</button>
+    </div>
+  `;
+
+  return;
+}
+
   const isPremium = !!AppState.premium; // ✔ нормализация состояния
 
   authBox.style.display = "none";
@@ -796,8 +814,8 @@ async function refreshPremiumState() {
    AppState.deviceBlocked = !deviceData.allowed;
 
 if (AppState.deviceBlocked) {
-  showDeviceLimitWarning();
-   return;
+  renderAuthState();
+  return;
 }
 
     // =========================
