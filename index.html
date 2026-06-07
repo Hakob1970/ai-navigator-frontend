@@ -979,6 +979,8 @@ window.location.href = "#pricing";
 // =========================
 // BUY PREMIUM
 // =========================
+let isBuying = false;
+
 window.buyPremium = async function () {
   const email = AppState.email?.trim().toLowerCase();
 
@@ -986,6 +988,10 @@ window.buyPremium = async function () {
     alert("Please login first");
     return;
   }
+
+  // ❗ защита от двойного клика
+  if (isBuying) return;
+  isBuying = true;
 
   try {
     const res = await fetch(`${API_URL}/api/polar/create-checkout`, {
@@ -1003,12 +1009,15 @@ window.buyPremium = async function () {
     } else {
       alert("Checkout error");
     }
+
   } catch (err) {
     console.error(err);
     alert("Payment failed");
+
+  } finally {
+    isBuying = false;
   }
 };
-
     
     document.addEventListener("DOMContentLoaded", async () => {
 
