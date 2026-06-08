@@ -491,54 +491,78 @@
   </section>
 
 
-  <!-- PRICING SECTION -->
-  <section id="pricing">
-    <div class="container">
-      <h2>Pricing</h2>
-      <div class="pricing-grid">
+<!-- PRICING SECTION -->
+<section id="pricing">
+  <div class="container">
+    <h2>Pricing</h2>
 
-        <!-- FREE PLAN -->
-        <div class="pricing-card">
-          <h3>Free</h3>
-          <p>Explore AI tools with limited workflows</p>
-          <p><strong>$0 / month</strong></p>
+    <div class="pricing-grid">
 
-          <ul class="premium-benefits empty">
-            <li>⚠️ Limited workflows</li>
-            <li>⚠️ Restricted AI access</li>
-          </ul>
-          <a href="#" class="premium-btn disabled">Try Free</a>
-        </div>
+      <!-- FREE PLAN -->
+      <div class="pricing-card">
+        <h3>Free</h3>
+        <p>Explore AI tools with limited workflows</p>
+        <p><strong>$0 / month</strong></p>
 
-        <!-- PRO PLAN -->
-        <div class="pricing-card">
-          <h3>Pro</h3>
+        <ul class="premium-benefits empty">
+          <li>⚠️ Limited workflows</li>
+          <li>⚠️ Restricted AI access</li>
+        </ul>
 
-          <p class="premium-highlight">
-            One entry → multiple AI → ready solutions
-          </p>
-
-          <p><strong>$10 / month</strong></p>
-
-          <!-- PREMIUM BENEFITS -->
- <ul class="premium-benefits">
-  <li>✅ Access to premium AI workflows and guided prompts</li>
-  <li>✅ Productivity and content creation resources</li>
-  <li>✅ Step-by-step AI tutorials and practical guides</li>
-  <li>✅ Premium workflow library updates</li>
-  <li>✅ Early access to new features and workflows</li>
-  <li>✅ Research, writing, and productivity tools</li>
-  <li>✅ Optional Telegram companion access</li>
-  <li>✅ Save time with organized AI resources and workflows</li>
-</ul>
-
-          <a href="javascript:void(0)" onclick="buyPremium()" class="premium-btn">
-            Get Premium
-          </a>
-        </div>
+        <a href="#" class="premium-btn disabled">Try Free</a>
       </div>
+
+      <!-- 7 DAYS PLAN -->
+      <div class="pricing-card">
+        <h3>7 Days Trial</h3>
+
+        <p class="premium-highlight">
+          Try full access for 7 days
+        </p>
+
+        <p><strong>$3 one-time</strong></p>
+
+        <ul class="premium-benefits">
+          <li>✅ Full access to all tools</li>
+          <li>✅ All workflows unlocked</li>
+          <li>✅ Premium features included</li>
+          <li>✅ Perfect for testing the platform</li>
+        </ul>
+
+        <a href="javascript:void(0)" onclick="buyPremium('7d')" class="premium-btn">
+          Try 7 Days
+        </a>
+      </div>
+
+      <!-- PREMIUM PLAN -->
+      <div class="pricing-card">
+        <h3>Pro</h3>
+
+        <p class="premium-highlight">
+          One entry → multiple AI → ready solutions
+        </p>
+
+        <p><strong>$10 / month</strong></p>
+
+        <ul class="premium-benefits">
+          <li>✅ Access to premium AI workflows and guided prompts</li>
+          <li>✅ Productivity and content creation resources</li>
+          <li>✅ Step-by-step AI tutorials and practical guides</li>
+          <li>✅ Premium workflow library updates</li>
+          <li>✅ Early access to new features and workflows</li>
+          <li>✅ Research, writing, and productivity tools</li>
+          <li>✅ Optional Telegram companion access</li>
+          <li>✅ Save time with organized AI resources</li>
+        </ul>
+
+        <a href="javascript:void(0)" onclick="buyPremium('premium')" class="premium-btn">
+          Get Premium
+        </a>
+      </div>
+
     </div>
-  </section>
+  </div>
+</section>
 
 
   <!-- TELEGRAM BOT -->
@@ -981,7 +1005,7 @@ window.location.href = "#pricing";
 // =========================
 let isBuying = false;
 
-window.buyPremium = async function () {
+window.buyPremium = async function (plan = "premium") {
   const email = AppState.email?.trim().toLowerCase();
 
   if (!email) {
@@ -989,7 +1013,6 @@ window.buyPremium = async function () {
     return;
   }
 
-  // ❗ защита от двойного клика
   if (isBuying) return;
   isBuying = true;
 
@@ -999,7 +1022,10 @@ window.buyPremium = async function () {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ email })
+      body: JSON.stringify({
+        email,
+        plan // 👈 добавили тариф
+      })
     });
 
     const data = await res.json();
