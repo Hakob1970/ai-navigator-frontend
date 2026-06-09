@@ -983,7 +983,7 @@ window.location.href = "#pricing";
 // =========================
 let isBuying = false;
 
-window.buyPremium = async function (plan = "premium") {
+window.buyPremium = async function () {
   const email = AppState.email?.trim().toLowerCase();
 
   if (!email) {
@@ -1000,10 +1000,7 @@ window.buyPremium = async function (plan = "premium") {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({
-        email,
-        plan // 👈 добавили тариф
-      })
+      body: JSON.stringify({ email })
     });
 
     const data = await res.json();
