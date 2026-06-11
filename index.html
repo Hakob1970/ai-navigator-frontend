@@ -647,6 +647,7 @@
 // =========================
 const AppState = {
   email: null,
+  token: localStorage.getItem("token"),
   premium: false,
   deviceBlocked: false,
   isRefreshing: false,
@@ -660,21 +661,34 @@ const AppState = {
 // API
 // =========================
 const API = {
-  checkPremium: async (email) => {
-    const res = await fetch(`${API_URL}/api/premium/check?email=${email}`);
+  checkPremium: async (token) => {
+    if (!token) return { premium: false, error: "NO_TOKEN" };
+
+    const res = await fetch(`${API_URL}/api/premium/check`, {
+      headers: {
+        "Authorization": `Bearer ${token}`
+      }
+    });
+
     return await res.json();
   },
 
-  deviceCheck: async (email, deviceId) => {
+  deviceCheck: async (token, deviceId) => {
+if (!token) return { premium: false, error: "NO_TOKEN" };
+
+    
     const res = await fetch(`${API_URL}/api/device/check`, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, deviceId })
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({ deviceId })
     });
+
     return await res.json();
   }
 };
-
 // =========================
 // UI
 // =========================
