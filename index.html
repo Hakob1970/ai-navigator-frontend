@@ -834,10 +834,6 @@ console.log(JSON.stringify(deviceData));
     // ❗ НЕ убиваем premium, только помечаем блокировку
    AppState.deviceBlocked = !deviceData.allowed;
 
-if (AppState.deviceBlocked) {
-  renderAuthState();
-  return;
-}
 
     // =========================
     // PREMIUM CHECK (SOURCE OF TRUTH)
