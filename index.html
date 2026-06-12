@@ -390,7 +390,7 @@
             ✅ "Write a short Instagram post about a marketing strategy for a small coffee shop."
           </li>
           <li>
-            ✍️ <strong>How to ask good prompts</strong> — Use context and format. Always clarify: what, for whom, in
+            ✍�� <strong>How to ask good prompts</strong> — Use context and format. Always clarify: what, for whom, in
             which style. <br>
             Example: "Create 3 name ideas for a travel YouTube channel in a fun style."
           </li>
@@ -1055,6 +1055,73 @@ async function addLike() {
 }
 
 document.getElementById("like-btn").addEventListener("click", addLike);
+
+// =========================
+// WORKFLOWS & CATEGORIES
+// =========================
+const workflowsData = {
+  youtube: { title: "YouTube Creator", steps: ["Research topic", "Write script", "Generate images", "Create video", "Optimize SEO"] },
+  marketing: { title: "Marketing", steps: ["Define audience", "Create copy", "Design graphics", "Schedule posts", "Analyze metrics"] },
+  website: { title: "Website Builder", steps: ["Plan structure", "Generate copy", "Design layout", "Setup hosting", "Deploy site"] },
+  design: { title: "Design AI", steps: ["Concept ideation", "Generate variations", "Refine visuals", "Export assets", "Document guidelines"] },
+  learning: { title: "Learning AI", steps: ["Select topic", "Research sources", "Organize notes", "Create summaries", "Review concepts"] },
+  automation: { title: "Automation", steps: ["Identify tasks", "Map workflows", "Setup integrations", "Test automation", "Monitor performance"] },
+  notebook: { title: "NotebookLM", steps: ["Upload documents", "Ask questions", "Generate insights", "Create summaries", "Export notes"] },
+  writing: { title: "AI Writing", steps: ["Define topic", "Create outline", "Generate draft", "Edit content", "Finalize post"] },
+  research: { title: "AI Research", steps: ["Define research question", "Gather sources", "Analyze data", "Synthesize findings", "Write conclusion"] }
+};
+
+const categoriesData = {
+  text: ["ChatGPT", "Jasper", "Copy.ai", "Grammarly", "Notion AI"],
+  image: ["MidJourney", "DALL-E", "Stable Diffusion", "Canva", "Adobe Firefly"],
+  video: ["Runway", "Synthesia", "HeyGen", "Opus Clip", "Adobe Premiere"],
+  voice: ["ElevenLabs", "Descript", "Murf", "Google Cloud TTS", "Speechify"],
+  automation: ["Zapier", "Make", "IFTTT", "Pabbly", "Microsoft Power Automate"],
+  coding: ["GitHub Copilot", "ChatGPT", "Claude", "Tabnine", "Amazon CodeWhisperer"]
+};
+
+const useCasesData = {
+  business: ["Automate workflows", "Analyze data", "Generate reports", "Optimize operations", "Forecast trends"],
+  marketing: ["Write ad copy", "Create visuals", "Plan campaigns", "Generate leads", "Analyze performance"],
+  content: ["Generate scripts", "Create thumbnails", "Edit videos", "Write posts", "Design graphics"],
+  dev: ["Write code", "Debug issues", "Optimize performance", "Generate documentation", "Test applications"]
+};
+
+// Event listeners for categories
+document.querySelectorAll(".category-card").forEach(card => {
+  card.addEventListener("click", function() {
+    const category = this.getAttribute("data-category");
+    const tools = categoriesData[category] || [];
+    alert(`${category.toUpperCase()} Tools:\n\n${tools.join("\n")}`);
+  });
+});
+
+// Event listeners for use cases
+document.querySelectorAll(".case-card").forEach(card => {
+  card.addEventListener("click", function() {
+    const usecase = this.getAttribute("data-usecase");
+    const items = useCasesData[usecase] || [];
+    alert(`${this.querySelector("h3").textContent}:\n\n${items.join("\n")}`);
+  });
+});
+
+// Event listeners for workflows
+document.querySelectorAll(".open-workflow").forEach(btn => {
+  btn.addEventListener("click", function() {
+    if (!AppState.premium) {
+      alert("This workflow is premium only. Please upgrade to access.");
+      return;
+    }
+
+    const workflow = this.getAttribute("data-workflow");
+    const data = workflowsData[workflow];
+    
+    if (data) {
+      const stepsHTML = data.steps.map((step, idx) => `${idx + 1}. ${step}`).join("\n");
+      alert(`${data.title} Workflow:\n\n${stepsHTML}`);
+    }
+  });
+});
 
 // =========================
 // SHARE
