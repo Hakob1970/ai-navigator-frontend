@@ -673,21 +673,21 @@ const API = {
     return await res.json();
   },
 
-  deviceCheck: async (token, deviceId) => {
-if (!token) return { premium: false, error: "NO_TOKEN" };
+deviceCheck: async (email, deviceId) => {
 
-    
-    const res = await fetch(`${API_URL}/api/device/check`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({ deviceId })
-    });
+  const res = await fetch(`${API_URL}/api/device/check`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      email,
+      deviceId
+    })
+  });
 
-    return await res.json();
-  }
+  return await res.json();
+}
 };
 // =========================
 // UI
