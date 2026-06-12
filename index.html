@@ -924,11 +924,25 @@ async function saveEmail() {
   localStorage.setItem("email", email);
   AppState.email = email;
 
+    const res = await fetch(`${API_URL}/api/auth/session`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ email })
+  });
+
+  const data = await res.json();
+
+  localStorage.setItem("token", data.token);
+  AppState.token = data.token;
+
  await refreshPremiumState();
 UI.renderLocks();
 renderAuthState();
 
 console.log("USER:", AppState.email);
+ console.log("TOKEN:", AppState.token); 
 console.log("PREMIUM:", AppState.premium);
   
 }
