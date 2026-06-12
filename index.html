@@ -838,7 +838,7 @@ console.log(JSON.stringify(deviceData));
     // =========================
     // PREMIUM CHECK (SOURCE OF TRUTH)
     // =========================
-    const premiumData = await API.checkPremium(AppState.email);
+   const premiumData = await API.checkPremium(AppState.token);
 
     console.log("PREMIUM RAW:", JSON.stringify(premiumData));
     console.log("PREMIUM TYPE:", typeof premiumData.premium);
@@ -921,30 +921,46 @@ async function saveEmail() {
     return;
   }
 
-  localStorage.setItem("email", email);
-  AppState.email = email;
-
+  try {
     const res = await fetch(`${API_URL}/api/auth/session`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({ email })
-  });
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email })
+    });
 
-  const data = await res.json();
+    const data = await res.json();
 
-  localStorage.setItem("token", data.token);
-  AppState.token = data.token;
+    if (!data.token) {
+      alert("Auth failed");
+      return;
+    }
 
- await refreshPremiumState();
-UI.renderLocks();
-renderAuthState();
+    // =========================
+    // SAVE STATE (ОДИН ИСТОЧНИК ПРАВДЫ)
+    // =========================
+    localStorage.setItem("email", email);
+    localStorage.setItem("token", data.token);
 
-console.log("USER:", AppState.email);
- console.log("TOKEN:", AppState.token); 
-console.log("PREMIUM:", AppState.premium);
-  
+    AppState.email = email;
+    AppState.token = data.token;
+   
+
+    // =========================
+    // UPDATE UI
+    // =========================
+    await refreshPremiumState();
+    renderAuthState();
+
+    console.log("USER:", AppState.email);
+    console.log("TOKEN:", AppState.token);
+    console.log("PREMIUM:", AppState.premium);
+
+  } catch (err) {
+    console.error("saveEmail error:", err);
+    alert("Server error");
+  }
 }
 
   function showDeviceLimitWarning() {
