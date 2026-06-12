@@ -390,7 +390,7 @@
             ✅ "Write a short Instagram post about a marketing strategy for a small coffee shop."
           </li>
           <li>
-            ✍�� <strong>How to ask good prompts</strong> — Use context and format. Always clarify: what, for whom, in
+            ✍️ <strong>How to ask good prompts</strong> — Use context and format. Always clarify: what, for whom, in
             which style. <br>
             Example: "Create 3 name ideas for a travel YouTube channel in a fun style."
           </li>
@@ -600,7 +600,7 @@
           <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
             <path
               d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5zm5 5.5A4.5 4.5 0 1 0 16.5 12 4.5 4.5 0 0 0 12 7.5zm6.5-1.3a1.2 1.2 0 1 0 1.2 1.2 1.2 1.2 0 0 0-1.2-1.2z" />
-            </svg>
+          </svg>
         </a>
 
         <!-- Copy -->
@@ -664,12 +664,9 @@ const API = {
   checkPremium: async (token) => {
     if (!token) return { premium: false, error: "NO_TOKEN" };
 
-    const deviceId = localStorage.getItem("device_id");
-
     const res = await fetch(`${API_URL}/api/premium/check`, {
       headers: {
-        "Authorization": `Bearer ${token}`,
-        "x-device-id": deviceId || "unknown"
+        "Authorization": `Bearer ${token}`
       }
     });
 
@@ -841,7 +838,7 @@ console.log(JSON.stringify(deviceData));
     // =========================
     // PREMIUM CHECK (SOURCE OF TRUTH)
     // =========================
-    const premiumData = await API.checkPremium(AppState.token);
+    const premiumData = await API.checkPremium(AppState.email);
 
     console.log("PREMIUM RAW:", JSON.stringify(premiumData));
     console.log("PREMIUM TYPE:", typeof premiumData.premium);
@@ -1002,149 +999,537 @@ console.log("Telegram fallback:", data);
 window.location.href = "#pricing";
 
   } catch (err) {
-    console.error("Telegram error:", err);
+    console.error(err);
     window.location.href = "#pricing";
   }
 }
 
 // =========================
-// PREMIUM BUTTON
+// BUY PREMIUM
 // =========================
-function buyPremium() {
-  if (!AppState.email) {
-    alert("Please enter your email first");
+let isBuying = false;
+
+window.buyPremium = async function () {
+  const email = AppState.email?.trim().toLowerCase();
+
+  if (!email) {
+    alert("Please login first");
     return;
   }
 
-  window.location.href = "https://buy.polar.sh/polar_cl_KAQ2nzn15fhbw9U0W8Hxjng6mlnK6vHjRcot80Rhmo9";
-}
+  if (isBuying) return;
+  isBuying = true;
 
-// =========================
-// LIKES
-// =========================
+  try {
+    const res = await fetch(`${API_URL}/api/polar/create-checkout`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({ email })
+    });
+
+    const data = await res.json();
+
+    if (data.url) {
+      window.open(data.url, "_blank", "noopener,noreferrer");
+    } else {
+      alert("Checkout error");
+    }
+
+  } catch (err) {
+    console.error(err);
+    alert("Payment failed");
+
+  } finally {
+    isBuying = false;
+  }
+};
+    
+    document.addEventListener("DOMContentLoaded", async () => {
+
+      // =========================
+      // VIEWER
+      // =========================
+      const viewer = document.getElementById("workflow-viewer");
+      if (!viewer) return;
+
+      viewer.addEventListener("click", (e) => {
+        if (e.target === viewer) {
+          viewer.style.display = "none";
+        }
+      });
+
+      // =========================
+      // USER ID (FIXED)
+      // =========================
+      let userId = localStorage.getItem("user_id");
+
+      if (userId) {
+        AppState.userId = userId;
+      } else {
+        console.log("No user yet (waiting for login)");
+        AppState.userId = null;
+      }
+
+
+      function refreshViewerIfOpen() {
+        const viewer = document.getElementById("workflow-viewer");
+
+        if (viewer && viewer.style.display === "flex") {
+          const content = viewer.querySelector(".viewer-content");
+          const key = content?.dataset?.key;
+
+          if (key && typeof openViewer === "function") {
+            openViewer("Workflow", AppState.workflows[key], key, "workflow");
+          }
+        }
+      }
+
+
+      // =========================
+      // WORKFLOW INFO
+      // =========================
+      function getWorkflowInfo(key) {
+        const data = {
+          youtube: {
+            title: "YouTube Growth Workflow",
+            desc: "Create viral YouTube videos using AI tools",
+            result: "Ready-to-publish viral video",
+            tools: "AI Idea Generator • Script Writer • Visual Designer • Video Producer",
+            time: "30–60 min",
+            difficulty: "Medium"
+          },
+          marketing: {
+            title: "AI Marketing Workflow",
+            desc: "Launch and optimize ads with AI",
+            result: "Running ad campaign with conversions",
+            tools: "Audience Analyst • Copywriting AI • Ad Creative Engine • Campaign Optimizer",
+            time: "20–40 min",
+            difficulty: "Medium"
+          },
+          website: {
+            title: "Website Creation Workflow",
+            desc: "Build and launch a website",
+            result: "Live website online",
+            tools: "Product Strategist • UX Builder • Code Generator • Deployment Engine",
+            time: "1–2 hours",
+            difficulty: "Medium"
+          },
+          design: {
+            title: "AI Design Workflow",
+            desc: "Create visuals and branding",
+            result: "Finished design assets",
+            tools: "Creative Director AI • Visual Generator • Brand Designer • Asset Producer",
+            time: "20–40 min",
+            difficulty: "Easy"
+          },
+          learning: {
+            title: "AI Learning Workflow",
+            desc: "Learn faster with AI",
+            result: "Clear understanding of topic",
+            tools: "Learning Strategist • Knowledge Explainer • Tutor AI • Memory Builder",
+            time: "15–30 min",
+            difficulty: "Easy"
+          },
+          automation: {
+            title: "Automation Workflow",
+            desc: "Automate repetitive tasks",
+            result: "Fully automated process",
+            tools: "Workflow Architect • Automation Builder • API Connector • System Optimizer",
+            time: "30–90 min",
+            difficulty: "Hard"
+          },
+          notebook: {
+            title: "AI Notebook Workflow",
+            desc: "Analyze documents and data",
+            result: "Structured insights",
+            tools: "Data Analyst AI • Insight Extractor • Summary Engine • Knowledge Organizer",
+            time: "10–20 min",
+            difficulty: "Easy"
+          },
+          writing: {
+            title: "AI Writing Workflow",
+            desc: "Create high-quality text",
+            result: "Polished content ready to use",
+            tools: "Content Strategist • Writer AI • Editor Engine • Tone Optimizer",
+            time: "10–25 min",
+            difficulty: "Easy"
+          },
+          research: {
+            title: "AI Research Workflow",
+            desc: "Analyze and compare information",
+            result: "Clear structured report",
+            tools: "Research Analyst • Data Gatherer • Comparison Engine • Report Generator",
+            time: "20–45 min",
+            difficulty: "Medium"
+          }
+        };
+
+        return data[key] || {
+          title: "Workflow",
+          desc: "AI process",
+          result: "Result",
+          tools: "AI System",
+          time: "—",
+          difficulty: "—"
+        };
+      }
+
+      // =========================
+      // VIEWER RENDER
+      // =========================
+
+      function openViewer(title, content, key, type) {
+
+        if (!content) return;
+
+        const viewer = document.getElementById("workflow-viewer");
+        const premium = AppState.premium;
+
+        const lines = content.split("\n");
+        const info = getWorkflowInfo(key);
+
+        let html = `<div class="viewer-content" data-key="${key}"><h3>${title}</h3>`;
+
+        if (type === "workflow") {
+
+          html += `
+      <div class="workflow-desc">${info.desc}</div>
+      <div class="workflow-result">🎯 ${info.result}</div>
+      <div class="workflow-tools">🛠 ${info.tools}</div>
+      <div class="workflow-meta">
+        ⏱ ${info.time} <br>
+        📊 ${info.difficulty}
+      </div>
+
+    `;
+
+          lines.forEach((line, index) => {
+            html += premium
+              ? `<div class="step">${line}</div>`
+              : index === 0
+                ? `<div class="step">${line}</div>`
+                : `<div class="step step-locked">🔒 Premium step</div>`;
+          });
+
+        } else {
+
+          html += `<div class="simple-content">${content}</div>`;
+        }
+
+        html += `</div>`;
+
+        viewer.innerHTML = html;
+        viewer.style.display = "flex";
+      }
+
+      // =========================
+      // DATA (НЕ ТРОГАЛ)
+      // =========================
+      const workflows = {
+        youtube: `💡 Generate a viral YouTube video idea in [your niche] with target audience and hook
+✍️ Write a full engaging script with intro, main points, and strong call-to-action
+🎨 Create visuals using MidJourney (thumbnails + scene ideas with prompts)
+🎬 Edit video using Runway or CapCut (cuts, captions, effects)
+🚀 Publish with SEO title, description, and tags optimized for YouTube algorithm`,
+
+        marketing: `🎯 Define your target audience (age, needs, pain points)
+✍️ Write high-converting copy (headline, offer, CTA)
+📢 Create ad creatives (images/videos with AI tools)
+🚀 Launch campaign (Meta Ads / Google Ads setup)
+📊 Analyze performance and optimize results`,
+
+        website: `🧠 Define website goal (landing page, SaaS, portfolio)
+🧱 Generate structure (sections, layout, UX flow)
+💻 Write clean HTML/CSS or use AI builder
+🎨 Improve UI design (colors, spacing, typography)
+🚀 Deploy website (Vercel / Netlify / hosting)`,
+
+        design: `💡 Generate design concept (style, mood, references)
+🎨 Create visuals using MidJourney or Leonardo AI
+🛠 Refine design in Figma or Photoshop
+✨ Add details (colors, shadows, composition)
+📦 Export final assets (web, social, branding)`,
+
+        learning: `🔍 Research topic using AI (summarize key ideas)
+📘 Generate structured learning plan (steps, resources)
+🧠 Learn with explanations and examples
+📝 Create notes and summaries
+🔁 Review and practice regularly`,
+
+        automation: `⚙️ Define task to automate (content, emails, workflows)
+🔗 Choose tools (Zapier, Make, APIs, AI tools)
+🧱 Build automation flow step-by-step
+🧪 Test workflow and fix errors
+🚀 Run automation and monitor results`,
+
+        notebook: `📤 Upload document or data
+❓ Ask specific questions about content
+📊 Analyze information (summaries, insights)
+🧠 Extract key points and patterns
+📄 Generate final summary or report`,
+
+        writing: `✍️ Generate first draft (topic + goal + audience)
+🧠 Improve clarity and structure
+✨ Enhance tone and style (professional, casual, etc.)
+📝 Edit grammar and readability
+🚀 Finalize polished version`,
+
+        research: `🔍 Search information from multiple sources
+⚖️ Compare perspectives and data
+🧠 Analyze findings and identify key insights
+📊 Structure results clearly
+📄 Generate final report or conclusion`
+      };
+
+      const categories = {
+        text: `✍️ Generate high-quality content (posts, blogs, articles)
+🧠 Write engaging social media posts with hooks and CTAs
+🎬 Create scripts for videos, ads, or storytelling
+🔍 Optimize text for SEO (keywords, structure, readability)`,
+
+        image: `🎨 Generate images using AI (MidJourney, DALL·E)
+🖌 Design graphics for social media, branding, ads
+🖼 Create thumbnails that attract clicks and attention
+✨ Enhance and edit images with AI tools`,
+
+        video: `🎬 Generate videos using AI tools (Runway, Pika)
+✂️ Edit clips with cuts, subtitles, effects
+📱 Create short-form content (Reels, TikTok, Shorts)
+🚀 Publish and optimize videos for engagement`,
+
+        voice: `🎙 Convert text to natural speech (AI voice tools)
+🗣 Generate realistic AI voices for content
+🎧 Edit audio (noise removal, clarity, effects)
+📢 Create voiceovers for videos and ads`,
+
+        automation: `⚙️ Connect tools using Zapier, Make, APIs
+🔗 Build automated workflows step-by-step
+🤖 Use AI to automate repetitive tasks
+🚀 Save time by creating smart systems`,
+
+        coding: `💻 Generate code using AI (HTML, JS, Python)
+🐞 Debug and fix errors in your code
+🧠 Explain code logic and improve structure
+🚀 Deploy and optimize your project`
+      };
+      const usecases = {
+        business: `📊 Automate business processes (emails, workflows, tasks)
+📈 Analyze data and generate insights for decision making
+🤖 Use AI to reduce manual work and save time
+🚀 Scale your business with smart AI systems`,
+
+        marketing: `🎯 Create high-converting ads (copy + visuals)
+🧠 Build marketing funnels (lead → conversion)
+📢 Generate content for campaigns (emails, posts, creatives)
+🚀 Launch and optimize campaigns using AI insights`,
+
+        content: `💡 Generate content ideas for social media and YouTube
+✍️ Create posts, scripts, and captions with AI
+🎨 Design visuals and thumbnails for content
+🚀 Publish and grow audience with consistent content`,
+
+        dev: `💻 Write code faster using AI assistance
+🐞 Debug errors and fix issues efficiently
+🧠 Understand and improve code logic
+🚀 Build and launch apps or websites`
+      };
+
+      // =========================
+      // EVENTS
+      // =========================
+      document.querySelectorAll(".open-workflow").forEach(btn => {
+        const card = btn.closest(".tool-card");
+
+        btn.addEventListener("click", (e) => {
+          e.stopPropagation();
+
+          const key = btn.dataset.workflow;
+          openViewer("Workflow", workflows[key], key, "workflow");
+        });
+      });
+
+      document.querySelectorAll(".category-card").forEach(card => {
+        card.addEventListener("click", () => {
+          openViewer("AI Category", categories[card.dataset.category], card.dataset.category, "category");
+        });
+      });
+
+      document.querySelectorAll(".case-card").forEach(card => {
+        card.addEventListener("click", () => {
+          openViewer("Use Case", usecases[card.dataset.usecase], card.dataset.usecase, "usecase");
+        });
+      });
+
+      // =====================
+      // WORKFLOW TITLES
+      // =====================
+      const workflowTitles = {
+        youtube: "YouTube Video Creation",
+        marketing: "AI Marketing",
+        website: "Website Development",
+        design: "AI Design",
+        learning: "AI Learning",
+        automation: "Automation Systems",
+        notebook: "Data Analysis",
+        writing: "AI Writing",
+        research: "AI Research"
+      };
+
+
+      (function () {
+
+        const url = encodeURIComponent(window.location.href);
+        const text = encodeURIComponent("Check out AI Navigator 🚀");
+
+        const fb = document.getElementById("share-fb");
+        const tw = document.getElementById("share-tw");
+        const tg = document.getElementById("share-tg");
+
+        if (fb) fb.href = `https://www.facebook.com/sharer/sharer.php?u=${url}`;
+        if (tw) tw.href = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
+        if (tg) tg.href = `https://t.me/share/url?url=${url}&text=${text}`;
+
+      })();
+
+      // =====================
+      // COPY LINK
+      // =====================
+
+      const copyBtn = document.getElementById("copy-btn");
+
+      if (copyBtn) {
+        copyBtn.addEventListener("click", async () => {
+          try {
+            await navigator.clipboard.writeText(window.location.origin + window.location.pathname);
+
+            showToast("Link copied!");
+          } catch (e) {
+            showToast("Copy failed");
+          }
+        });
+      }
+
+      function showToast(message) {
+        const toast = document.createElement("div");
+        toast.textContent = message;
+
+        toast.style.position = "fixed";
+        toast.style.bottom = "20px";
+        toast.style.left = "50%";
+        toast.style.transform = "translateX(-50%)";
+        toast.style.background = "#111";
+        toast.style.color = "#fff";
+        toast.style.padding = "10px 16px";
+        toast.style.borderRadius = "8px";
+        toast.style.fontSize = "14px";
+        toast.style.zIndex = "9999";
+        toast.style.opacity = "0.9";
+
+        document.body.appendChild(toast);
+
+        setTimeout(() => {
+          toast.remove();
+        }, 1500);
+      }
+
+ const likeBtn = document.getElementById("like-btn");
+const likeCount = document.getElementById("like-count");
+
 async function loadLikes() {
   try {
     const res = await fetch(`${API_URL}/api/likes`);
     const data = await res.json();
-    document.getElementById("like-count").textContent = data.likes;
-  } catch (err) {
-    console.error("Likes error:", err);
+    likeCount.textContent = data.likes || 0;
+  } catch (e) {
+    likeCount.textContent = "0";
   }
 }
 
-async function addLike() {
-  if (!AppState.email) {
-    alert("Please enter your email first");
-    return;
-  }
+if (likeBtn && likeCount) {
+  loadLikes();
 
-  const deviceId = localStorage.getItem("device_id") || "unknown";
+  likeBtn.addEventListener("click", async () => {
+    try {
+      const res = await fetch(`${API_URL}/api/likes`, {
+        method: "POST"
+      });
 
-  try {
-    const res = await fetch(`${API_URL}/api/likes`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email: AppState.email, deviceId })
-    });
-
-    const data = await res.json();
-    document.getElementById("like-count").textContent = data.likes;
-  } catch (err) {
-    console.error("Like error:", err);
-  }
+      const data = await res.json();
+      likeCount.textContent = data.likes || 0;
+    } catch (e) {
+      showToast("Like failed");
+    }
+  });
 }
 
-document.getElementById("like-btn").addEventListener("click", addLike);
 
+      // =========================
+      // MOBILE MENU
+      // =========================
+      const toggle = document.querySelector(".menu-toggle");
+      const nav = document.querySelector("nav");
+
+      if (toggle && nav) {
+        toggle.addEventListener("click", () => {
+          nav.classList.toggle("active");
+        });
+
+        nav.querySelectorAll("a").forEach(link => {
+          link.addEventListener("click", () => {
+            nav.classList.remove("active");
+          });
+        });
+      }
+
+      // =========================
+// EMAIL ENTER KEY
 // =========================
-// WORKFLOWS & CATEGORIES
-// =========================
-const workflowsData = {
-  youtube: { title: "YouTube Creator", steps: ["Research topic", "Write script", "Generate images", "Create video", "Optimize SEO"] },
-  marketing: { title: "Marketing", steps: ["Define audience", "Create copy", "Design graphics", "Schedule posts", "Analyze metrics"] },
-  website: { title: "Website Builder", steps: ["Plan structure", "Generate copy", "Design layout", "Setup hosting", "Deploy site"] },
-  design: { title: "Design AI", steps: ["Concept ideation", "Generate variations", "Refine visuals", "Export assets", "Document guidelines"] },
-  learning: { title: "Learning AI", steps: ["Select topic", "Research sources", "Organize notes", "Create summaries", "Review concepts"] },
-  automation: { title: "Automation", steps: ["Identify tasks", "Map workflows", "Setup integrations", "Test automation", "Monitor performance"] },
-  notebook: { title: "NotebookLM", steps: ["Upload documents", "Ask questions", "Generate insights", "Create summaries", "Export notes"] },
-  writing: { title: "AI Writing", steps: ["Define topic", "Create outline", "Generate draft", "Edit content", "Finalize post"] },
-  research: { title: "AI Research", steps: ["Define research question", "Gather sources", "Analyze data", "Synthesize findings", "Write conclusion"] }
-};
+const emailInput = document.getElementById("email-input");
 
-const categoriesData = {
-  text: ["ChatGPT", "Jasper", "Copy.ai", "Grammarly", "Notion AI"],
-  image: ["MidJourney", "DALL-E", "Stable Diffusion", "Canva", "Adobe Firefly"],
-  video: ["Runway", "Synthesia", "HeyGen", "Opus Clip", "Adobe Premiere"],
-  voice: ["ElevenLabs", "Descript", "Murf", "Google Cloud TTS", "Speechify"],
-  automation: ["Zapier", "Make", "IFTTT", "Pabbly", "Microsoft Power Automate"],
-  coding: ["GitHub Copilot", "ChatGPT", "Claude", "Tabnine", "Amazon CodeWhisperer"]
-};
-
-const useCasesData = {
-  business: ["Automate workflows", "Analyze data", "Generate reports", "Optimize operations", "Forecast trends"],
-  marketing: ["Write ad copy", "Create visuals", "Plan campaigns", "Generate leads", "Analyze performance"],
-  content: ["Generate scripts", "Create thumbnails", "Edit videos", "Write posts", "Design graphics"],
-  dev: ["Write code", "Debug issues", "Optimize performance", "Generate documentation", "Test applications"]
-};
-
-// Event listeners for categories
-document.querySelectorAll(".category-card").forEach(card => {
-  card.addEventListener("click", function() {
-    const category = this.getAttribute("data-category");
-    const tools = categoriesData[category] || [];
-    alert(`${category.toUpperCase()} Tools:\n\n${tools.join("\n")}`);
-  });
-});
-
-// Event listeners for use cases
-document.querySelectorAll(".case-card").forEach(card => {
-  card.addEventListener("click", function() {
-    const usecase = this.getAttribute("data-usecase");
-    const items = useCasesData[usecase] || [];
-    alert(`${this.querySelector("h3").textContent}:\n\n${items.join("\n")}`);
-  });
-});
-
-// Event listeners for workflows
-document.querySelectorAll(".open-workflow").forEach(btn => {
-  btn.addEventListener("click", function() {
-    if (!AppState.premium) {
-      alert("This workflow is premium only. Please upgrade to access.");
-      return;
-    }
-
-    const workflow = this.getAttribute("data-workflow");
-    const data = workflowsData[workflow];
-    
-    if (data) {
-      const stepsHTML = data.steps.map((step, idx) => `${idx + 1}. ${step}`).join("\n");
-      alert(`${data.title} Workflow:\n\n${stepsHTML}`);
+if (emailInput) {
+  emailInput.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      saveEmail();
     }
   });
-});
+}
 
+
+      // =========================
+      // INIT
+      // =========================
+      await initApp();
+
+      const urlParams = new URLSearchParams(window.location.search);
+      const paymentSuccess = urlParams.get("success");
+
+    // =========================
+// STRIPE SUCCESS FLOW
 // =========================
-// SHARE
-// =========================
-const pageUrl = window.location.href;
-const pageTitle = "AI Navigator - Workflows for AI Tools";
+if (paymentSuccess === "true") {
+ await refreshPremiumAfterPayment();
 
-document.getElementById("share-fb").href = `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(pageUrl)}`;
-document.getElementById("share-tw").href = `https://twitter.com/intent/tweet?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(pageTitle)}`;
-document.getElementById("share-ig").href = `https://instagram.com`;
-document.getElementById("share-tg").href = `https://t.me/share/url?url=${encodeURIComponent(pageUrl)}&text=${encodeURIComponent(pageTitle)}`;
+  // UI эффект (скролл + fade)
+  setTimeout(() => {
+    const el = document.getElementById("workflows");
 
-document.getElementById("copy-btn").addEventListener("click", () => {
-  navigator.clipboard.writeText(pageUrl);
-  alert("Link copied!");
-});
+    if (el) {
+      el.style.transition = "opacity 0.4s";
+      el.style.opacity = "0";
 
-// =========================
-// INIT
-// =========================
-loadLikes();
-initApp();
+      el.scrollIntoView({ behavior: "smooth" });
 
+      setTimeout(() => {
+        el.style.opacity = "1";
+      }, 400);
+    }
+  }, 500);
+}
+
+    }); 
   </script>
 
 </body>
