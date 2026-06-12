@@ -827,7 +827,9 @@ async function refreshPremiumState() {
     // =========================
     const deviceData = await API.deviceCheck(AppState.email, deviceId);
 
-    console.log("DEVICE CHECK:", deviceData);
+    console.log("DEVICE CHECK FULL:");
+console.log(deviceData);
+console.log(JSON.stringify(deviceData));
 
     // ❗ НЕ убиваем premium, только помечаем блокировку
    AppState.deviceBlocked = !deviceData.allowed;
