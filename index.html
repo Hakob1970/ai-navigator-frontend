@@ -890,26 +890,22 @@ console.log("PREMIUM VALUE:", premiumData.premium);
 // INIT APP
 // =========================
 async function initApp() {
+  if (appInitialized) return;
+  appInitialized = true;
+
   const savedEmail = localStorage.getItem("email");
   const email = savedEmail ? savedEmail.trim().toLowerCase() : null;
 
   if (!email) {
     document.getElementById("auth-box").style.display = "block";
-    AppState.email = null;
-    AppState.premium = false;
-    UI.renderLocks();
     return;
   }
 
   AppState.email = email;
-  AppState.premium = false; 
+  AppState.token = localStorage.getItem("token");
 
- await refreshPremiumState();
-UI.renderLocks();
-renderAuthState();
-
-  console.log("USER:", AppState.email);
-  console.log("PREMIUM:", AppState.premium);
+  await refreshPremiumState();
+  renderAuthState();
 }
 
 // =========================
@@ -953,8 +949,7 @@ async function saveEmail() {
     // =========================
     // UPDATE UI
     // =========================
-    await refreshPremiumState();
-    renderAuthState();
+    await initApp();
 
     console.log("USER:", AppState.email);
     console.log("TOKEN:", AppState.token);
