@@ -654,6 +654,8 @@ const AppState = {
   notifiedPremiumWarning: false
 };
 
+    let appInitialized = false;
+
    function hasPremiumAccess() {
   return AppState.premium && !AppState.deviceBlocked;
 } 
