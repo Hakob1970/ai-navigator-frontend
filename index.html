@@ -837,7 +837,8 @@ console.log(deviceData);
 console.log(JSON.stringify(deviceData));
 
     // ❗ НЕ убиваем premium, только помечаем блокировку
-   AppState.deviceBlocked = !deviceData.allowed;
+  if (deviceData.error === "NO_TOKEN") {
+  console.log("Device check skipped
 
 
     // =========================
