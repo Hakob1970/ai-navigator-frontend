@@ -1551,14 +1551,22 @@ footer {
 
 /* pricing */
 .auto-mechanic .pricing-card {
-  margin: 20px;
+  width: 100%;
+  max-width: 700px;
+  margin: 20px auto;
+
   padding: 20px;
   border-radius: 12px;
+
   background: #12172a;
   border: 1px solid #2a2f45;
+
   color: white;
+
+  text-align: center; /* 🔥 центр всего текста */
 }
 
+/* цена */
 .auto-mechanic .pricing-card .price {
   font-size: 22px;
   margin: 10px 0;
@@ -1566,21 +1574,30 @@ footer {
   font-weight: bold;
 }
 
+/* список */
 .auto-mechanic .pricing-card ul {
-  padding-left: 18px;
-  margin-bottom: 15px;
+  list-style: none;   /* убираем точки */
+  padding: 0;
+  margin: 15px 0;
 }
 
+.auto-mechanic .pricing-card li {
+  margin: 6px 0;
+}
+
+/* кнопка */
 .auto-mechanic .pricing-card button {
-  width: 100%;
-    max-width: 700px;
-  margin: 20px auto;
-  padding: 20px;
-  border-radius: 12px;
-  border: 1px solid #2a2f45;
-  color: white;
-  text-align: center;
+  width: 100%;        /* 🔥 на всю карточку */
+  padding: 14px;
+
+  border: none;
+  border-radius: 10px;
+
   background: linear-gradient(135deg, #ff7a18, #ffb347);
+  color: white;
+
   font-weight: bold;
   cursor: pointer;
+
+  margin-top: 15px;
 }
