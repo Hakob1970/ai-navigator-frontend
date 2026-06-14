@@ -11,30 +11,51 @@
 
   <div class="auto-mechanic">
 
-    <!-- простой возврат -->
-    <div style="padding:20px;">
-      <a href="index.html" style="color:#ff7a18;">← Back to AI Navigator</a>
-    </div>
+  <!-- возврат -->
+  <div style="padding:20px;">
+    <a href="index.html" style="color:#ff7a18;">← Back to AI Navigator</a>
+  </div>
 
-    <div class="container">
+  <!-- 💰 PRICING BLOCK -->
+  <div class="pricing-card">
+    <h2>🚗 Auto Mechanic Premium</h2>
 
-      <h1>🚗 Auto Mechanic AI</h1>
+    <p>Full AI diagnostics & repair guidance.</p>
 
-      <input id="car" placeholder="Car brand (e.g. BMW)" />
-      <input id="year" placeholder="Year" />
-      <input id="vin" placeholder="VIN (optional)" />
+    <div class="price">$5</div>
+<p style="color:#b6b6b6; margin-top:5px;">
+  50 AI diagnostics (attempts)
+</p>
 
-      <textarea id="problem" placeholder="Describe the problem..."></textarea>
+    <ul>
+      <li>✔ Full AI diagnosis</li>
+      <li>✔ Repair instructions</li>
+      <li>✔ VIN analysis</li>
+      <li>✔ Priority responses</li>
+    </ul>
 
-      <button onclick="sendProblem()">Analyze Problem</button>
+    <button onclick="goPremium()">Get Premium</button>
+  </div>
 
-      <div id="result"></div>
+  <!-- основной контент -->
+  <div class="auto-mechanic-inner">
 
-    </div>
+    <h1>🚗 Auto Mechanic AI</h1>
+
+    <input id="car" placeholder="Car brand (e.g. BMW)" />
+    <input id="year" placeholder="Year" />
+    <input id="vin" placeholder="VIN (optional)" />
+
+    <textarea id="problem" placeholder="Describe the problem..."></textarea>
+
+    <button onclick="sendProblem()">Analyze Problem</button>
+
+    <div id="result"></div>
 
   </div>
 
-  <script src="auto-mechanic.js"></script>
+</div>
 
+<script src="auto-mechanic.js"></script>
 </body>
 </html>
