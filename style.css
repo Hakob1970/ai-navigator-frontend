@@ -1504,6 +1504,59 @@ footer {
 .dashboard-btn:hover {
   transform: scale(1.05);
 }
+/* ===== AUTO MECHANIC FIX ===== */
+
+.container {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 20px;
+  color: white;
+}
+
+h1 {
+  color: white;
+  margin-bottom: 20px;
+}
+
+input, textarea {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 12px;
+  border-radius: 10px;
+  border: 1px solid #2a2f45;
+  background: #0f1322;
+  color: white;
+  outline: none;
+}
+
+textarea {
+  min-height: 120px;
+  resize: vertical;
+}
+
+button {
+  padding: 12px 16px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ff7a18, #ffb347);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  transform: scale(1.03);
+}
+
+#result {
+  margin-top: 20px;
+  padding: 15px;
+  background: #12172a;
+  border-radius: 10px;
+  border: 1px solid #2a2f45;
+  white-space: pre-line;
+}
+
 @media (max-width: 768px) {
 
   .dashboard {
