@@ -1543,3 +1543,41 @@ footer {
   background: #12172a;
   border-radius: 10px;
 }
+.auto-mechanic-inner {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* pricing */
+.auto-mechanic .pricing-card {
+  margin: 20px;
+  padding: 20px;
+  border-radius: 12px;
+  background: #12172a;
+  border: 1px solid #2a2f45;
+  color: white;
+}
+
+.auto-mechanic .pricing-card .price {
+  font-size: 22px;
+  margin: 10px 0;
+  color: #ffb347;
+  font-weight: bold;
+}
+
+.auto-mechanic .pricing-card ul {
+  padding-left: 18px;
+  margin-bottom: 15px;
+}
+
+.auto-mechanic .pricing-card button {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #ff7a18, #ffb347);
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+}
