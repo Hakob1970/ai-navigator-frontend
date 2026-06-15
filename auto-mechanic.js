@@ -6,6 +6,8 @@ async function sendProblem() {
 
   const resultBox = document.getElementById("result");
 
+  const usageBox = document.getElementById("usageInfo");
+
   resultBox.innerText = "Analyzing...";
 
   try {
@@ -27,6 +29,22 @@ async function sendProblem() {
     );
 
     const data = await res.json();
+
+    if (data.remaining !== undefined) {
+
+  const date = new Date(Number(data.resetAt));
+
+  usageBox.innerHTML = `
+    🚗 Remaining: <b>${data.remaining}</b> / 50 <br>
+    🔄 Reset: ${date.toLocaleDateString()}
+  `;
+
+  // блокировка кнопки если 0
+  if (data.remaining <= 0) {
+    document.querySelector("button").disabled = true;
+    document.querySelector("button").innerText = "Limit reached";
+  }
+}
 
     resultBox.innerText =
       data.result || "No response from AI";
