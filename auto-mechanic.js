@@ -3,30 +3,30 @@ async function sendProblem() {
   const year = document.getElementById("year").value;
   const vin = document.getElementById("vin").value;
   const problem = document.getElementById("problem").value;
-
+  const btn = document.getElementById("analyzeBtn");
   const resultBox = document.getElementById("result");
+ const usageBox = document.getElementById("usageInfo");
 
-  const usageBox = document.getElementById("usageInfo");
+resultBox.innerText = "Analyzing...";
 
-  resultBox.innerText = "Analyzing...";
+const token = localStorage.getItem("token");
 
-  try {
-
-    const res = await fetch(
-      "https://ai-navigator-backend-mcb3.onrender.com/api/auto-mechanic",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          car,
-          year,
-          vin,
-          problem
-        })
-      }
-    );
+const res = await fetch(
+  "https://ai-navigator-backend-mcb3.onrender.com/api/auto-mechanic",
+  {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify({
+      car: car.value,
+      year: year.value,
+      vin: vin.value,
+      problem: problem.value
+    })
+  }
+);
 
     const data = await res.json();
 
@@ -41,8 +41,10 @@ async function sendProblem() {
 
   // блокировка кнопки если 0
   if (data.remaining <= 0) {
-    document.querySelector("button").disabled = true;
-    document.querySelector("button").innerText = "Limit reached";
+   
+
+btn.disabled = true;
+btn.innerText = "Limit reached";
   }
 }
 
