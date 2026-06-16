@@ -678,13 +678,6 @@
   Support
 </a>
 
-
-      <!-- LIKE -->
-      <div class="footer-like">
-        <span id="like-btn" class="like-btn">❤️</span>
-        <span id="like-count">0</span>
-      </div>
-
       <p class="footer-copy">© 2026 AI Navigator. All rights reserved.</p>
 
     </div>
@@ -1505,37 +1498,6 @@ window.buyPremium = async function () {
           toast.remove();
         }, 1500);
       }
-
- const likeBtn = document.getElementById("like-btn");
-const likeCount = document.getElementById("like-count");
-
-async function loadLikes() {
-  try {
-    const res = await fetch(`${API_URL}/api/likes`);
-    const data = await res.json();
-    likeCount.textContent = data.likes || 0;
-  } catch (e) {
-    likeCount.textContent = "0";
-  }
-}
-
-if (likeBtn && likeCount) {
-  loadLikes();
-
-  likeBtn.addEventListener("click", async () => {
-    try {
-      const res = await fetch(`${API_URL}/api/likes`, {
-        method: "POST"
-      });
-
-      const data = await res.json();
-      likeCount.textContent = data.likes || 0;
-    } catch (e) {
-      showToast("Like failed");
-    }
-  });
-}
-
 
       // =========================
       // MOBILE MENU
