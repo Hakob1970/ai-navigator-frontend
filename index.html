@@ -709,16 +709,12 @@ const AppState = {
 // =========================
 const API = {
 
-  // =========================
-  // PREMIUM CHECK
-  // =========================
   checkPremium: async (token) => {
     if (!token) return { premium: false, error: "NO_TOKEN" };
 
     const deviceId = localStorage.getItem("device_id");
 
     const res = await fetch(`${API_URL}/api/premium/check`, {
-      method: "GET",
       headers: {
         "Authorization": `Bearer ${token}`,
         "x-device-id": deviceId
@@ -728,19 +724,14 @@ const API = {
     return await res.json();
   },
 
-
-  // =========================
-  // DEVICE CHECK
-  // =========================
   deviceCheck: async (token, deviceId) => {
-
-    if (!token) return { allowed: false, error: "NO_TOKEN" };
+    if (!token) return { error: "NO_TOKEN" };
 
     const res = await fetch(`${API_URL}/api/device/check`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+        "Authorization": `Bearer ${token}`   // 🔥 ВОТ ЭТО БЫЛО ПРОПУЩЕНО
       },
       body: JSON.stringify({
         deviceId
