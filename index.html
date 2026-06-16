@@ -708,36 +708,47 @@ const AppState = {
 // API
 // =========================
 const API = {
-checkPremium: async (token) => {
-  if (!token) return { premium: false, error: "NO_TOKEN" };
 
-  const deviceId = localStorage.getItem("device_id");
+  // =========================
+  // PREMIUM CHECK
+  // =========================
+  checkPremium: async (token) => {
+    if (!token) return { premium: false, error: "NO_TOKEN" };
 
-  const res = await fetch(`${API_URL}/api/premium/check`, {
-    headers: {
-      "Authorization": `Bearer ${token}`,
-      "x-device-id": deviceId
-    }
-  });
+    const deviceId = localStorage.getItem("device_id");
 
-  return await res.json();
-},
+    const res = await fetch(`${API_URL}/api/premium/check`, {
+      method: "GET",
+      headers: {
+        "Authorization": `Bearer ${token}`,
+        "x-device-id": deviceId
+      }
+    });
 
-deviceCheck: async (email, deviceId) => {
+    return await res.json();
+  },
 
-  const res = await fetch(`${API_URL}/api/device/check`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
-    body: JSON.stringify({
-      email,
-      deviceId
-    })
-  });
 
-  return await res.json();
-}
+  // =========================
+  // DEVICE CHECK
+  // =========================
+  deviceCheck: async (token, deviceId) => {
+
+    if (!token) return { allowed: false, error: "NO_TOKEN" };
+
+    const res = await fetch(`${API_URL}/api/device/check`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+      },
+      body: JSON.stringify({
+        deviceId
+      })
+    });
+
+    return await res.json();
+  }
 };
 // =========================
 // UI
