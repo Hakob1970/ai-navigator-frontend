@@ -16,7 +16,27 @@
     <a href="index.html" style="color:#ff7a18;">← Back to AI Navigator</a>
   </div>
 
-  <!-- 💰 PRICING BLOCK -->
+
+  <!-- MAIN -->
+  <div class="auto-mechanic-inner">
+
+    <h1>🚗 Auto Mechanic AI</h1>
+
+    <input id="car" placeholder="Car brand (e.g. BMW)" />
+    <input id="year" placeholder="Year" />
+    <input id="vin" placeholder="VIN (optional)" />
+
+    <textarea id="problem" placeholder="Describe the problem..."></textarea>
+
+    <button id="analyzeBtn" onclick="sendProblem()">Analyze Problem</button>
+
+    <div id="usageInfo" style="margin-top:10px; color:#ccc;"></div>
+
+    <div id="result"></div>
+
+  </div>
+
+    <!-- 💰 PRICING BLOCK -->
   <div class="pricing-card">
     <h2>🚗 Auto Mechanic Premium</h2>
 
@@ -38,24 +58,6 @@
     <button onclick="goPremium()">Get Premium</button>
   </div>
 
-  <!-- MAIN -->
-  <div class="auto-mechanic-inner">
-
-    <h1>🚗 Auto Mechanic AI</h1>
-
-    <input id="car" placeholder="Car brand (e.g. BMW)" />
-    <input id="year" placeholder="Year" />
-    <input id="vin" placeholder="VIN (optional)" />
-
-    <textarea id="problem" placeholder="Describe the problem..."></textarea>
-
-    <button id="analyzeBtn" onclick="sendProblem()">Analyze Problem</button>
-
-    <div id="usageInfo" style="margin-top:10px; color:#ccc;"></div>
-
-    <div id="result"></div>
-
-  </div>
 
 </div>
 
