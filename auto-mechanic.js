@@ -57,9 +57,21 @@ async function sendProblem() {
     // =========================
     if (data.error) {
 
-      if (data.error === "AUTO_MECHANIC_PREMIUM_REQUIRED") {
-        resultBox.innerText = "❌ Premium required";
-      }
+     if (data.error === "AUTO_MECHANIC_PREMIUM_REQUIRED") {
+
+  resultBox.innerText = "🚗 Premium required";
+
+  const box = document.querySelector(".pricing-card");
+
+  box.scrollIntoView({ behavior: "smooth" });
+
+  // 🔥 лёгкий акцент
+  box.style.boxShadow = "0 0 20px #ff7a18";
+
+  setTimeout(() => {
+    box.style.boxShadow = "none";
+  }, 1500);
+}
 
       else if (data.error === "MONTHLY_LIMIT_REACHED") {
         resultBox.innerText = "❌ Monthly limit reached";
