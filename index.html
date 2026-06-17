@@ -723,18 +723,24 @@ const API = {
     return await res.json();
   },
 
-  deviceCheck: async (token, deviceId) => {
-    const res = await fetch(`${API_URL}/api/device/check`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({ deviceId })
-    });
+deviceCheck: async () => {
 
-    return await res.json();
-  }
+  const token = localStorage.getItem("token"); // 🔥 всегда здесь
+  const deviceId = localStorage.getItem("device_id");
+
+  if (!token) return { error: "NO_TOKEN" };
+
+  const res = await fetch(`${API_URL}/api/device/check`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": `Bearer ${token}`
+    },
+    body: JSON.stringify({ deviceId })
+  });
+
+  return await res.json();
+}
 
 };
 // =========================
@@ -950,6 +956,13 @@ async function initApp() {
 
   AppState.email = email;
   AppState.token = localStorage.getItem("token");
+
+  // 🔥 если токена нет, дальше не идём
+  if (!AppState.token) {
+    console.log("No token yet");
+    renderAuthState();
+    return;
+  }
 
   await refreshPremiumState();
   renderAuthState();
