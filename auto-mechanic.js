@@ -20,7 +20,6 @@ async function sendProblem() {
 
   // =========================
   // REQUIRED FIELDS CHECK
-  // (VIN НЕ обязателен)
   // =========================
   if (!car || !year || !problem) {
     resultBox.innerText = "⚠️ Please fill Car, Year and Problem";
@@ -31,8 +30,10 @@ async function sendProblem() {
   // LOADING STATE
   // =========================
   btn.disabled = true;
-  btn.innerText = "Analyzing...";
+  btn.innerText = "🔧 AI Mechanic is analyzing your vehicle...";
   resultBox.innerText = "Analyzing...";
+
+  let data;
 
   try {
     const res = await fetch(
@@ -52,15 +53,17 @@ async function sendProblem() {
       }
     );
 
-    const data = await res.json();
+    data = await res.json();
 
     // =========================
     // ERROR HANDLING
     // =========================
     if (data.error) {
       resultBox.innerText = data.error;
+
       btn.disabled = false;
       btn.innerText = "Analyze Problem";
+
       return;
     }
 
@@ -68,7 +71,14 @@ async function sendProblem() {
     // USAGE INFO
     // =========================
     if (data.remaining !== undefined) {
-      usageBox.innerHTML = `🚗 Remaining: <b>${data.remaining}</b> / 50`;
+      const resetText = data.resetAt
+        ? `🔄 Reset: ${new Date(Number(data.resetAt)).toLocaleDateString()}`
+        : "";
+
+      usageBox.innerHTML = `
+        🚗 Remaining: <b>${data.remaining}</b> / 50 <br>
+        ${resetText}
+      `;
     }
 
     // =========================
@@ -82,8 +92,10 @@ async function sendProblem() {
   }
 
   // =========================
-  // RESET BUTTON
+  // RESET BUTTON (SAFE)
   // =========================
-  btn.disabled = false;
-  btn.innerText = "Analyze Problem";
+  if (!data?.error && (data?.remaining === undefined || data?.remaining > 0)) {
+    btn.disabled = false;
+    btn.innerText = "Analyze Problem";
+  }
 }
