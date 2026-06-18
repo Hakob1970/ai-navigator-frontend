@@ -8,6 +8,8 @@ async function sendProblem() {
   const resultBox = document.getElementById("result");
   const usageBox = document.getElementById("usageInfo");
 
+  console.log("USAGE BOX ELEMENT:", usageBox);
+
   const token = localStorage.getItem("token");
 
   // =========================
@@ -54,6 +56,8 @@ async function sendProblem() {
     );
 
     data = await res.json();
+
+    console.log("API DATA:", data);
 
     // =========================
     // ERROR HANDLING
