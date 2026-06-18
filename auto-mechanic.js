@@ -70,16 +70,24 @@ async function sendProblem() {
     // =========================
     // USAGE INFO
     // =========================
-    if (data.remaining !== undefined) {
-      const resetText = data.resetAt
-        ? `🔄 Reset: ${new Date(Number(data.resetAt)).toLocaleDateString()}`
-        : "";
+  if (data.remaining !== undefined) {
 
-      usageBox.innerHTML = `
-        🚗 Remaining: <b>${data.remaining}</b> / 50 <br>
-        ${resetText}
-      `;
-    }
+  const remaining = data.remaining;
+  const resetText = data.resetAt
+    ? `🔄 Reset: ${new Date(Number(data.resetAt)).toLocaleDateString()}`
+    : "";
+
+  usageBox.innerHTML = `
+    🚗 Remaining: <b>${remaining}</b> / 50 <br>
+    ${resetText}
+  `;
+
+  // 🚨 если лимит закончился
+  if (remaining <= 0) {
+    btn.disabled = true;
+    btn.innerText = "Limit reached";
+  }
+}
 
     // =========================
     // RESULT
