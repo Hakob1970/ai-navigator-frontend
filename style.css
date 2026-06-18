@@ -1601,3 +1601,12 @@ footer {
 
   margin-top: 15px;
 }
+#usageInfo {
+  margin-top: 15px;
+  padding: 12px;
+  border-radius: 10px;
+  background: #0f1322;
+  color: #fff;
+  border: 1px solid #2a2f45;
+  font-size: 14px;
+}
