@@ -847,6 +847,7 @@ function renderAuthState() {
   // 🔥 защита от "залипшего UI"
   document.getElementById("auth-box").style.display = "block";
   document.getElementById("account-box").style.display = "none";
+  document.getElementById("email-input").value = "";  
 }
 
    function changeEmail() {
@@ -867,6 +868,7 @@ function renderAuthState() {
   // 🔥 очистка UI
   document.getElementById("auth-box").style.display = "block";
   document.getElementById("account-box").style.display = "none";
+  document.getElementById("email-input").value = "";
 } 
 
 // =========================
