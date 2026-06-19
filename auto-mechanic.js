@@ -111,3 +111,19 @@ async function sendProblem() {
     btn.innerText = "Analyze Problem";
   }
 }
+
+// =========================
+// GET PREMIUM
+// =========================
+function goPremium() {
+
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    alert("🔐 Please login before purchasing Premium");
+    return;
+  }
+
+  // Здесь потом вставим Polar
+  alert("💳 Opening Premium purchase...");
+}
