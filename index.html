@@ -1022,7 +1022,11 @@ async function saveEmail() {
     // =========================
     // UPDATE UI
     // =========================
-    await initApp();
+   // =========================
+// UPDATE UI AFTER LOGIN
+// =========================
+renderAuthState();
+UI.renderLocks();
 
     console.log("USER:", AppState.email);
     console.log("TOKEN:", AppState.token);
