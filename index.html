@@ -831,6 +831,7 @@ function renderAuthState() {
     
    function logout() {
   localStorage.removeItem("email");
+  localStorage.removeItem("token");  
 
   AppState.email = null;
   AppState.premium = false;
