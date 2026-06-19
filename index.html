@@ -843,6 +843,7 @@ function renderAuthState() {
 
    function changeEmail() {
   localStorage.removeItem("email");
+  localStorage.removeItem("token");
 
   AppState.email = null;
   AppState.premium = false;
