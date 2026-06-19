@@ -743,6 +743,12 @@ deviceCheck: async () => {
 }
 
 };
+
+       function syncUI() {
+  renderAuthState();
+  UI.renderLocks();
+} 
+
 // =========================
 // UI
 // =========================
@@ -841,8 +847,7 @@ function renderAuthState() {
   // 🔥 ВАЖНО: фикс состояния
   AppState.loggedIn = false;
 
-  renderAuthState();
-  UI.renderLocks();
+syncUI();
 
   // 🔥 защита от "залипшего UI"
   document.getElementById("auth-box").style.display = "block";
@@ -862,8 +867,7 @@ function renderAuthState() {
   // 🔥 ВАЖНО: фикс состояния
   AppState.loggedIn = false;
 
-  renderAuthState();
-  UI.renderLocks();
+syncUI();
 
   // 🔥 очистка UI
   document.getElementById("auth-box").style.display = "block";
@@ -944,7 +948,7 @@ console.log("PREMIUM VALUE:", premiumData.premium);
     // =========================
     // APPLY UI UPDATE
     // =========================
-    UI.renderLocks();
+    syncUI();
 
   } catch (e) {
     console.error("refreshPremiumState error", e);
@@ -980,7 +984,8 @@ async function initApp() {
   }
 
   await refreshPremiumState();
-  renderAuthState();
+  syncUI();
+  
 }
 
 // =========================
@@ -1028,8 +1033,7 @@ async function saveEmail() {
    // =========================
 // UPDATE UI AFTER LOGIN
 // =========================
-renderAuthState();
-UI.renderLocks();
+syncUI();
 
     console.log("USER:", AppState.email);
     console.log("TOKEN:", AppState.token);
