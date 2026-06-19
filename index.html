@@ -1019,7 +1019,8 @@ async function saveEmail() {
 
     AppState.email = email;
     AppState.token = data.token;
-   
+    
+   await refreshPremiumState();
 
     // =========================
     // UPDATE UI
