@@ -831,15 +831,22 @@ function renderAuthState() {
     
    function logout() {
   localStorage.removeItem("email");
-  localStorage.removeItem("token");  
+  localStorage.removeItem("token");
 
   AppState.email = null;
   AppState.premium = false;
   AppState.daysLeft = 0;
-  AppState.deviceBlocked = false;   
+  AppState.deviceBlocked = false;
+
+  // 🔥 ВАЖНО: фикс состояния
+  AppState.loggedIn = false;
 
   renderAuthState();
   UI.renderLocks();
+
+  // 🔥 защита от "залипшего UI"
+  document.getElementById("auth-box").style.display = "block";
+  document.getElementById("account-box").style.display = "none";
 }
 
    function changeEmail() {
@@ -849,11 +856,15 @@ function renderAuthState() {
   AppState.email = null;
   AppState.premium = false;
   AppState.daysLeft = 0;
-  AppState.deviceBlocked = false;   
+  AppState.deviceBlocked = false;
+
+  // 🔥 ВАЖНО: фикс состояния
+  AppState.loggedIn = false;
 
   renderAuthState();
   UI.renderLocks();
 
+  // 🔥 очистка UI
   document.getElementById("auth-box").style.display = "block";
   document.getElementById("account-box").style.display = "none";
 } 
