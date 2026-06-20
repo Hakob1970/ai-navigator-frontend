@@ -86,14 +86,6 @@ resultBox.innerHTML = `
     console.log("API DATA:", data);
 
     // =========================
-    // ERROR HANDLING
-    // =========================
-if (data.error) {
-  setError(btn, resultBox, data.error);
-  return;
-}
-
-    // =========================
     // USAGE INFO
     // =========================
   if (data.remaining !== undefined) {
@@ -124,11 +116,6 @@ if (data.error) {
     console.error(err);
     resultBox.innerText = "Server error. Try again.";
   }
-
-  // =========================
-  // RESET BUTTON (SAFE)
-  // =========================
-resetButton(btn);
 }
 
 // =========================
