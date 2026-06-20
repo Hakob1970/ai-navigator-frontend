@@ -1124,7 +1124,10 @@ window.buyPremium = async function () {
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ email })
+      body: JSON.stringify({
+  email,
+  module: "ai-navigator"
+})
     });
 
     const data = await res.json();
