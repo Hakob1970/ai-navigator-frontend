@@ -895,13 +895,10 @@ async function refreshPremiumState() {
       localStorage.setItem("device_id", deviceId);
     }
 
-      console.log("🚀 START DEVICE CHECK");
     // =========================
     // DEVICE CHECK
     // =========================
     const deviceData = await API.deviceCheck(AppState.email, deviceId);
-
-     console.log("✅ DEVICE CHECK DONE");
 
     console.log("DEVICE CHECK FULL:");
 console.log(deviceData);
@@ -912,13 +909,10 @@ if (deviceData.error === "NO_TOKEN") {
   console.log("Device check skipped");
 }
 
-console.log("🚀 START PREMIUM CHECK");
     // =========================
     // PREMIUM CHECK (SOURCE OF TRUTH)
     // =========================
    const premiumData = await API.checkPremium(AppState.token);
-
-     console.log("✅ PREMIUM CHECK DONE");
 
     console.log("PREMIUM RAW:", JSON.stringify(premiumData));
     console.log("PREMIUM TYPE:", typeof premiumData.premium);
