@@ -1,3 +1,19 @@
+function resetButton(btn) {
+  btn.disabled = false;
+  btn.innerText = "Analyze Problem";
+}
+
+function setLoading(btn) {
+  btn.disabled = true;
+  btn.innerText = "🔄 Running diagnostic scan...";
+}
+
+function setError(btn, box, msg) {
+  box.innerHTML = `❌ ${msg}`;
+  resetButton(btn);
+}
+
+
 async function sendProblem() {
   const car = document.getElementById("car").value.trim();
   const year = document.getElementById("year").value.trim();
@@ -11,6 +27,7 @@ async function sendProblem() {
   console.log("USAGE BOX ELEMENT:", usageBox);
 
   const token = localStorage.getItem("token");
+
 
   // =========================
   // LOGIN CHECK
@@ -31,9 +48,11 @@ async function sendProblem() {
   // =========================
   // LOADING STATE
   // =========================
-  btn.disabled = true;
-  btn.innerText = "🔧 AI Mechanic is analyzing your vehicle...";
-  resultBox.innerText = "Analyzing...";
+setLoading(btn);
+
+resultBox.innerHTML = `
+  <div class="scan-loader">🚗 Scanning...</div>
+`;
 
   let data;
 
@@ -55,6 +74,13 @@ async function sendProblem() {
       }
     );
 
+ if (!res.ok) {
+  const err = await res.json().catch(() => ({}));
+
+ setError(btn, resultBox, err.error || "Server error");
+  return;
+}
+
     data = await res.json();
 
     console.log("API DATA:", data);
@@ -62,14 +88,10 @@ async function sendProblem() {
     // =========================
     // ERROR HANDLING
     // =========================
-    if (data.error) {
-      resultBox.innerText = data.error;
-
-      btn.disabled = false;
-      btn.innerText = "Analyze Problem";
-
-      return;
-    }
+if (data.error) {
+  setError(btn, resultBox, data.error);
+  return;
+}
 
     // =========================
     // USAGE INFO
@@ -106,10 +128,7 @@ async function sendProblem() {
   // =========================
   // RESET BUTTON (SAFE)
   // =========================
-  if (!data?.error && (data?.remaining === undefined || data?.remaining > 0)) {
-    btn.disabled = false;
-    btn.innerText = "Analyze Problem";
-  }
+resetButton(btn);
 }
 
 // =========================
