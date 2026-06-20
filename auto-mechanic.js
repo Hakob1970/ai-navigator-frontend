@@ -130,24 +130,34 @@ function goPremium() {
 
 
 function formatMechanicReport(text) {
-  if (!text) return "<div class='diag-card'>No data</div>";
+  if (!text) {
+    return `<div class="diag-card error">No diagnostic data</div>`;
+  }
 
   return `
   <div class="diag-card">
+
     <div class="diag-header">
-      📊 DIAGNOSTIC REPORT
+      🚗 AI DIAGNOSTIC SCAN REPORT
+    </div>
+
+    <div class="diag-status">
+      🔍 Scan completed successfully
     </div>
 
     <div class="diag-body">
-      ${text
-        .replace(/🔍/g, "<h3>🔍 Symptom Analysis</h3>")
-        .replace(/⚠️/g, "<h3>⚠️ Possible Causes</h3>")
-        .replace(/🧪/g, "<h3>🧪 Diagnosis Steps</h3>")
-        .replace(/🛠/g, "<h3>🛠 Repair Instructions</h3>")
-        .replace(/💡/g, "<h3>💡 Advice</h3>")
-        .replace(/\n/g, "<br>")
-      }
+      <div class="section full">
+        <pre>${escapeHtml(text)}</pre>
+      </div>
     </div>
+
   </div>
   `;
+}
+
+function escapeHtml(text) {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
 }
