@@ -133,7 +133,7 @@ async function goPremium(module) {
 
   try {
     const res = await fetch(
-      "https://ai-navigator-backend-mcb3.onrender.com/api/polar/get-checkout",
+    fetch("https://ai-navigator-backend-mcb3.onrender.com/api/polar/create-checkout",
       {
         method: "POST",
         headers: {
@@ -149,8 +149,8 @@ async function goPremium(module) {
 
     const data = await res.json();
 
-    if (data.checkoutUrl) {
-      window.location.href = data.checkoutUrl;
+ if (data.url) {
+  window.location.href = data.url;
       return;
     }
 
