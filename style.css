@@ -1610,3 +1610,26 @@ footer {
   border: 1px solid #2a2f45;
   font-size: 14px;
 }
+
+.diag-card {
+  background: #0f172a;
+  color: #e5e7eb;
+  border: 1px solid #1f2937;
+  border-radius: 12px;
+  padding: 16px;
+  margin-top: 15px;
+  font-family: Arial, sans-serif;
+}
+
+.diag-header {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: #38bdf8;
+}
+
+.diag-body h3 {
+  margin-top: 12px;
+  color: #facc15;
+  font-size: 14px;
+}
