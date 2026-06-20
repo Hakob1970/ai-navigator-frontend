@@ -121,17 +121,44 @@ resultBox.innerHTML = `
 // =========================
 // GET PREMIUM
 // =========================
-function goPremium() {
-
+async function goPremium(module) {
   const token = localStorage.getItem("token");
 
   if (!token) {
-    alert("🔐 Please login before purchasing Premium");
+    alert("🔐 Please login first");
     return;
   }
 
-  // Здесь потом вставим Polar
-  alert("💳 Opening Premium purchase...");
+  const email = localStorage.getItem("email");
+
+  try {
+    const res = await fetch(
+      "https://ai-navigator-backend-mcb3.onrender.com/api/polar/get-checkout",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          email,
+          module
+        })
+      }
+    );
+
+    const data = await res.json();
+
+    if (data.checkoutUrl) {
+      window.location.href = data.checkoutUrl;
+      return;
+    }
+
+    alert("❌ Cannot start payment");
+  } catch (err) {
+    console.error(err);
+    alert("Server error");
+  }
 }
 
 
