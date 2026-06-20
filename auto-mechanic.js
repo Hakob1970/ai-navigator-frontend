@@ -96,7 +96,7 @@ async function sendProblem() {
     // =========================
     // RESULT
     // =========================
-    resultBox.innerText = data.result || "No response from AI";
+   resultBox.innerHTML = formatMechanicReport(data.result || "No response from AI");
 
   } catch (err) {
     console.error(err);
@@ -126,4 +126,28 @@ function goPremium() {
 
   // Здесь потом вставим Polar
   alert("💳 Opening Premium purchase...");
+}
+
+
+function formatMechanicReport(text) {
+  if (!text) return "<div class='diag-card'>No data</div>";
+
+  return `
+  <div class="diag-card">
+    <div class="diag-header">
+      📊 DIAGNOSTIC REPORT
+    </div>
+
+    <div class="diag-body">
+      ${text
+        .replace(/🔍/g, "<h3>🔍 Symptom Analysis</h3>")
+        .replace(/⚠️/g, "<h3>⚠️ Possible Causes</h3>")
+        .replace(/🧪/g, "<h3>🧪 Diagnosis Steps</h3>")
+        .replace(/🛠/g, "<h3>🛠 Repair Instructions</h3>")
+        .replace(/💡/g, "<h3>💡 Advice</h3>")
+        .replace(/\n/g, "<br>")
+      }
+    </div>
+  </div>
+  `;
 }
