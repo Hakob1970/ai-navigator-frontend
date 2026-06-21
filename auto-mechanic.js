@@ -74,10 +74,31 @@ resultBox.innerHTML = `
       }
     );
 
- if (!res.ok) {
+if (!res.ok) {
   const err = await res.json().catch(() => ({}));
 
- setError(btn, resultBox, err.error || "Server error");
+  // =========================
+  // NO SUBSCRIPTION / PREMIUM ERROR
+  // =========================
+  if (err.error === "NO_SUBSCRIPTION" || err.error === "AUTO_MECHANIC_PREMIUM_REQUIRED") {
+    resultBox.innerHTML = `
+      <div class="diag-card error">
+        ❌ Auto Mechanic Premium required<br><br>
+        <button onclick="goPremium('auto-mechanic')">
+          🔓 Upgrade to Premium
+        </button>
+      </div>
+    `;
+
+    usageBox.innerHTML = "🔒 Premium required";
+    resetButton(btn);
+    return;
+  }
+
+  // =========================
+  // OTHER ERRORS
+  // =========================
+  setError(btn, resultBox, err.error || "Server error");
   return;
 }
 
