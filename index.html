@@ -1699,6 +1699,13 @@ document.addEventListener("keydown", function (e) {
     document.getElementById("aiGuideOverlay").classList.add("hidden");
   }
 }); 
+
+   document.getElementById("aiGuideOverlay").addEventListener("click", function (e) {
+  // если кликнули НЕ в окно (modal), а по фону
+  if (e.target === this) {
+    this.classList.add("hidden");
+  }
+}); 
   </script>
 
 </body>
