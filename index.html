@@ -768,20 +768,6 @@
 
   <script>
 
-      function openGuide() {
-    document.getElementById("aiGuideOverlay").classList.remove("hidden");
-  }
-
-  function closeGuide() {
-    document.getElementById("aiGuideOverlay").classList.add("hidden");
-  }
-
-  document.addEventListener("keydown", function (e) {
-    if (e.key === "Escape") {
-      document.getElementById("aiGuideOverlay").classList.add("hidden");
-    }
-  });
-
   const API_URL = "https://ai-navigator-backend-mcb3.onrender.com";
 
 // =========================
@@ -1699,6 +1685,20 @@ if (paymentSuccess === "true") {
 }
 
     }); 
+
+   function openGuide() {
+  document.getElementById("aiGuideOverlay").classList.remove("hidden");
+}
+
+function closeGuide() {
+  document.getElementById("aiGuideOverlay").classList.add("hidden");
+}
+
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") {
+    document.getElementById("aiGuideOverlay").classList.add("hidden");
+  }
+}); 
   </script>
 
 </body>
