@@ -1682,6 +1682,8 @@ footer {
   padding-left: 2px;
 }
 
+
+
 .overlay {
   position: fixed;
   inset: 0; /* лучше чем top/left/width/height */
@@ -1784,4 +1786,8 @@ footer {
     padding: 18px;
     border-radius: 12px;
   }
+}
+
+.hidden {
+  display: none !important;
 }
