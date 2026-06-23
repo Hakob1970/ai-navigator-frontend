@@ -273,6 +273,23 @@ nav a {
   font-size: 14px;
   color: #888;
 }
+.hero-guide {
+  margin-top: 10px;
+  text-align: center;
+}
+
+.guide-link {
+  font-size: 14px;
+  color: #6b7280;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: 0.2s;
+}
+
+.guide-link:hover {
+  color: #111;
+}
+
 #telegram-btn {
   border: 1px solid rgba(255, 122, 24, 0.45);
   background: rgba(255, 122, 24, 0.08);
