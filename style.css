@@ -1702,6 +1702,10 @@ footer {
   height: 100dvh; /* 🔥 mobile fix */
 }
 
+.overlay.hidden {
+  display: none !important;
+}
+
 .modal {
   width: 100%;
   max-width: 650px;
