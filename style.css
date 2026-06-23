@@ -274,7 +274,7 @@ nav a {
   color: #888;
 }
 
-.guide-btn {
+.ai-nav-guide-btn {
   margin-top: 12px;
   padding: 10px 16px;
   border-radius: 999px;
@@ -287,12 +287,12 @@ nav a {
   box-shadow: 0 2px 10px rgba(0,0,0,0.06);
 }
 
-.guide-btn:hover {
+.ai-nav-guide-btn:hover {
   transform: translateY(-2px) scale(1.03);
   box-shadow: 0 6px 18px rgba(0,0,0,0.12);
 }
 
-.guide-btn:active {
+.ai-nav-guide-btn:active {
   transform: scale(0.98);
 }
 
