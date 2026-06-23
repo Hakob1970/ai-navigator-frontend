@@ -278,15 +278,13 @@ nav a {
   text-align: center;
 }
 
-.guide-link {
-  font-size: 14px;
+.hero .guide-link {
   color: #6b7280;
   cursor: pointer;
   text-decoration: underline;
-  transition: 0.2s;
 }
 
-.guide-link:hover {
+.hero .guide-link:hover {
   color: #111;
 }
 
