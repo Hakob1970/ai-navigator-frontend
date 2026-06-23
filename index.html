@@ -34,37 +34,37 @@
     </div>
   </header>
 
-  <!-- HERO -->
-  <section class="hero">
-    <div class="container">
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
 
-      <h1>Structured AI Workflows for Productivity & Content Creation</h1>
+    <h1>Structured AI Workflows for Productivity & Content Creation</h1>
 
-      <p>
-   Discover practical AI workflows, guided prompts, and productivity tools
+    <p>
+      Discover practical AI workflows, guided prompts, and productivity tools
       designed to help creators, freelancers, and professionals work faster with AI.
-      </p>
+    </p>
 
-      <!-- AUTH INPUT -->
-      <div id="auth-box" class="hero-auth">
-        <input id="email-input" type="email" placeholder="Enter your email" />
-        <button onclick="saveEmail()">Get Started</button>
-      </div>
-
-      <div id="account-box" class="hero-auth" style="display:none;">
-
-      </div>
-
-      <p class="hero-proof">
-              🚀 50+ structured AI workflows for research, writing, productivity, and content creation
-      </p>
-
-<button class="ai-nav-guide-btn" onclick="openGuide()">
-  What is AI Navigator?
-</button>
-
+    <!-- AUTH INPUT -->
+    <div id="auth-box" class="hero-auth">
+      <input id="email-input" type="email" placeholder="Enter your email" />
+      <button onclick="saveEmail()">Get Started</button>
     </div>
-  </section>
+
+    <div id="account-box" class="hero-auth" style="display:none;">
+      <!-- logged in content -->
+    </div>
+
+    <p class="hero-proof">
+      🚀 50+ structured AI workflows for research, writing, productivity, and content creation
+    </p>
+
+    <button class="ai-nav-guide-btn" onclick="openGuide()">
+        What is AI Navigator?
+      </button>
+
+  </div>
+</section>
 
   <!-- AI NAVIGATOR DASHBOARD -->
 <section class="dashboard">
@@ -677,6 +677,94 @@
 
     </div>
   </footer>
+
+  <div id="aiGuideOverlay" class="overlay hidden">
+  <div class="modal">
+
+    <h2>What is AI Navigator?</h2>
+
+    <p>
+      AI Navigator is a platform that combines different AI tools in one system.
+      It is designed to help you complete tasks faster and more efficiently.
+    </p>
+
+    <h3>1. Home Page (Start Here)</h3>
+    <p>
+      This is the first page you see.
+      Here you can create an account using your email and enter the platform.
+    </p>
+
+    <p>
+      After login, you can access all AI tools.
+    </p>
+
+    <h3>2. AI Tools Dashboard</h3>
+    <p>
+      This is the main part of the platform.
+      It contains different AI modules, each designed for a specific task.
+    </p>
+
+    <p>
+      Examples include:
+      Auto Mechanic AI, Book Creator AI, Builder AI.
+    </p>
+
+    <p>
+      Each tool opens a separate page where you can work with AI directly.
+    </p>
+
+    <h3>3. AI Pages (Tools)</h3>
+    <p>
+      Every tool is a separate page inside the system.
+      Each page focuses on one task only.
+    </p>
+
+    <p>
+      For example:
+      Auto Mechanic helps with car problems,
+      Book Creator helps with writing books,
+      Builder AI helps design systems and websites.
+    </p>
+
+    <h3>4. Workflows System</h3>
+    <p>
+      Workflows are step-by-step AI instructions.
+      They help you complete tasks in a structured way.
+    </p>
+
+    <p>
+      This is useful for writing, research, and productivity tasks.
+    </p>
+
+    <h3>5. Telegram Bot</h3>
+    <p>
+      AI Navigator also works inside Telegram.
+      The bot is connected to the same system as the website.
+    </p>
+
+    <p>
+      You can use it to access AI tools quickly without opening the site.
+    </p>
+
+    <h3>6. Telegram Channel</h3>
+    <p>
+      The Telegram channel is used for updates, news, and new features.
+      It keeps users informed about improvements in the platform.
+    </p>
+
+    <h3>How to Start</h3>
+    <p>
+      Enter your email on the home page, choose a tool, and start using AI instantly.
+    </p>
+
+    <button onclick="closeGuide()" class="close-btn">
+      Close
+    </button>
+
+  </div>
+</div>
+
+  
 
   <script>
 
