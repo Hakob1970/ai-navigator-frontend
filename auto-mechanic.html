@@ -18,31 +18,37 @@
 
 
   <!-- MAIN -->
-  <div class="auto-mechanic-inner">
+<div class="auto-mechanic-inner">
 
-    <h1>🚗 Auto Mechanic AI</h1>
+  <h1>🚗 Auto Mechanic AI</h1>
 
-    <input id="car" placeholder="Car brand (e.g. BMW)" />
-    <input id="year" placeholder="Year" />
-     <div class="input-group">
+  <input id="car" placeholder="Car brand (e.g. BMW)" />
+
+  <input id="year" placeholder="Year" />
+
+  <input id="engine" placeholder="Engine size (e.g. 2.0L)" />
+
+  <div class="input-group">
+
     <input id="vin" placeholder="VIN code" />
 
     <div class="input-hint">
       VIN code (optional)
     </div>
-  </div>
-
-    <textarea id="problem" placeholder="Describe the problem..."></textarea>
-
-    <button id="analyzeBtn" onclick="sendProblem()">Analyze Problem</button>
-
-    <div id="usageInfo" style="margin-top:10px; color:#ccc;"></div>
-
-    <div id="result"></div>
 
   </div>
 
-<!-- 💰 PRICING BLOCK -->
+  <textarea id="problem" placeholder="Describe the problem..."></textarea>
+
+  <button id="analyzeBtn" onclick="sendProblem()">
+    Analyze Problem
+  </button>
+
+  <div id="usageInfo" style="margin-top:10px; color:#ccc;"></div>
+
+  <div id="result"></div>
+
+</div>
 
 <!-- 💰 PRICING BLOCK -->
 
