@@ -17,6 +17,7 @@ function setError(btn, box, msg) {
 async function sendProblem() {
   const car = document.getElementById("car").value.trim();
   const year = document.getElementById("year").value.trim();
+  const engine = document.getElementById("engine").value;
   const vin = document.getElementById("vin").value.trim(); // optional
   const problem = document.getElementById("problem").value.trim();
 
