@@ -1573,6 +1573,15 @@ footer {
   padding: 15px;
   background: #12172a;
   border-radius: 10px;
+
+  max-width: 100%;
+  box-sizing: border-box;
+
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-wrap: break-word;
+
+  line-height: 1.5;
 }
 .auto-mechanic-inner {
   max-width: 700px;
