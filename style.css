@@ -1579,7 +1579,7 @@ footer {
   max-width: 100%;
   box-sizing: border-box;
 
-  white-space: pre-wrap;
+ white-space: pre-line;
   word-break: break-word;
   overflow-wrap: break-word;
 
