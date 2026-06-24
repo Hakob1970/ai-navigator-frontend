@@ -1588,6 +1588,13 @@ footer {
   margin: 0 auto;
   padding: 20px;
 }
+.auto-mechanic #result pre,
+.auto-mechanic #result code {
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+  max-width: 100%;
+}
 
 /* pricing */
 .auto-mechanic .pricing-card {
