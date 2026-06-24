@@ -1573,6 +1573,8 @@ footer {
   padding: 15px;
   background: #12172a;
   border-radius: 10px;
+  color: #eaeaea;
+  font-size: 14px;
 
   max-width: 100%;
   box-sizing: border-box;
@@ -1594,6 +1596,23 @@ footer {
   word-break: break-word;
   overflow-x: auto;
   max-width: 100%;
+}
+.auto-mechanic #result h1,
+.auto-mechanic #result h2,
+.auto-mechanic #result h3 {
+  color: #ffffff;
+  margin: 10px 0;
+}
+.auto-mechanic #result ul,
+.auto-mechanic #result ol {
+  padding-left: 20px;
+}
+
+.auto-mechanic #result li {
+  margin-bottom: 6px;
+}
+.auto-mechanic #result br {
+  line-height: 1.4;
 }
 
 /* pricing */
