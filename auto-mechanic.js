@@ -15,11 +15,15 @@ function setError(btn, box, msg) {
 
 
 async function sendProblem() {
-  const car = document.getElementById("car").value.trim();
-  const year = document.getElementById("year").value.trim();
-  const engine = document.getElementById("engine").value;
-  const vin = document.getElementById("vin").value.trim(); // optional
-  const problem = document.getElementById("problem").value.trim();
+const car = document.getElementById("car").value.trim();
+
+const year = document.getElementById("year").value.trim();
+
+const engine = document.getElementById("engine").value.trim();
+
+const vin = document.getElementById("vin").value.trim(); // optional
+
+const problem = document.getElementById("problem").value.trim();
 
   const btn = document.getElementById("analyzeBtn");
   const resultBox = document.getElementById("result");
@@ -67,10 +71,11 @@ resultBox.innerHTML = `
           "Authorization": `Bearer ${token}`
         },
         body: JSON.stringify({
-          car,
-          year,
-          vin,
-          problem
+         car,
+  year,
+  engine,
+  vin,
+  problem
         })
       }
     );
