@@ -1830,3 +1830,14 @@ footer {
 .hidden {
   display: none !important;
 }
+
+.diag-code {
+  font-size: 18px;
+  font-weight: bold;
+  color: #ff7a18;
+  margin-bottom: 10px;
+}
+
+.diag-card h2 {
+  margin-bottom: 10px;
+}
