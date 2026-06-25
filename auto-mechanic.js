@@ -137,7 +137,41 @@ if (!res.ok) {
     // =========================
     // RESULT
     // =========================
-   resultBox.innerHTML = formatMechanicReport(data.result || "No response from AI");
+const result = typeof data.result === "object" ? data.result : null;
+
+if (!result) {
+  resultBox.innerHTML = `<div class="diag-card error">❌ ${data.result}</div>`;
+  return;
+}
+
+resultBox.innerHTML = `
+  <div class="diag-card">
+
+    <div class="diag-code">
+      🔧 ${result.code || "UNKNOWN"}
+    </div>
+
+    <h2>${result.title || "No title"}</h2>
+
+    <p><b>Main cause:</b> ${result.most_likely_cause || "N/A"}</p>
+
+    <p><b>Secondary causes:</b></p>
+    <ul>
+      ${(result.secondary_causes || []).map(c => `<li>${c}</li>`).join("")}
+    </ul>
+
+    <p><b>Checks:</b></p>
+    <ul>
+      ${(result.recommended_checks || []).map(c => `<li>${c}</li>`).join("")}
+    </ul>
+
+    <p><b>Fix:</b></p>
+    <ul>
+      ${(result.suggested_fix || []).map(c => `<li>${c}</li>`).join("")}
+    </ul>
+
+  </div>
+`;
 
   } catch (err) {
     console.error(err);
