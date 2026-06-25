@@ -123,7 +123,7 @@ if (!res.ok) {
     : "";
 
   usageBox.innerHTML = `
-    🚗 Remaining: <b>${remaining}</b> / 50 <br>
+    🚗 Remaining: <b>${remaining}</b> / 20 <br>
     ${resetText}
   `;
 
