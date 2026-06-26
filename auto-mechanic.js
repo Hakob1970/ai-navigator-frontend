@@ -30,30 +30,21 @@ async function sendProblem() {
 
   const token = localStorage.getItem("token");
 
-  // =========================
-  // LOGIN CHECK
-  // =========================
   if (!token) {
     resultBox.innerText = "❌ Please login";
     return;
   }
 
-  // =========================
-  // REQUIRED FIELDS CHECK
-  // =========================
   if (!car || !year || !problem) {
     resultBox.innerText = "⚠️ Please fill Car, Year and Problem";
     return;
   }
 
-  // =========================
-  // LOADING STATE
-  // =========================
   setLoading(btn);
   resultBox.innerHTML = `<div class="scan-loader">🚗 Scanning...</div>`;
 
   let data;
-  let remaining = -1; // ✅ ОБЪЯВЛЯЕМ ЗДЕСЬ
+  let remaining = -1;
 
   try {
     console.log("BEFORE FETCH");
@@ -81,9 +72,6 @@ async function sendProblem() {
     if (!res.ok) {
       const err = await res.json().catch(() => ({}));
 
-      // =========================
-      // NO SUBSCRIPTION / PREMIUM ERROR
-      // =========================
       if (
         err.error === "NO_SUBSCRIPTION" ||
         err.error === "AUTO_MECHANIC_PREMIUM_REQUIRED"
@@ -96,27 +84,18 @@ async function sendProblem() {
             </button>
           </div>
         `;
-
         usageBox.innerHTML = "🔒 Premium required";
         resetButton(btn);
         return;
       }
 
-      // =========================
-      // OTHER ERRORS
-      // =========================
       setError(btn, resultBox, err.error || "Server error");
       return;
     }
 
     data = await res.json();
-
     console.log("API DATA:", data);
 
-    // =========================
-    // USAGE INFO
-    // =========================
-    // ✅ ИСПРАВЛЕНО: убрал const
     if (data.remaining !== undefined) {
       remaining = data.remaining;
       const resetText = data.resetAt
@@ -128,98 +107,92 @@ async function sendProblem() {
         ${resetText}
       `;
 
-      // 🚨 если лимит закончился
       if (remaining <= 0) {
         btn.disabled = true;
         btn.innerText = "Limit reached";
       }
     }
 
-// =========================
-// RESULT (улучшенная версия с иконками)
-// =========================
-const result = typeof data.result === "object" ? data.result : null;
+    // =========================
+    // RESULT - НОВАЯ ВЕРСИЯ
+    // =========================
+    const result = typeof data.result === "object" ? data.result : null;
 
-if (!result) {
-  resultBox.innerHTML = `<div class="diag-card error">❌ ${data.result}</div>`;
-  return;
+    if (!result) {
+      resultBox.innerHTML = `<div class="diag-card error">❌ ${data.result}</div>`;
+      return;
+    }
+
+    let html = `<div class="diag-card">`;
+
+    // Заголовок с кодом
+    html += `<div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 15px;">`;
+    html += `<h2 style="margin:0;">${result.title || "Диагностика"}</h2>`;
+    if (result.code) {
+      html += `<span style="background:#f0f0f0; padding:5px 12px; border-radius:20px; font-size:14px; font-weight:bold;">🔧 ${result.code}</span>`;
+    }
+    html += `</div>`;
+
+    // Основная причина
+    if (result.most_likely_cause) {
+      html += `
+        <div style="background:#fff3cd; border-left:4px solid #ffc107; padding:10px 15px; border-radius:4px; margin-bottom:15px;">
+          <b>🔍 Основная причина:</b> ${result.most_likely_cause}
+        </div>
+      `;
+    }
+
+    // Вторичные причины
+    if (result.secondary_causes && result.secondary_causes.length > 0) {
+      html += `<div style="margin-bottom:15px;">`;
+      html += `<b>📋 Вторичные причины:</b>`;
+      html += `<ul style="margin-top:5px;">`;
+      result.secondary_causes.forEach(c => {
+        html += `<li style="padding:3px 0;">${c}</li>`;
+      });
+      html += `</ul></div>`;
+    }
+
+    // Рекомендуемые проверки
+    if (result.recommended_checks && result.recommended_checks.length > 0) {
+      html += `<div style="margin-bottom:15px;">`;
+      html += `<b>🔧 Рекомендуемые проверки:</b>`;
+      html += `<ul style="margin-top:5px;">`;
+      result.recommended_checks.forEach(c => {
+        html += `<li style="padding:3px 0;">${c}</li>`;
+      });
+      html += `</ul></div>`;
+    }
+
+    // Предлагаемый ремонт
+    if (result.suggested_fix && result.suggested_fix.length > 0) {
+      html += `<div style="margin-top:10px; background:#d4edda; border-left:4px solid #28a745; padding:10px 15px; border-radius:4px;">`;
+      html += `<b>✅ Предлагаемый ремонт:</b>`;
+      html += `<ul style="margin-top:5px;">`;
+      result.suggested_fix.forEach(c => {
+        html += `<li style="padding:3px 0;">${c}</li>`;
+      });
+      html += `</ul></div>`;
+    }
+
+    html += `</div>`;
+    resultBox.innerHTML = html;
+
+  } catch (err) {
+    console.error(err);
+    resultBox.innerText = "Server error. Try again.";
+  } finally {
+    if (remaining !== 0 && remaining !== -1) {
+      resetButton(btn);
+    } else if (remaining === 0) {
+      btn.disabled = true;
+      btn.innerText = "Limit reached";
+    } else {
+      resetButton(btn);
+    }
+  }
 }
 
-// Определяем серьезность проблемы
-const severity = result.severity || "medium";
-const severityIcon = {
-  critical: "🔴",
-  high: "🟠",
-  medium: "🟡",
-  low: "🟢"
-}[severity] || "🟡";
-
-let html = `<div class="diag-card">`;
-
-// Заголовок с кодом и серьезностью
-html += `<div style="display:flex; justify-content:space-between; align-items:center; border-bottom: 2px solid #eee; padding-bottom: 10px; margin-bottom: 15px;">`;
-html += `<h2 style="margin:0;">${result.title || "Диагностика"}</h2>`;
-if (result.code) {
-  html += `<span class="diag-code" style="background:#f0f0f0; padding:5px 12px; border-radius:20px; font-size:14px; font-weight:bold;">🔧 ${result.code}</span>`;
-}
-html += `</div>`;
-
-// Основная причина
-if (result.most_likely_cause) {
-  html += `
-    <div style="background:#fff3cd; border-left:4px solid #ffc107; padding:10px 15px; border-radius:4px; margin-bottom:15px;">
-      <b>🔍 Основная причина:</b> ${result.most_likely_cause}
-    </div>
-  `;
-}
-
-// Вторичные причины
-if (result.secondary_causes && result.secondary_causes.length > 0) {
-  html += `<div style="margin-bottom:15px;">`;
-  html += `<b>📋 Вторичные причины:</b>`;
-  html += `<ul style="margin-top:5px;">`;
-  result.secondary_causes.forEach(c => {
-    html += `<li style="padding:3px 0;">${c}</li>`;
-  });
-  html += `</ul></div>`;
-}
-
-// Рекомендуемые проверки
-if (result.recommended_checks && result.recommended_checks.length > 0) {
-  html += `<div style="margin-bottom:15px;">`;
-  html += `<b>🔧 Рекомендуемые проверки:</b>`;
-  html += `<ul style="margin-top:5px;">`;
-  result.recommended_checks.forEach(c => {
-    html += `<li style="padding:3px 0;">${c}</li>`;
-  });
-  html += `</ul></div>`;
-}
-
-// Предлагаемый ремонт
-if (result.suggested_fix && result.suggested_fix.length > 0) {
-  html += `<div style="margin-top:10px; background:#d4edda; border-left:4px solid #28a745; padding:10px 15px; border-radius:4px;">`;
-  html += `<b>✅ Предлагаемый ремонт:</b>`;
-  html += `<ul style="margin-top:5px;">`;
-  result.suggested_fix.forEach(c => {
-    html += `<li style="padding:3px 0;">${c}</li>`;
-  });
-  html += `</ul></div>`;
-}
-
-// Дополнительная информация (если есть)
-if (result.notes) {
-  html += `<div style="margin-top:10px; color:#666; font-style:italic; border-top:1px solid #eee; padding-top:10px;">`;
-  html += `💡 ${result.notes}`;
-  html += `</div>`;
-}
-
-html += `</div>`;
-
-resultBox.innerHTML = html;
-
-// =========================
-// GET PREMIUM
-// =========================
 async function goPremium(module) {
   const token = localStorage.getItem("token");
 
