@@ -181,6 +181,7 @@ resultBox.innerHTML = `
   if (remaining > 0) {  
     resetButton(btn);
   }
+  }
 }
 
 // =========================
