@@ -176,7 +176,9 @@ resultBox.innerHTML = `
   } catch (err) {
     console.error(err);
     resultBox.innerText = "Server error. Try again.";
-  }
+  } finally {
+    resetButton(btn);
+}
 }
 
 // =========================
