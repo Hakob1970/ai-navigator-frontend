@@ -16,11 +16,7 @@ function setError(btn, box, msg) {
 
 async function sendProblem() {
 
-  console.log("SEND PROBLEM STARTED");
-
   const car = document.getElementById("car").value.trim();
-  
-const car = document.getElementById("car").value.trim();
 
 const year = document.getElementById("year").value.trim();
 
@@ -187,8 +183,9 @@ resultBox.innerHTML = `
     console.error(err);
     resultBox.innerText = "Server error. Try again.";
   } finally {
+  if (remaining > 0) {  
     resetButton(btn);
-}
+  }
 }
 
 // =========================
