@@ -13,13 +13,14 @@ function setError(btn, box, msg) {
   resetButton(btn);
 }
 
-
 async function sendProblem() {
-const car = document.getElementById("car").value.trim();
-const year = document.getElementById("year").value.trim();
-const engine = document.getElementById("engine").value.trim();
-const vin = document.getElementById("vin").value.trim(); // optional
-const problem = document.getElementById("problem").value.trim();
+  console.log("SEND PROBLEM STARTED");
+
+  const car = document.getElementById("car").value.trim();
+  const year = document.getElementById("year").value.trim();
+  const engine = document.getElementById("engine").value.trim();
+  const vin = document.getElementById("vin").value.trim();
+  const problem = document.getElementById("problem").value.trim();
 
   const btn = document.getElementById("analyzeBtn");
   const resultBox = document.getElementById("result");
@@ -28,7 +29,6 @@ const problem = document.getElementById("problem").value.trim();
   console.log("USAGE BOX ELEMENT:", usageBox);
 
   const token = localStorage.getItem("token");
-
 
   // =========================
   // LOGIN CHECK
@@ -49,65 +49,65 @@ const problem = document.getElementById("problem").value.trim();
   // =========================
   // LOADING STATE
   // =========================
-setLoading(btn);
-
-resultBox.innerHTML = `
-  <div class="scan-loader">🚗 Scanning...</div>
-`;
+  setLoading(btn);
+  resultBox.innerHTML = `<div class="scan-loader">🚗 Scanning...</div>`;
 
   let data;
+  let remaining = -1; // ✅ ОБЪЯВЛЯЕМ ЗДЕСЬ
 
   try {
+    console.log("BEFORE FETCH");
 
- console.log("BEFORE FETCH");
-    
     const res = await fetch(
       "https://ai-navigator-backend-mcb3.onrender.com/api/auto-mechanic",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
-         car,
-  year,
-  engine,
-  vin,
-  problem
-        })
+          car,
+          year,
+          engine,
+          vin,
+          problem,
+        }),
       }
     );
 
     console.log("AFTER FETCH");
 
-if (!res.ok) {
-  const err = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const err = await res.json().catch(() => ({}));
 
-  // =========================
-  // NO SUBSCRIPTION / PREMIUM ERROR
-  // =========================
-  if (err.error === "NO_SUBSCRIPTION" || err.error === "AUTO_MECHANIC_PREMIUM_REQUIRED") {
-    resultBox.innerHTML = `
-      <div class="diag-card error">
-        ❌ Auto Mechanic Premium required<br><br>
-        <button onclick="goPremium('auto-mechanic')">
-          🔓 Upgrade to Premium
-        </button>
-      </div>
-    `;
+      // =========================
+      // NO SUBSCRIPTION / PREMIUM ERROR
+      // =========================
+      if (
+        err.error === "NO_SUBSCRIPTION" ||
+        err.error === "AUTO_MECHANIC_PREMIUM_REQUIRED"
+      ) {
+        resultBox.innerHTML = `
+          <div class="diag-card error">
+            ❌ Auto Mechanic Premium required<br><br>
+            <button onclick="goPremium('auto-mechanic')">
+              🔓 Upgrade to Premium
+            </button>
+          </div>
+        `;
 
-    usageBox.innerHTML = "🔒 Premium required";
-    resetButton(btn);
-    return;
-  }
+        usageBox.innerHTML = "🔒 Premium required";
+        resetButton(btn);
+        return;
+      }
 
-  // =========================
-  // OTHER ERRORS
-  // =========================
-  setError(btn, resultBox, err.error || "Server error");
-  return;
-}
+      // =========================
+      // OTHER ERRORS
+      // =========================
+      setError(btn, resultBox, err.error || "Server error");
+      return;
+    }
 
     data = await res.json();
 
@@ -116,71 +116,72 @@ if (!res.ok) {
     // =========================
     // USAGE INFO
     // =========================
-  if (data.remaining !== undefined) {
+    // ✅ ИСПРАВЛЕНО: убрал const
+    if (data.remaining !== undefined) {
+      remaining = data.remaining;
+      const resetText = data.resetAt
+        ? `🔄 Reset: ${new Date(Number(data.resetAt)).toLocaleDateString()}`
+        : "";
 
-  const remaining = data.remaining;
-  const resetText = data.resetAt
-    ? `🔄 Reset: ${new Date(Number(data.resetAt)).toLocaleDateString()}`
-    : "";
+      usageBox.innerHTML = `
+        🚗 Remaining: <b>${remaining}</b> / 20 <br>
+        ${resetText}
+      `;
 
-  usageBox.innerHTML = `
-    🚗 Remaining: <b>${remaining}</b> / 20 <br>
-    ${resetText}
-  `;
-
-  // 🚨 если лимит закончился
-  if (remaining <= 0) {
-    btn.disabled = true;
-    btn.innerText = "Limit reached";
-  }
-}
+      // 🚨 если лимит закончился
+      if (remaining <= 0) {
+        btn.disabled = true;
+        btn.innerText = "Limit reached";
+      }
+    }
 
     // =========================
     // RESULT
     // =========================
-const result = typeof data.result === "object" ? data.result : null;
+    const result = typeof data.result === "object" ? data.result : null;
 
-if (!result) {
-  resultBox.innerHTML = `<div class="diag-card error">❌ ${data.result}</div>`;
-  return;
-}
+    if (!result) {
+      resultBox.innerHTML = `<div class="diag-card error">❌ ${data.result}</div>`;
+      return;
+    }
 
-resultBox.innerHTML = `
-  <div class="diag-card">
-
-    <div class="diag-code">
-      🔧 ${result.code || "UNKNOWN"}
-    </div>
-
-    <h2>${result.title || "No title"}</h2>
-
-    <p><b>Main cause:</b> ${result.most_likely_cause || "N/A"}</p>
-
-    <p><b>Secondary causes:</b></p>
-    <ul>
-      ${(result.secondary_causes || []).map(c => `<li>${c}</li>`).join("")}
-    </ul>
-
-    <p><b>Checks:</b></p>
-    <ul>
-      ${(result.recommended_checks || []).map(c => `<li>${c}</li>`).join("")}
-    </ul>
-
-    <p><b>Fix:</b></p>
-    <ul>
-      ${(result.suggested_fix || []).map(c => `<li>${c}</li>`).join("")}
-    </ul>
-
-  </div>
-`;
-
+    resultBox.innerHTML = `
+      <div class="diag-card">
+        <div class="diag-code">🔧 ${result.code || "UNKNOWN"}</div>
+        <h2>${result.title || "No title"}</h2>
+        <p><b>Main cause:</b> ${result.most_likely_cause || "N/A"}</p>
+        <p><b>Secondary causes:</b></p>
+        <ul>
+          ${(result.secondary_causes || []).map((c) => `<li>${c}</li>`).join("")}
+        </ul>
+        <p><b>Checks:</b></p>
+        <ul>
+          ${(result.recommended_checks || [])
+            .map((c) => `<li>${c}</li>`)
+            .join("")}
+        </ul>
+        <p><b>Fix:</b></p>
+        <ul>
+          ${(result.suggested_fix || []).map((c) => `<li>${c}</li>`).join("")}
+        </ul>
+      </div>
+    `;
   } catch (err) {
     console.error(err);
     resultBox.innerText = "Server error. Try again.";
   } finally {
-  if (remaining > 0) {  
-    resetButton(btn);
-  }
+    // ✅ ИСПРАВЛЕНО: проверяем что remaining не 0
+    // ✅ И проверяем что remaining был установлен (не -1)
+    if (remaining !== 0 && remaining !== -1) {
+      resetButton(btn);
+    } else if (remaining === 0) {
+      // Лимит достигнут - не включаем кнопку
+      btn.disabled = true;
+      btn.innerText = "Limit reached";
+    } else {
+      // Если осталось -1 (не было ответа от сервера)
+      resetButton(btn);
+    }
   }
 }
 
@@ -199,24 +200,24 @@ async function goPremium(module) {
 
   try {
     const res = await fetch(
-    "https://ai-navigator-backend-mcb3.onrender.com/api/polar/create-checkout",
+      "https://ai-navigator-backend-mcb3.onrender.com/api/polar/create-checkout",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           email,
-          module
-        })
+          module,
+        }),
       }
     );
 
     const data = await res.json();
 
- if (data.url) {
-  window.location.href = data.url;
+    if (data.url) {
+      window.location.href = data.url;
       return;
     }
 
@@ -227,7 +228,6 @@ async function goPremium(module) {
   }
 }
 
-
 function formatMechanicReport(text) {
   if (!text) {
     return `<div class="diag-card error">No diagnostic data</div>`;
@@ -235,21 +235,17 @@ function formatMechanicReport(text) {
 
   return `
   <div class="diag-card">
-
     <div class="diag-header">
       🚗 AI DIAGNOSTIC SCAN REPORT
     </div>
-
     <div class="diag-status">
       🔍 Scan completed successfully
     </div>
-
     <div class="diag-body">
       <div class="section full">
         <pre>${escapeHtml(text)}</pre>
       </div>
     </div>
-
   </div>
   `;
 }
