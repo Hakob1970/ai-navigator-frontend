@@ -15,6 +15,11 @@ function setError(btn, box, msg) {
 
 
 async function sendProblem() {
+
+  console.log("SEND PROBLEM STARTED");
+
+  const car = document.getElementById("car").value.trim();
+  
 const car = document.getElementById("car").value.trim();
 
 const year = document.getElementById("year").value.trim();
@@ -62,6 +67,9 @@ resultBox.innerHTML = `
   let data;
 
   try {
+
+ console.log("BEFORE FETCH");
+    
     const res = await fetch(
       "https://ai-navigator-backend-mcb3.onrender.com/api/auto-mechanic",
       {
@@ -79,6 +87,8 @@ resultBox.innerHTML = `
         })
       }
     );
+
+    console.log("AFTER FETCH");
 
 if (!res.ok) {
   const err = await res.json().catch(() => ({}));
